@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FashionHub — Coleção & Estilo</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090C;--s1:#0E0F14;--s2:#14151C;--s3:#1C1D26;--s4:#252630;
+  --b1:rgba(255,255,255,.055);--b2:rgba(255,255,255,.1);--b3:rgba(255,255,255,.16);
+  --ac:#E8650A;--ac2:#FF7A1F;--acd:rgba(232,101,10,.12);--acb:rgba(232,101,10,.25);
+  --t1:#F0EDE8;--t2:#888480;--t3:#484440;--t4:#282420;
+  --gr:#4CAF80;--grd:rgba(76,175,128,.10);--grb:rgba(76,175,128,.22);
+  --re:#E06060;--red:rgba(224,96,96,.10);
+  --am:#E0A840;--amd:rgba(224,168,64,.10);
+  --bl:#6090D8;--bld:rgba(96,144,216,.10);
+  --pu:#9878D0;--pud:rgba(152,120,208,.10);
+  --pk:#D87898;--pkd:rgba(216,120,152,.10);
+  --r:10px;--rl:14px;
+}
+[data-theme="light"]{
+  --bg:#F5F4F2;--s1:#FFFFFF;--s2:#F0EFEC;--s3:#E8E6E2;--s4:#DDD9D4;
+  --b1:rgba(0,0,0,.07);--b2:rgba(0,0,0,.12);--b3:rgba(0,0,0,.18);
+  --ac:#E8650A;--ac2:#D45A08;--acd:rgba(232,101,10,.09);--acb:rgba(232,101,10,.22);
+  --t1:#1A1815;--t2:#5A5650;--t3:#9A9690;--t4:#C4C0BA;
+  --gr:#2E7D52;--grd:rgba(46,125,82,.09);--grb:rgba(46,125,82,.2);
+  --re:#C0392B;--red:rgba(192,57,43,.08);
+  --am:#B8860B;--amd:rgba(184,134,11,.09);
+  --bl:#2563EB;--bld:rgba(37,99,235,.09);
+  --pu:#7C3AED;--pud:rgba(124,58,237,.09);
+  --pk:#BE185D;--pkd:rgba(190,24,93,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;transition:background .2s ease,color .2s ease,border-color .2s ease}
+.btn,.ni,.mc,.card{transition:all .15s !important}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* BRAND BAR */
+.bbar{height:30px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0}
+.bl-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;font-family:'DM Mono',monospace}
+.bc{padding:2px 10px;border-radius:4px;font-size:10.5px;cursor:pointer;border:1px solid var(--b1);background:transparent;color:var(--t2);font-family:'Instrument Sans',sans-serif}
+.bc:hover{background:var(--s2);color:var(--t1)}.bc.on{background:var(--acd);color:var(--ac);border-color:var(--acb)}
+.br{margin-left:auto;font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace}
+.brdot{width:5px;height:5px;border-radius:50%;background:var(--gr);box-shadow:0 0 5px var(--gr)}
+.theme-toggle{width:34px;height:20px;border-radius:10px;background:var(--s4);border:1px solid var(--b2);position:relative;cursor:pointer;flex-shrink:0}
+.theme-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;top:2px;left:2px;background:var(--t2);transition:transform .2s ease,background .2s ease !important}
+[data-theme="light"] .theme-toggle{background:var(--acd);border-color:var(--acb)}
+[data-theme="light"] .theme-toggle::after{transform:translateX(14px);background:var(--ac)}
+
+/* LAYOUT */
+.body{flex:1;display:flex;overflow:hidden}
+.sb{width:210px;flex-shrink:0;background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;height:100%;overflow-y:auto}
+.logo{padding:14px 14px 12px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:9px}
+.lm{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.03em}
+.lm b{color:var(--ac)}
+.lbadge{background:var(--pud);border:1px solid rgba(152,120,208,.25);color:var(--pu);font-size:8px;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:3px;letter-spacing:.07em}
+nav{padding:7px;flex:1}
+.ng{margin-bottom:3px}
+.nl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);padding:7px 8px 3px;font-family:'DM Mono',monospace}
+.ni{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:7px;font-size:12.5px;color:var(--t2);cursor:pointer;margin-bottom:1px;border:1px solid transparent;user-select:none}
+.ni:hover{background:var(--s2);color:var(--t1)}.ni.on{background:var(--acd);color:var(--ac);border-color:var(--acb)}
+.nd{width:4px;height:4px;border-radius:50%;background:var(--t3);flex-shrink:0}.ni.on .nd{background:var(--ac)}
+.nb{margin-left:auto;font-size:9px;font-family:'DM Mono',monospace;padding:1px 5px;border-radius:99px}
+.nb-r{background:var(--red);color:var(--re)}.nb-a{background:var(--amd);color:var(--am)}.nb-g{background:var(--grd);color:var(--gr)}.nb-p{background:var(--pud);color:var(--pu)}
+.nn{font-size:8px;background:var(--acd);color:var(--ac);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;margin-left:auto;border:1px solid var(--acb)}
+.sft{padding:10px;border-top:1px solid var(--b1)}
+.ws{background:var(--s2);border-radius:8px;padding:9px 11px;border:1px solid var(--b1)}
+.wsn{font-size:12px;font-weight:500}.wsp{font-size:10px;color:var(--t3);margin-top:1px;font-family:'DM Mono',monospace}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.tb{height:48px;flex-shrink:0;border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 18px;gap:10px;background:var(--s1)}
+.tbt{font-family:'Syne',sans-serif;font-size:13.5px;font-weight:700;letter-spacing:-.02em}
+.tbr{margin-left:auto;display:flex;align-items:center;gap:7px}
+.pulse{width:5px;height:5px;border-radius:50%;background:var(--ac);box-shadow:0 0 4px var(--ac);animation:blink 2s ease-in-out infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn{padding:5px 12px;border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px}
+.btn-ac{background:var(--ac);color:#08090C}.btn-ac:hover{background:var(--ac2)}
+.btn-o{background:transparent;color:var(--t2);border:1px solid var(--b2)}.btn-o:hover{background:var(--s2);color:var(--t1)}
+.btn-gr{background:var(--grd);color:var(--gr);border:1px solid var(--grb)}
+.btn-re{background:var(--red);color:var(--re);border:1px solid rgba(224,96,96,.2)}
+.btn-am{background:var(--amd);color:var(--am);border:1px solid rgba(224,168,64,.2)}
+.btn-bl{background:var(--bld);color:var(--bl);border:1px solid rgba(96,144,216,.2)}
+.btn-pu{background:var(--pud);color:var(--pu);border:1px solid rgba(152,120,208,.2)}
+.btn-pk{background:var(--pkd);color:var(--pk);border:1px solid rgba(216,120,152,.2)}
+
+.content{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.view{display:none;flex-direction:column;gap:12px}.view.on{display:flex}
+
+/* COMPONENTS */
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden}
+.card-p{padding:16px}
+.sh{display:flex;align-items:center;gap:8px}
+.sht{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:-.02em}
+.shr{margin-left:auto;display:flex;gap:6px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:99px;font-size:10px;font-weight:500;font-family:'DM Mono',monospace}
+.b-ac{background:var(--acd);color:var(--ac);border:1px solid var(--acb)}
+.b-gr{background:var(--grd);color:var(--gr)}.b-re{background:var(--red);color:var(--re)}
+.b-am{background:var(--amd);color:var(--am)}.b-bl{background:var(--bld);color:var(--bl)}
+.b-pu{background:var(--pud);color:var(--pu)}.b-pk{background:var(--pkd);color:var(--pk)}
+.b-n{background:var(--s3);color:var(--t3);border:1px solid var(--b1)}
+.mc{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:13px 16px}
+.mc.hi{background:var(--acd);border-color:var(--acb)}.mc.hg{background:var(--grd);border-color:var(--grb)}
+.mc.hr{background:var(--red);border-color:rgba(224,96,96,.18)}.mc.ha{background:var(--amd);border-color:rgba(224,168,64,.18)}
+.mc.hb{background:var(--bld);border-color:rgba(96,144,216,.2)}.mc.hp{background:var(--pud);border-color:rgba(152,120,208,.2)}
+.mc.hpk{background:var(--pkd);border-color:rgba(216,120,152,.2)}
+.mcl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;font-family:'DM Mono',monospace}
+.mcv{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1}
+.mc.hi .mcv{color:var(--ac)}.mc.hg .mcv{color:var(--gr)}.mc.hr .mcv{color:var(--re)}
+.mc.ha .mcv{color:var(--am)}.mc.hb .mcv{color:var(--bl)}.mc.hp .mcv{color:var(--pu)}.mc.hpk .mcv{color:var(--pk)}
+.mcs{font-size:10px;color:var(--t3);margin-top:2px;font-family:'DM Mono',monospace}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g21{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+.g12{display:grid;grid-template-columns:1fr 1.4fr;gap:12px}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:9px 13px;font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--b1);background:var(--s2);font-family:'DM Mono',monospace}
+td{padding:10px 13px;font-size:12.5px;color:var(--t1);border-bottom:1px solid var(--b1)}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--s2)}
+
+/* PROGRESS */
+.pbar{background:var(--s4);border-radius:99px;height:3px;overflow:hidden}
+.pbf{height:100%;border-radius:99px}
+.sv-row{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.sv-name{font-size:12px;color:var(--t1);width:160px;flex-shrink:0}
+.sv-bar{flex:1;height:3px;background:var(--s4);border-radius:99px;overflow:hidden}
+.sv-fill{height:100%;border-radius:99px}
+.sv-pct{font-size:11px;font-family:'DM Mono',monospace;min-width:36px;text-align:right}
+
+/* TIMELINE */
+.tl-item{display:flex;gap:11px;align-items:flex-start;padding:10px 14px;border-bottom:1px solid var(--b1)}
+.tl-item:last-child{border-bottom:none}
+.tl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tl-content{flex:1}.tl-title{font-size:12.5px;font-weight:500;margin-bottom:2px}
+.tl-sub{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace}
+.tl-time{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace;flex-shrink:0}
+
+/* FORM */
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10.5px;color:var(--t2);font-weight:500}
+.fg input,.fg select,.fg textarea{background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:8px 11px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;color:var(--t1);outline:none;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--ac)}
+.fg select option{background:var(--s2)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.full{grid-column:span 2}
+
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.mo.on{display:flex}
+.mbox{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);padding:22px;width:560px;max-width:96vw;max-height:92vh;overflow-y:auto}
+.mt{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;letter-spacing:-.02em}
+.ms{font-size:12px;color:var(--t3);margin-bottom:18px}
+.mact{display:flex;gap:7px;justify-content:flex-end;margin-top:18px}
+.mcls{cursor:pointer;color:var(--t3);font-size:18px;background:none;border:none;line-height:1}.mcls:hover{color:var(--t1)}
+
+/* TOAST */
+.toast{position:fixed;bottom:18px;right:18px;background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:10px 15px;font-size:12.5px;color:var(--t1);z-index:500;display:flex;align-items:center;gap:8px;transform:translateY(60px);opacity:0;transition:all .3s ease;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* GANTT */
+.gantt{width:100%;overflow-x:auto}
+.gantt-row{display:flex;align-items:center;gap:0;border-bottom:1px solid var(--b1);min-height:36px}
+.gantt-row:last-child{border-bottom:none}
+.gantt-label{width:180px;flex-shrink:0;padding:0 12px;font-size:12px;color:var(--t1)}
+.gantt-label-sm{font-size:10px;color:var(--t3);margin-top:1px;font-family:'DM Mono',monospace}
+.gantt-track{flex:1;position:relative;height:36px;display:flex;align-items:center}
+.gantt-bar{height:16px;border-radius:4px;position:absolute;display:flex;align-items:center;padding:0 6px;font-size:10px;font-weight:500;white-space:nowrap;overflow:hidden;cursor:pointer}
+.gantt-bar:hover{filter:brightness(1.15)}
+
+/* MOODBOARD */
+.mood-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.mood-card{border-radius:9px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .15s}
+.mood-card:hover{border-color:var(--ac)}
+.mood-card.sel{border-color:var(--ac)}
+.mood-img{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;font-family:'Syne',sans-serif}
+.mood-label{padding:6px 8px;font-size:10px;font-family:'DM Mono',monospace;color:var(--t3);text-align:center}
+
+/* PANTONE SWATCH */
+.swatch{width:40px;height:40px;border-radius:8px;border:1.5px solid var(--b2);flex-shrink:0;cursor:pointer}
+.swatch:hover{transform:scale(1.1)}
+.swatch-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--b1)}
+.swatch-row:last-child{border-bottom:none}
+
+/* FICHA TECNICA */
+.ft-section{background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:8px}
+.ft-title{font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace}
+
+/* STATUS BADGE FICHA */
+.st-dev{background:var(--bld);color:var(--bl);border:1px solid rgba(96,144,216,.22)}
+.st-rev{background:var(--amd);color:var(--am);border:1px solid rgba(224,168,64,.2)}
+.st-apr{background:var(--grd);color:var(--gr);border:1px solid var(--grb)}
+.st-rep{background:var(--red);color:var(--re);border:1px solid rgba(224,96,96,.2)}
+.st-prd{background:var(--pud);color:var(--pu);border:1px solid rgba(152,120,208,.2)}
+
+/* INTEGRAÇÃO STATUS */
+.int-card{background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.int-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.int-info{flex:1}
+.int-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.int-desc{font-size:11px;color:var(--t3)}
+.int-status{font-size:10px;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:99px;flex-shrink:0}
+.int-on{background:var(--grd);color:var(--gr);border:1px solid var(--grb)}
+.int-off{background:var(--s3);color:var(--t3);border:1px solid var(--b1)}
+.int-cfg{background:var(--amd);color:var(--am);border:1px solid rgba(224,168,64,.2)}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--s4);border-radius:99px}
+svg{display:inline-block;vertical-align:middle;flex-shrink:0}
+</style>
+</head>
+<body>
+<script>try{if(localStorage.getItem('fh-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}</script>
+
+<!-- BRAND BAR -->
+<div class="bbar">
+  <span class="bl-label">Marca</span>
+  <button class="bc on">Minha Marca</button>
+  <span style="width:1px;height:12px;background:var(--b1);margin:0 2px"></span>
+  <button class="bc" style="border-style:dashed" onclick="toast('Múltiplas marcas na versão Pro','')">+ Marca</button>
+  <div style="display:flex;align-items:center;gap:5px;margin-left:8px;padding-left:8px;border-left:1px solid var(--b1)">
+    <span id="theme-icon" style="font-size:12px;color:var(--t3);cursor:pointer;user-select:none" onclick="toggleTheme()">◐</span>
+    <div class="theme-toggle" onclick="toggleTheme()"></div>
+  </div>
+  <div class="br"><div class="brdot"></div><span>Estilo ativo</span></div>
+</div>
+
+<div class="body">
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="logo">
+    <div>
+      <div class="lm">Fashion<b>Hub</b></div>
+      <div style="font-size:8px;font-family:'DM Mono',monospace;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-top:2px">Coleção & Estilo</div>
+    </div>
+    <span class="lbadge">M3</span>
+  </div>
+  <nav>
+    <div class="ng">
+      <div class="nl">Visão Geral</div>
+      <div class="ni on" onclick="nav('dashboard',this)"><div class="nd"></div>Dashboard</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Coleções</div>
+      <div class="ni" onclick="nav('colecoes',this)"><div class="nd"></div>Coleções ativas</div>
+      <div class="ni" onclick="nav('nova-colecao',this)"><div class="nd"></div>Nova coleção<span class="nn">+</span></div>
+    </div>
+    <div class="ng">
+      <div class="nl">Produto</div>
+      <div class="ni" onclick="nav('fichas',this)"><div class="nd"></div>Fichas técnicas<span class="nb nb-a">8</span></div>
+      <div class="ni" onclick="nav('nova-ficha',this)"><div class="nd"></div>Nova ficha<span class="nn">+</span></div>
+      <div class="ni" onclick="nav('aprovacao',this)"><div class="nd"></div>Aguardando aprovação<span class="nb nb-r">3</span></div>
+    </div>
+    <div class="ng">
+      <div class="nl">Desenvolvimento</div>
+      <div class="ni" onclick="nav('calendario',this)"><div class="nd"></div>Calendário (Gantt)</div>
+      <div class="ni" onclick="nav('moodboard',this)"><div class="nd"></div>Moodboard & referências</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Materiais</div>
+      <div class="ni" onclick="nav('materiais',this)"><div class="nd"></div>Tecidos & aviamentos</div>
+      <div class="ni" onclick="nav('pantone',this)"><div class="nd"></div>Cartela de cores</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Comercial</div>
+      <div class="ni" onclick="nav('lookbook',this)"><div class="nd"></div>Lookbook interno</div>
+      <div class="ni" onclick="nav('grade',this)"><div class="nd"></div>Grade de produção</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Sistema</div>
+      <div class="ni" onclick="nav('integracoes',this)"><div class="nd"></div>Integrações
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--gr);margin-left:auto;flex-shrink:0"></div>
+      </div>
+    </div>
+    <div class="ng">
+      <div class="nl">Ajuda</div>
+      <div class="ni" onclick="nav('instrucoes',this)"><div class="nd"></div>Instruções</div>
+      <div class="ni" onclick="startTutorial()"><div class="nd"></div>Tutorial<span class="nn">▶</span></div>
+    </div>
+  </nav>
+  <div class="sft">
+    <div class="ws">
+      <div class="wsn">Inverno 27</div>
+      <div class="wsp">Em desenvolvimento · 32 peças</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+<div class="tb">
+  <span class="tbt" id="page-title">Dashboard</span>
+  <div class="tbr">
+    <button class="btn btn-o" style="font-size:11px;padding:4px 10px" onclick="toast('Exportando relatório da coleção','')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="8,17 12,21 16,17"/><line x1="12" y1="21" x2="12" y2="3"/></svg>
+      Exportar
+    </button>
+    <button class="btn btn-ac" onclick="openM('m-nova-peca')">+ Peça</button>
+  </div>
+</div>
+<div class="content">
+
+<!-- ════ DASHBOARD ════ -->
+<div class="view on" id="v-dashboard">
+  <div class="g5">
+    <div class="mc hp"><div class="mcl">Coleção ativa</div><div class="mcv" style="font-size:14px">Inverno 27</div><div class="mcs">em desenvolvimento</div></div>
+    <div class="mc hi"><div class="mcl">Peças planejadas</div><div class="mcv">32</div><div class="mcs">18 com ficha completa</div></div>
+    <div class="mc ha"><div class="mcl">Fichas em revisão</div><div class="mcv">8</div><div class="mcs">aguardando feedback</div></div>
+    <div class="mc hr"><div class="mcl">Aprovação pendente</div><div class="mcv">3</div><div class="mcs">prazo: 10 dias</div></div>
+    <div class="mc hg"><div class="mcl">Aprovadas</div><div class="mcv">21</div><div class="mcs">prontas para produção</div></div>
+  </div>
+
+  <div class="g21">
+    <!-- PROGRESSO DA COLEÇÃO -->
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:14px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--pu)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 2,7 12,12 22,7 12,2"/><polyline points="2,17 12,22 22,17"/><polyline points="2,12 12,17 22,12"/></svg>
+        <span class="sht">Inverno 27 — progresso geral</span>
+        <span class="badge b-pu" style="margin-left:auto">Em andamento</span>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;font-family:'DM Mono',monospace;margin-bottom:5px">
+          <span style="color:var(--t3)">Progresso geral</span>
+          <span style="color:var(--pu)">66%</span>
+        </div>
+        <div class="pbar" style="height:8px"><div class="pbf" style="width:66%;background:var(--pu)"></div></div>
+      </div>
+      <!-- POR ETAPA -->
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div class="sv-row"><span class="sv-name">Briefing & moodboard</span><div class="sv-bar"><div class="sv-fill" style="width:100%;background:var(--gr)"></div></div><span class="sv-pct" style="color:var(--gr)">100%</span></div>
+        <div class="sv-row"><span class="sv-name">Fichas técnicas</span><div class="sv-bar"><div class="sv-fill" style="width:78%;background:var(--ac)"></div></div><span class="sv-pct" style="color:var(--ac)">78%</span></div>
+        <div class="sv-row"><span class="sv-name">Aprovação de fichas</span><div class="sv-bar"><div class="sv-fill" style="width:66%;background:var(--pu)"></div></div><span class="sv-pct" style="color:var(--pu)">66%</span></div>
+        <div class="sv-row"><span class="sv-name">Amostras solicitadas</span><div class="sv-bar"><div class="sv-fill" style="width:45%;background:var(--am)"></div></div><span class="sv-pct" style="color:var(--am)">45%</span></div>
+        <div class="sv-row"><span class="sv-name">Grade de produção</span><div class="sv-bar"><div class="sv-fill" style="width:20%;background:var(--re)"></div></div><span class="sv-pct" style="color:var(--re)">20%</span></div>
+        <div class="sv-row" style="margin-bottom:0"><span class="sv-name">Lookbook gerado</span><div class="sv-bar"><div class="sv-fill" style="width:0%;background:var(--t3)"></div></div><span class="sv-pct" style="color:var(--t3)">0%</span></div>
+      </div>
+    </div>
+
+    <!-- ALERTAS + STATUS RÁPIDO -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div class="sh" style="margin-bottom:10px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--re)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span class="sht">Alertas de prazo</span>
+        </div>
+        <div class="tl-item"><div class="tl-dot" style="background:var(--re)"></div><div class="tl-content"><div class="tl-title">Ficha do Blazer Oversize — aprovação atrasada</div><div class="tl-sub">Prazo era 28/04 · 3 dias de atraso</div></div><button class="btn btn-re" style="font-size:10px;padding:2px 7px;flex-shrink:0" onclick="nav('aprovacao',document.querySelector('.ni[onclick*=aprovacao]'))">Aprovar</button></div>
+        <div class="tl-item"><div class="tl-dot" style="background:var(--am)"></div><div class="tl-content"><div class="tl-title">Grade de produção — prazo em 5 dias</div><div class="tl-sub">Fornecedor Têxtil SP aguardando</div></div><button class="btn btn-am" style="font-size:10px;padding:2px 7px;flex-shrink:0" onclick="nav('grade',document.querySelector('.ni[onclick*=grade]'))">Ver</button></div>
+        <div class="tl-item" style="border-bottom:none"><div class="tl-dot" style="background:var(--gr)"></div><div class="tl-content"><div class="tl-title">Cartela de cores Inverno 27 — aprovada</div><div class="tl-sub">12 cores confirmadas para produção</div></div><span class="tl-time">hoje</span></div>
+      </div>
+      <div class="card card-p">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Peças por categoria</div>
+        <div class="sv-row"><span class="sv-name">Alfaiataria</span><div class="sv-bar"><div class="sv-fill" style="width:75%;background:var(--pu)"></div></div><span class="sv-pct">8 peças</span></div>
+        <div class="sv-row"><span class="sv-name">Vestidos</span><div class="sv-bar"><div class="sv-fill" style="width:62%;background:var(--ac)"></div></div><span class="sv-pct">6 peças</span></div>
+        <div class="sv-row"><span class="sv-name">Couro / PU</span><div class="sv-bar"><div class="sv-fill" style="width:50%;background:var(--gr)"></div></div><span class="sv-pct">5 peças</span></div>
+        <div class="sv-row"><span class="sv-name">Knitwear</span><div class="sv-bar"><div class="sv-fill" style="width:37%;background:var(--bl)"></div></div><span class="sv-pct">4 peças</span></div>
+        <div class="sv-row" style="margin-bottom:0"><span class="sv-name">Tops & outros</span><div class="sv-bar"><div class="sv-fill" style="width:28%;background:var(--am)"></div></div><span class="sv-pct">9 peças</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATIVIDADE RECENTE -->
+  <div class="card">
+    <div style="padding:11px 14px;border-bottom:1px solid var(--b1)"><span class="sht">Atividade recente — Inverno 27</span></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--gr)"></div><div class="tl-content"><div class="tl-title">Ficha Calça Pantalona Linho — aprovada</div><div class="tl-sub">Aprovado por Marina Dias · encaminhada para amostras</div></div><span class="tl-time">hoje</span></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--bl)"></div><div class="tl-content"><div class="tl-title">Moodboard Inverno 27 — atualizado</div><div class="tl-sub">12 referências adicionadas · tema: estrutura e fluidez</div></div><span class="tl-time">ontem</span></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--am)"></div><div class="tl-content"><div class="tl-title">Ficha Blazer Oversize — revisão solicitada</div><div class="tl-sub">Comentário: ajustar especificação do forro</div></div><span class="tl-time">2 dias</span></div>
+    <div class="tl-item" style="border-bottom:none"><div class="tl-dot" style="background:var(--pu)"></div><div class="tl-content"><div class="tl-title">Cartela de cores aprovada — 12 tons</div><div class="tl-sub">Pantone: 9221C, 9062C, 7527C, 4975C + 8 outros</div></div><span class="tl-time">3 dias</span></div>
+  </div>
+</div>
+
+<!-- ════ COLEÇÕES ════ -->
+<div class="view" id="v-colecoes">
+  <div class="g4">
+    <div class="mc hp"><div class="mcl">Em desenvolvimento</div><div class="mcv">1</div><div class="mcs">Inverno 27</div></div>
+    <div class="mc hg"><div class="mcl">Lançadas este ano</div><div class="mcv">2</div><div class="mcs">Verão 27 · Oriente</div></div>
+    <div class="mc ha"><div class="mcl">Total de peças 2026</div><div class="mcv">89</div><div class="mcs">nas 3 coleções</div></div>
+    <div class="mc hi"><div class="mcl">Próxima coleção</div><div class="mcv" style="font-size:14px">Verão 28</div><div class="mcs">briefing: jul/26</div></div>
+  </div>
+  <div class="g3">
+    <!-- INVERNO 27 -->
+    <div class="card card-p" style="border-color:rgba(152,120,208,.3)">
+      <div style="width:100%;height:120px;background:linear-gradient(135deg,#1C1D26,#252630);border-radius:8px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(152,120,208,.3),rgba(96,144,216,.2))"></div>
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#F0EDE8;letter-spacing:.05em">INVERNO</div>
+          <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--pu);letter-spacing:.2em">2027</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700">Inverno 27</div>
+        <span class="badge b-pu">Em desenvolvimento</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+        <div style="background:var(--s2);border-radius:6px;padding:6px 9px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">PEÇAS</div><div style="font-size:14px;font-weight:700">32</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:6px 9px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">LANÇAMENTO</div><div style="font-size:12px;font-weight:600">ago/26</div></div>
+      </div>
+      <div class="pbar" style="margin-bottom:8px;height:5px"><div class="pbf" style="width:66%;background:var(--pu)"></div></div>
+      <button class="btn btn-pu" style="width:100%;justify-content:center;font-size:11px" onclick="abrirColecao(0)">Abrir coleção →</button>
+    </div>
+    <!-- VERÃO 27 -->
+    <div class="card card-p">
+      <div style="width:100%;height:120px;background:linear-gradient(135deg,#1C1D26,#252630);border-radius:8px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,101,10,.25),rgba(224,168,64,.15))"></div>
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#F0EDE8;letter-spacing:.05em">VERÃO</div>
+          <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--ac);letter-spacing:.2em">2027</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700">Verão 27</div>
+        <span class="badge b-gr">Lançada</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+        <div style="background:var(--s2);border-radius:6px;padding:6px 9px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">PEÇAS</div><div style="font-size:14px;font-weight:700">28</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:6px 9px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">LANÇAMENTO</div><div style="font-size:12px;font-weight:600">nov/25</div></div>
+      </div>
+      <div class="pbar" style="margin-bottom:8px;height:5px"><div class="pbf" style="width:100%;background:var(--gr)"></div></div>
+      <button class="btn btn-o" style="width:100%;justify-content:center;font-size:11px" onclick="abrirColecao(1)">Ver coleção →</button>
+    </div>
+    <!-- NOVA -->
+    <div class="card card-p" style="border:2px dashed var(--b2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;cursor:pointer" onclick="nav('nova-colecao',document.querySelector('.ni[onclick*=nova-colecao]'))">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:10px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <div style="font-size:13px;color:var(--t3);margin-bottom:4px">Nova coleção</div>
+      <div style="font-size:11px;color:var(--t3)">Briefing + moodboard + peças</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ NOVA COLEÇÃO ════ -->
+<div class="view" id="v-nova-colecao">
+  <div class="g21">
+    <div class="card card-p">
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;font-family:'DM Mono',monospace">Criar nova coleção</div>
+      <div class="fgrid">
+        <div class="fg"><label>Nome da coleção</label><input type="text" id="nc-nome" placeholder="Ex: Inverno 27"></div>
+        <div class="fg"><label>Temporada</label><select><option>Inverno 2027</option><option>Verão 2028</option><option>Cápsula — sem temporada</option></select></div>
+        <div class="fg"><label>Data de lançamento</label><input type="date"></div>
+        <div class="fg"><label>Número de peças planejadas</label><input type="number" placeholder="Ex: 30"></div>
+        <div class="fg full"><label>Tema / conceito central</label><input type="text" placeholder="Ex: Estrutura e fluidez — o poder da alfaiataria feminina"></div>
+        <div class="fg full"><label>Briefing criativo</label><textarea rows="4" placeholder="Descreva o universo da coleção: referências culturais, paleta de humor, cliente-alvo desta coleção, posicionamento de preço, ocasiões de uso..."></textarea></div>
+        <div class="fg"><label>Faixa de preço (atacado de / até)</label><input type="text" placeholder="R$ 150 — R$ 450"></div>
+        <div class="fg"><label>Faixa de preço (varejo de / até)</label><input type="text" placeholder="R$ 380 — R$ 980"></div>
+        <div style="grid-column:span 2;border-top:1px solid var(--b1);padding-top:12px;margin-top:2px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Categorias de produto</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px" id="cat-toggles">
+            <button class="btn btn-pu" onclick="toggleCat(this)" style="font-size:11px">Alfaiataria</button>
+            <button class="btn btn-o" onclick="toggleCat(this)" style="font-size:11px">Vestidos</button>
+            <button class="btn btn-o" onclick="toggleCat(this)" style="font-size:11px">Couro / PU</button>
+            <button class="btn btn-o" onclick="toggleCat(this)" style="font-size:11px">Knitwear</button>
+            <button class="btn btn-o" onclick="toggleCat(this)" style="font-size:11px">Tops</button>
+            <button class="btn btn-o" onclick="toggleCat(this)" style="font-size:11px">Bottoms</button>
+            <button class="btn btn-o" onclick="toggleCat(this)" style="font-size:11px">Acessórios</button>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button class="btn btn-o" onclick="nav('colecoes',document.querySelector('.ni[onclick*=colecoes]'))">Cancelar</button>
+        <button class="btn btn-ac" onclick="criarColecao()">Criar coleção →</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace">Após criar a coleção</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px"><div style="width:20px;height:20px;border-radius:50%;background:var(--acd);border:1.5px solid var(--acb);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ac);flex-shrink:0;margin-top:1px">1</div><div>Calendário de desenvolvimento criado automaticamente com <strong>marcos padrão</strong></div></div>
+          <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px"><div style="width:20px;height:20px;border-radius:50%;background:var(--acd);border:1.5px solid var(--acb);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ac);flex-shrink:0;margin-top:1px">2</div><div>Adicione as peças e abra as <strong>fichas técnicas</strong> para cada uma</div></div>
+          <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px"><div style="width:20px;height:20px;border-radius:50%;background:var(--acd);border:1.5px solid var(--acb);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ac);flex-shrink:0;margin-top:1px">3</div><div>Upload do <strong>moodboard</strong> e definição da cartela de cores</div></div>
+          <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px"><div style="width:20px;height:20px;border-radius:50%;background:var(--acd);border:1.5px solid var(--acb);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ac);flex-shrink:0;margin-top:1px">4</div><div>Fichas aprovadas viram <strong>pedidos de amostra</strong> no Módulo Fornecedores</div></div>
+          <div style="display:flex;align-items:flex-start;gap:9px;font-size:12px"><div style="width:20px;height:20px;border-radius:50%;background:var(--acd);border:1.5px solid var(--acb);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--ac);flex-shrink:0;margin-top:1px">5</div><div>Grade de produção vira <strong>pedido de produção</strong> automaticamente</div></div>
+        </div>
+      </div>
+      <div style="background:var(--acd);border:1px solid var(--acb);border-radius:var(--rl);padding:13px 15px">
+        <div style="font-size:9.5px;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:'DM Mono',monospace">Integração com ERP</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6">A coleção criada aqui é sincronizada automaticamente com o ERP (Bling/Linx). As peças viram SKUs no catálogo do ERP com a grade de cores e tamanhos definida nas fichas técnicas.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ FICHAS TÉCNICAS ════ -->
+<div class="view" id="v-fichas">
+  <div class="g4">
+    <div class="mc hb"><div class="mcl">Em desenvolvimento</div><div class="mcv">8</div><div class="mcs">com o time de estilo</div></div>
+    <div class="mc ha"><div class="mcl">Em revisão</div><div class="mcv">8</div><div class="mcs">aguardando feedback</div></div>
+    <div class="mc hr"><div class="mcl">Reprovadas</div><div class="mcv">2</div><div class="mcs">correções solicitadas</div></div>
+    <div class="mc hg"><div class="mcl">Aprovadas</div><div class="mcv">14</div><div class="mcs">prontas para amostras</div></div>
+  </div>
+  <div class="card">
+    <div style="padding:11px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px">
+      <span class="sht">Fichas técnicas — Inverno 27</span>
+      <div class="shr">
+        <select style="font-size:11px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 9px;color:var(--t2);font-family:'Instrument Sans',sans-serif"><option>Todos os status</option><option>Desenvolvimento</option><option>Revisão</option><option>Aprovada</option><option>Reprovada</option></select>
+        <select style="font-size:11px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 9px;color:var(--t2);font-family:'Instrument Sans',sans-serif"><option>Todas as categorias</option><option>Alfaiataria</option><option>Vestidos</option><option>Couro</option><option>Knitwear</option></select>
+        <button class="btn btn-ac" onclick="nav('nova-ficha',document.querySelector('.ni[onclick*=nova-ficha]'))">+ Nova ficha</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Ref.</th><th>Peça</th><th>Categoria</th><th>Tecido principal</th><th>Cores</th><th>Grade</th><th>Custo est.</th><th>Status</th><th>Responsável</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0291</span></td><td><strong>Blazer estruturado alfaiataria</strong></td><td><span class="badge b-pu">Alfaiataria</span></td><td style="font-size:12px">Crepe 300g</td><td style="font-family:'DM Mono',monospace;font-size:11px">Caramelo, Off-white, Preto</td><td style="font-family:'DM Mono',monospace;font-size:11px">PP/P/M/G/GG</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 138</td><td><span class="badge b-gr st-apr">Aprovada</span></td><td style="font-size:11.5px;color:var(--t3)">Marina Dias</td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirFicha('MOB-0291')">Ver</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0318</span></td><td><strong>Calça pantalona linho</strong></td><td><span class="badge b-ac">Bottoms</span></td><td style="font-size:12px">Linho 100%</td><td style="font-family:'DM Mono',monospace;font-size:11px">Areia, Branco, Marinho</td><td style="font-family:'DM Mono',monospace;font-size:11px">PP/P/M/G/GG</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 112</td><td><span class="badge b-gr st-apr">Aprovada</span></td><td style="font-size:11.5px;color:var(--t3)">Marina Dias</td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirFicha('MOB-0318')">Ver</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0331</span></td><td><strong>Blazer oversize estruturado</strong></td><td><span class="badge b-pu">Alfaiataria</span></td><td style="font-size:12px">Lã mista 400g</td><td style="font-family:'DM Mono',monospace;font-size:11px">Cinza, Camel</td><td style="font-family:'DM Mono',monospace;font-size:11px">P/M/G/GG</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--am)">R$ 164</td><td><span class="badge b-re st-rep">Reprovada</span></td><td style="font-size:11.5px;color:var(--t3)">Felipe Torres</td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirFicha('MOB-0331')">Ver</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0327</span></td><td><strong>Tricot oversize caramelo</strong></td><td><span class="badge b-am">Knitwear</span></td><td style="font-size:12px">Tricot 100% lã</td><td style="font-family:'DM Mono',monospace;font-size:11px">Caramelo, Creme</td><td style="font-family:'DM Mono',monospace;font-size:11px">P/M/G</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 94</td><td><span class="badge b-am st-rev">Em revisão</span></td><td style="font-size:11.5px;color:var(--t3)">Marina Dias</td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirFicha('MOB-0327')">Ver</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0299</span></td><td><strong>Saia midi couro PU</strong></td><td><span class="badge b-bl">Couro</span></td><td style="font-size:12px">Couro PU 1.2mm</td><td style="font-family:'DM Mono',monospace;font-size:11px">Preto, Caramelo, Off-white</td><td style="font-family:'DM Mono',monospace;font-size:11px">PP/P/M/G/GG</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 168</td><td><span class="badge b-gr st-apr">Aprovada</span></td><td style="font-size:11.5px;color:var(--t3)">Marina Dias</td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirFicha('MOB-0299')">Ver</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0304</span></td><td><strong>Vestido midi crepe</strong></td><td><span class="badge b-pk">Vestidos</span></td><td style="font-size:12px">Crepe acetinado</td><td style="font-family:'DM Mono',monospace;font-size:11px">Nude, Preto, Marsala</td><td style="font-family:'DM Mono',monospace;font-size:11px">PP/P/M/G/GG</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 148</td><td><span class="badge b-bl st-dev">Desenvolvimento</span></td><td style="font-size:11.5px;color:var(--t3)">Marina Dias</td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirFicha('MOB-0304')">Ver</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ APROVAÇÃO DE FICHAS ════ -->
+<div class="view" id="v-aprovacao">
+  <div class="g3">
+    <div class="mc hr"><div class="mcl">Aguardando aprovação</div><div class="mcv">3</div><div class="mcs">prazo médio: 3 dias</div></div>
+    <div class="mc ha"><div class="mcl">Em revisão</div><div class="mcv">8</div><div class="mcs">feedback pendente</div></div>
+    <div class="mc hg"><div class="mcl">Aprovadas esta semana</div><div class="mcv">4</div><div class="mcs">encaminhadas p/ amostras</div></div>
+  </div>
+  <div class="card">
+    <div style="padding:10px 14px;background:rgba(224,168,64,.06);border-bottom:1px solid rgba(224,168,64,.14)">
+      <span style="font-size:9px;font-family:'DM Mono',monospace;color:var(--am);text-transform:uppercase;letter-spacing:.1em;font-weight:600">Fichas aguardando sua aprovação</span>
+    </div>
+    <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+
+      <!-- FICHA 1 -->
+      <div style="background:var(--s2);border:1px solid var(--b1);border-radius:10px;overflow:hidden">
+        <div style="padding:12px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px">
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;margin-bottom:2px">MOB-0327 — Tricot oversize caramelo</div>
+            <div style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">Marina Dias · Knitwear · Enviada há 2 dias</div>
+          </div>
+          <span class="badge b-am">Aguardando aprovação</span>
+        </div>
+        <div style="padding:12px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;border-bottom:1px solid var(--b1)">
+          <div><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:3px">TECIDO</div><div style="font-size:12px">Tricot 100% lã</div></div>
+          <div><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:3px">CORES</div><div style="font-size:12px">Caramelo, Creme</div></div>
+          <div><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:3px">CUSTO EST.</div><div style="font-size:12px;color:var(--gr)">R$ 94</div></div>
+        </div>
+        <div style="padding:10px 14px;background:var(--s2);border-bottom:1px solid var(--b1)">
+          <div style="font-size:11.5px;color:var(--t2);line-height:1.6"><strong style="color:var(--t1)">Nota da designer:</strong> Ajustei a especificação do fio conforme solicitado. O ponto biagio foi substituído pelo ponto tricot jersey para melhor aderência ao corpo. Custo mantido dentro do target.</div>
+        </div>
+        <div style="padding:10px 14px;display:flex;gap:8px">
+          <div class="fg" style="flex:1"><label>Comentário (opcional)</label><input type="text" placeholder="Ex: Aprovado — confirmar pantone do caramelo com o fornecedor"></div>
+          <div style="display:flex;gap:6px;align-items:flex-end;flex-shrink:0">
+            <button class="btn btn-re" onclick="reprovarFicha('MOB-0327')" style="font-size:11px">Reprovar</button>
+            <button class="btn btn-gr" onclick="aprovarFicha('MOB-0327')" style="font-size:12px;padding:8px 16px">Aprovar ficha</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FICHA 2 -->
+      <div style="background:var(--s2);border:1px solid var(--b1);border-radius:10px;overflow:hidden">
+        <div style="padding:12px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px">
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;margin-bottom:2px">MOB-0342 — Vestido slip dress cetim</div>
+            <div style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">Marina Dias · Vestidos · Enviada hoje</div>
+          </div>
+          <span class="badge b-am">Aguardando aprovação</span>
+        </div>
+        <div style="padding:12px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;border-bottom:1px solid var(--b1)">
+          <div><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:3px">TECIDO</div><div style="font-size:12px">Cetim 100% poliéster</div></div>
+          <div><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:3px">CORES</div><div style="font-size:12px">Champagne, Preto, Marsala</div></div>
+          <div><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:3px">CUSTO EST.</div><div style="font-size:12px;color:var(--gr)">R$ 118</div></div>
+        </div>
+        <div style="padding:10px 14px;display:flex;gap:8px">
+          <div class="fg" style="flex:1"><label>Comentário</label><input type="text" placeholder="Comentário de aprovação ou reprovação..."></div>
+          <div style="display:flex;gap:6px;align-items:flex-end;flex-shrink:0">
+            <button class="btn btn-re" onclick="reprovarFicha('MOB-0342')" style="font-size:11px">Reprovar</button>
+            <button class="btn btn-gr" onclick="aprovarFicha('MOB-0342')" style="font-size:12px;padding:8px 16px">Aprovar ficha</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════ CALENDÁRIO GANTT ════ -->
+<div class="view" id="v-calendario">
+  <div class="g4" style="margin-bottom:4px">
+    <div class="mc hp"><div class="mcl">Coleção</div><div class="mcv" style="font-size:14px">Inverno 27</div><div class="mcs">lançamento: ago/26</div></div>
+    <div class="mc hg"><div class="mcl">Etapas concluídas</div><div class="mcv">3/7</div><div class="mcs">43% do ciclo</div></div>
+    <div class="mc ha"><div class="mcl">Em andamento</div><div class="mcv">2</div><div class="mcs">fichas + amostras</div></div>
+    <div class="mc hr"><div class="mcl">Atrasadas</div><div class="mcv">1</div><div class="mcs">aprovação de fichas</div></div>
+  </div>
+  <div class="card card-p">
+    <div class="sh" style="margin-bottom:14px">
+      <span class="sht">Calendário de desenvolvimento — Inverno 27</span>
+      <div class="shr">
+        <select style="font-size:11px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 9px;color:var(--t2);font-family:'Instrument Sans',sans-serif"><option>Inverno 27</option><option>Verão 27</option></select>
+      </div>
+    </div>
+    <!-- LEGENDA MESES -->
+    <div style="display:flex;margin-bottom:4px;padding-left:180px">
+      <div style="flex:1;text-align:center;font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">FEV</div>
+      <div style="flex:1;text-align:center;font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">MAR</div>
+      <div style="flex:1;text-align:center;font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">ABR</div>
+      <div style="flex:1;text-align:center;font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">MAI</div>
+      <div style="flex:1;text-align:center;font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">JUN</div>
+      <div style="flex:1;text-align:center;font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">JUL</div>
+      <div style="flex:1;text-align:center;font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">AGO</div>
+    </div>
+    <div class="gantt">
+      <!-- Linha de referência HOJE -->
+      <div style="position:relative">
+        <div style="position:absolute;top:0;bottom:0;left:calc(180px + (100% - 180px) * 0.43);width:2px;background:rgba(232,101,10,.5);z-index:10;pointer-events:none">
+          <div style="position:absolute;top:-2px;left:-3px;width:8px;height:8px;border-radius:50%;background:var(--ac)"></div>
+          <div style="position:absolute;top:-14px;left:4px;font-size:9px;font-family:'DM Mono',monospace;color:var(--ac);white-space:nowrap">hoje</div>
+        </div>
+      </div>
+      <div class="gantt-row"><div class="gantt-label">Briefing & tema<div class="gantt-label-sm">100% concluído</div></div><div class="gantt-track"><div class="gantt-bar" style="left:0%;width:20%;background:var(--gr);color:#08090C">Briefing Inv.27</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Moodboard & cartela<div class="gantt-label-sm">100% concluído</div></div><div class="gantt-track"><div class="gantt-bar" style="left:8%;width:18%;background:var(--gr);color:#08090C">Moodboard</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Fichas técnicas<div class="gantt-label-sm">78% — em andamento</div></div><div class="gantt-track"><div class="gantt-bar" style="left:15%;width:35%;background:var(--ac);color:#08090C">Fichas técnicas (18/32)</div></div></div>
+      <div class="gantt-row" style="background:rgba(224,96,96,.04)"><div class="gantt-label" style="color:var(--re)">Aprovação de fichas<div class="gantt-label-sm" style="color:var(--re)">ATRASADO — 3 pendentes</div></div><div class="gantt-track"><div class="gantt-bar" style="left:30%;width:20%;background:var(--re);color:#F0EDE8">Aprovação (atrasada)</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Amostras<div class="gantt-label-sm">45% — solicitando</div></div><div class="gantt-track"><div class="gantt-bar" style="left:40%;width:25%;background:var(--am);color:#08090C">Amostras forn.</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Grade de produção<div class="gantt-label-sm">20% — iniciando</div></div><div class="gantt-track"><div class="gantt-bar" style="left:58%;width:20%;background:var(--bl);color:#F0EDE8">Grade prod.</div></div></div>
+      <div class="gantt-row"><div class="gantt-label">Lookbook & lançamento<div class="gantt-label-sm">Aguardando amostras</div></div><div class="gantt-track"><div class="gantt-bar" style="left:80%;width:20%;background:var(--pu);color:#F0EDE8">Lançamento ago/26</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MOODBOARD ════ -->
+<div class="view" id="v-moodboard">
+  <div class="g12">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div class="sh" style="margin-bottom:10px">
+          <span class="sht">Moodboard — Inverno 27</span>
+          <div class="shr">
+            <button class="btn btn-o" style="font-size:11px" onclick="toast('Upload de referência adicionado','')">+ Adicionar</button>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.6"><strong style="color:var(--t1)">Tema:</strong> Estrutura e fluidez — o poder da alfaiataria feminina contemporânea. Referências: Bottega Veneta A/W 23, Toteme, The Row. Paleta: tons terrosos quentes, off-whites e neutros profundos.</div>
+        <div class="mood-grid">
+          <div class="mood-card sel" onclick="this.classList.toggle('sel')"><div class="mood-img" style="background:linear-gradient(135deg,#C4956A,#8B6542);color:#F0EDE8;font-size:14px;letter-spacing:.05em">CAMEL<br>REF.</div><div class="mood-label">alfaiataria camel</div></div>
+          <div class="mood-card" onclick="this.classList.toggle('sel')"><div class="mood-img" style="background:linear-gradient(135deg,#2A2A2A,#1A1A1A);color:#F0EDE8;font-size:14px">PRETO<br>EST.</div><div class="mood-label">estrutura escura</div></div>
+          <div class="mood-card" onclick="this.classList.toggle('sel')"><div class="mood-img" style="background:linear-gradient(135deg,#F5F0E8,#EDE8DE);color:#484440;font-size:14px">OFF<br>WHITE</div><div class="mood-label">minimalismo limpo</div></div>
+          <div class="mood-card" onclick="this.classList.toggle('sel')"><div class="mood-img" style="background:linear-gradient(135deg,#6B4C3B,#4A3228);color:#F0EDE8;font-size:14px">COURO<br>MED.</div><div class="mood-label">textura couro</div></div>
+          <div class="mood-card" onclick="this.classList.toggle('sel')"><div class="mood-img" style="background:linear-gradient(135deg,#888480,#5A5650);color:#F0EDE8;font-size:14px">CINZA<br>SOFT</div><div class="mood-label">neutro profundo</div></div>
+          <div class="mood-card" onclick="this.classList.toggle('sel')"><div class="mood-img" style="background:linear-gradient(135deg,#D4B896,#C4A882);color:#484440;font-size:14px">AREIA<br>NUDE</div><div class="mood-label">nude terroso</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace">Cartela de cores — Inverno 27</div>
+        <div class="swatch-row"><div class="swatch" style="background:#C4956A;border-color:transparent" onclick="toast('Pantone 9062C — Caramelo dourado','')"></div><div style="flex:1"><div style="font-size:12.5px;font-weight:500">Caramelo dourado</div><div style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">Pantone 9062C</div></div><span class="badge b-gr">Principal</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#F5F0E8;border-color:#DDD" onclick="toast('Pantone 9221C — Off-white quente','')"></div><div style="flex:1"><div style="font-size:12.5px;font-weight:500">Off-white quente</div><div style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">Pantone 9221C</div></div><span class="badge b-gr">Principal</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#1A1A1A;border-color:transparent" onclick="toast('Pantone Black C — Preto estruturado','')"></div><div style="flex:1"><div style="font-size:12.5px;font-weight:500">Preto estruturado</div><div style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">Pantone Black C</div></div><span class="badge b-gr">Principal</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#6B4C3B;border-color:transparent" onclick="toast('Pantone 4975C — Couro escuro','')"></div><div style="flex:1"><div style="font-size:12.5px;font-weight:500">Couro escuro</div><div style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">Pantone 4975C</div></div><span class="badge b-n">Secundária</span></div>
+        <div class="swatch-row"><div class="swatch" style="background:#888480;border-color:transparent" onclick="toast('Pantone 7527C — Cinza neutro','')"></div><div style="flex:1"><div style="font-size:12.5px;font-weight:500">Cinza neutro</div><div style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">Pantone 7527C</div></div><span class="badge b-n">Secundária</span></div>
+        <div class="swatch-row" style="border-bottom:none"><div class="swatch" style="background:#D4B896;border-color:transparent" onclick="toast('Pantone 9181C — Areia nude','')"></div><div style="flex:1"><div style="font-size:12.5px;font-weight:500">Areia nude</div><div style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">Pantone 9181C</div></div><span class="badge b-n">Secundária</span></div>
+      </div>
+      <button class="btn btn-ac" style="width:100%;justify-content:center" onclick="nav('pantone',document.querySelector('.ni[onclick*=pantone]'))">Gerenciar cartela completa</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ MATERIAIS & TECIDOS ════ -->
+<div class="view" id="v-materiais">
+  <div class="g4">
+    <div class="mc hi"><div class="mcl">Tecidos cadastrados</div><div class="mcv">18</div><div class="mcs">para Inverno 27</div></div>
+    <div class="mc hg"><div class="mcl">Amostras de tecido</div><div class="mcv">12</div><div class="mcs">aprovadas</div></div>
+    <div class="mc ha"><div class="mcl">Aviamentos</div><div class="mcv">34</div><div class="mcs">botões, zíperes, etc.</div></div>
+    <div class="mc hp"><div class="mcl">Fornecedores ativos</div><div class="mcv">6</div><div class="mcs">de tecidos e aviamentos</div></div>
+  </div>
+  <div class="card">
+    <div style="padding:11px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px">
+      <span class="sht">Tecidos — Inverno 27</span>
+      <div class="shr">
+        <button class="btn btn-ac" onclick="openM('m-novo-material')">+ Tecido</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Código</th><th>Descrição</th><th>Composição</th><th>Gramatura</th><th>Fornecedor</th><th>Peças vinculadas</th><th>Preço/m</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px">TEC-001</td><td><strong>Crepe 300g off-white</strong></td><td style="font-size:12px">100% Poliéster</td><td style="font-family:'DM Mono',monospace;font-size:11px">300g/m²</td><td style="font-size:12px">Têxtil SP</td><td style="font-family:'DM Mono',monospace;font-size:11px">MOB-0291, MOB-0304</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 28/m</td><td><span class="badge b-gr">Aprovado</span></td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px">TEC-002</td><td><strong>Linho 100% natural</strong></td><td style="font-size:12px">100% Linho</td><td style="font-family:'DM Mono',monospace;font-size:11px">220g/m²</td><td style="font-size:12px">Fio & Fibra</td><td style="font-family:'DM Mono',monospace;font-size:11px">MOB-0318</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 42/m</td><td><span class="badge b-gr">Aprovado</span></td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px">TEC-003</td><td><strong>Couro PU premium 1.2mm</strong></td><td style="font-size:12px">PU / Base poliéster</td><td style="font-family:'DM Mono',monospace;font-size:11px">1.2mm</td><td style="font-size:12px">Couroart</td><td style="font-family:'DM Mono',monospace;font-size:11px">MOB-0299</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 68/m</td><td><span class="badge b-gr">Aprovado</span></td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px">TEC-004</td><td><strong>Lã mista 400g</strong></td><td style="font-size:12px">60% Lã / 40% Poliéster</td><td style="font-family:'DM Mono',monospace;font-size:11px">400g/m²</td><td style="font-size:12px">Têxtil SP</td><td style="font-family:'DM Mono',monospace;font-size:11px">MOB-0331</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--am)">R$ 85/m</td><td><span class="badge b-am">Em avaliação</span></td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px">TEC-005</td><td><strong>Tricot jersey 100% lã</strong></td><td style="font-size:12px">100% Lã merino</td><td style="font-family:'DM Mono',monospace;font-size:11px">350g/m²</td><td style="font-size:12px">Malha & Cia</td><td style="font-family:'DM Mono',monospace;font-size:11px">MOB-0327</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 56/m</td><td><span class="badge b-gr">Aprovado</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ CARTELA PANTONE ════ -->
+<div class="view" id="v-pantone">
+  <div class="g3">
+    <div class="mc hp"><div class="mcl">Cores na cartela</div><div class="mcv">12</div><div class="mcs">Inverno 27 confirmadas</div></div>
+    <div class="mc hg"><div class="mcl">Aprovadas</div><div class="mcv">12</div><div class="mcs">todas aprovadas</div></div>
+    <div class="mc hi"><div class="mcl">Peças que usam</div><div class="mcv">32</div><div class="mcs">total da coleção</div></div>
+  </div>
+  <div class="g21">
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:14px">
+        <span class="sht">Cartela completa — Inverno 27</span>
+        <div class="shr"><button class="btn btn-ac" onclick="openM('m-nova-cor')">+ Adicionar cor</button></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px">
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#C4956A;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 9062C — Caramelo dourado',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">9062C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#F5F0E8;border:1px solid #DDD;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 9221C — Off-white',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">9221C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#1A1A1A;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone Black C — Preto',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">Black C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#6B4C3B;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 4975C — Couro',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">4975C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#888480;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 7527C — Cinza',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">7527C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#D4B896;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 9181C — Areia',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">9181C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#3D2B1F;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 476C — Chocolate',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">476C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#E8D5C4;border:1px solid #DDD;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 9080C — Pêssego',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">9080C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#4A4A4A;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone Cool Gray 11C — Grafite',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">CG11C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#8B7355;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 7531C — Bege escuro',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">7531C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#F0EDE8;border:1px solid #DDD;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 9160C — Creme',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">9160C</div></div>
+        <div style="text-align:center"><div style="width:100%;aspect-ratio:1;border-radius:9px;background:#722F37;margin-bottom:5px;cursor:pointer;transition:transform .15s" onclick="toast('Pantone 5115C — Marsala',' ')" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div><div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--t3)">5115C</div></div>
+      </div>
+      <div style="background:var(--acd);border:1px solid var(--acb);border-radius:8px;padding:11px 13px;font-size:12px;color:var(--t2)">As cores da cartela são sincronizadas com o ERP e com as fichas técnicas. Cada cor é referenciada pelo código Pantone nas ordens de produção enviadas aos fornecedores.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Uso por categoria</div>
+        <div class="sv-row"><span class="sv-name">Alfaiataria</span><div class="sv-bar"><div class="sv-fill" style="width:90%;background:var(--pu)"></div></div><span class="sv-pct">8 cores</span></div>
+        <div class="sv-row"><span class="sv-name">Couro / PU</span><div class="sv-bar"><div class="sv-fill" style="width:50%;background:var(--ac)"></div></div><span class="sv-pct">5 cores</span></div>
+        <div class="sv-row"><span class="sv-name">Vestidos</span><div class="sv-bar"><div class="sv-fill" style="width:40%;background:var(--pk)"></div></div><span class="sv-pct">4 cores</span></div>
+        <div class="sv-row" style="margin-bottom:0"><span class="sv-name">Knitwear</span><div class="sv-bar"><div class="sv-fill" style="width:20%;background:var(--am)"></div></div><span class="sv-pct">2 cores</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ LOOKBOOK INTERNO ════ -->
+<div class="view" id="v-lookbook">
+  <div class="g4">
+    <div class="mc hp"><div class="mcl">Peças no lookbook</div><div class="mcv">21</div><div class="mcs">fichas aprovadas</div></div>
+    <div class="mc ha"><div class="mcl">Pendentes (sem foto)</div><div class="mcv">11</div><div class="mcs">aguardando amostras</div></div>
+    <div class="mc hg"><div class="mcl">Com foto de amostra</div><div class="mcv">10</div><div class="mcs">prontas para lookbook</div></div>
+    <div class="mc"><div class="mcl">Lookbook publicado</div><div class="mcv" style="font-size:14px">Não</div><div class="mcs">aguardando aprovação</div></div>
+  </div>
+  <div class="card card-p">
+    <div class="sh" style="margin-bottom:14px">
+      <span class="sht">Lookbook interno — Inverno 27</span>
+      <div class="shr">
+        <button class="btn btn-o" style="font-size:11px" onclick="toast('PDF do lookbook gerado','')">Gerar PDF</button>
+        <button class="btn btn-ac" onclick="toast('Lookbook compartilhado com o time comercial','')">Compartilhar com Atacado</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div class="card" style="overflow:hidden;cursor:pointer" onclick="toast('Abrindo MOB-0291 — Blazer estruturado','')">
+        <div style="width:100%;aspect-ratio:3/4;background:linear-gradient(160deg,#C4956A22,#88848022);display:flex;align-items:center;justify-content:center">
+          <div style="text-align:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg><div style="font-size:10px;color:var(--t3);margin-top:6px">foto da amostra</div></div>
+        </div>
+        <div style="padding:8px 10px"><div style="font-size:11px;font-weight:600">MOB-0291</div><div style="font-size:10px;color:var(--t3)">Blazer alfaiataria</div><div style="margin-top:4px"><span class="badge b-gr" style="font-size:9px">Aprovada</span></div></div>
+      </div>
+      <div class="card" style="overflow:hidden;cursor:pointer" onclick="toast('Abrindo MOB-0318 — Calça pantalona','')">
+        <div style="width:100%;aspect-ratio:3/4;background:linear-gradient(160deg,#F5F0E822,#D4B89622);display:flex;align-items:center;justify-content:center">
+          <div style="text-align:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg><div style="font-size:10px;color:var(--t3);margin-top:6px">foto da amostra</div></div>
+        </div>
+        <div style="padding:8px 10px"><div style="font-size:11px;font-weight:600">MOB-0318</div><div style="font-size:10px;color:var(--t3)">Calça pantalona</div><div style="margin-top:4px"><span class="badge b-gr" style="font-size:9px">Aprovada</span></div></div>
+      </div>
+      <div class="card" style="overflow:hidden;cursor:pointer" onclick="toast('Abrindo MOB-0299 — Saia couro','')">
+        <div style="width:100%;aspect-ratio:3/4;background:linear-gradient(160deg,#6B4C3B22,#3D2B1F22);display:flex;align-items:center;justify-content:center">
+          <div style="text-align:center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg><div style="font-size:10px;color:var(--t3);margin-top:6px">foto da amostra</div></div>
+        </div>
+        <div style="padding:8px 10px"><div style="font-size:11px;font-weight:600">MOB-0299</div><div style="font-size:10px;color:var(--t3)">Saia midi couro</div><div style="margin-top:4px"><span class="badge b-gr" style="font-size:9px">Aprovada</span></div></div>
+      </div>
+      <div class="card" style="overflow:hidden;border:2px dashed var(--b2);background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;cursor:pointer;aspect-ratio:3/4" onclick="toast('Upload de foto de amostra','')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <div style="font-size:11px;color:var(--t3);margin-top:6px">Adicionar peça</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ GRADE DE PRODUÇÃO ════ -->
+<div class="view" id="v-grade">
+  <div class="g4">
+    <div class="mc hi"><div class="mcl">Peças na grade</div><div class="mcv">21</div><div class="mcs">fichas aprovadas</div></div>
+    <div class="mc hg"><div class="mcl">Total de unidades</div><div class="mcv">3.840</div><div class="mcs">planejadas</div></div>
+    <div class="mc ha"><div class="mcl">Custo total estimado</div><div class="mcv" style="font-size:17px">R$528K</div><div class="mcs">de produção</div></div>
+    <div class="mc hp"><div class="mcl">VGV potencial</div><div class="mcv" style="font-size:17px">R$1,8M</div><div class="mcs">markup 3,4x médio</div></div>
+  </div>
+  <div class="card">
+    <div style="padding:11px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px">
+      <span class="sht">Grade de produção — Inverno 27</span>
+      <div class="shr">
+        <button class="btn btn-o" style="font-size:11px" onclick="toast('Grade exportada para o ERP (Bling)','')">↑ Enviar ao ERP</button>
+        <button class="btn btn-ac" onclick="toast('Grade enviada para Fornecedores como pedido de produção','')">Criar pedidos de produção</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Ref.</th><th>Peça</th><th>PP</th><th>P</th><th>M</th><th>G</th><th>GG</th><th>Total</th><th>Custo unit.</th><th>Custo total</th><th>Fornecedor</th></tr></thead>
+      <tbody>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px">MOB-0291</td><td>Blazer alfaiataria</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">60</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">120</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">120</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">80</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">40</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">420</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 138</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600;color:var(--ac)">R$ 57.960</td><td style="font-size:12px">Têxtil SP</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px">MOB-0318</td><td>Calça pantalona</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">80</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">160</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">180</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">120</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">60</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">600</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 112</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600;color:var(--ac)">R$ 67.200</td><td style="font-size:12px">Fio & Fibra</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px">MOB-0299</td><td>Saia midi couro</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">40</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">80</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">100</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">60</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">20</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">300</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 168</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600;color:var(--ac)">R$ 50.400</td><td style="font-size:12px">Couroart</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px">MOB-0327</td><td>Tricot oversize</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">60</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">120</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">120</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">60</td><td style="font-family:'DM Mono',monospace;font-size:11px;text-align:center">—</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">360</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--gr)">R$ 94</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600;color:var(--ac)">R$ 33.840</td><td style="font-size:12px">Malha & Cia</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- ════ DETALHE COLEÇÃO ════ -->
+<div class="view" id="v-detalhe-colecao">
+  <div id="col-detalhe-content"></div>
+</div>
+
+<!-- ════ NOVA FICHA TÉCNICA ════ -->
+<div class="view" id="v-nova-ficha">
+  <div class="g21">
+    <div class="card card-p">
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;font-family:'DM Mono',monospace">Nova ficha técnica</div>
+      <div class="fgrid">
+        <div class="fg"><label>Referência</label><input type="text" id="nf-ref" placeholder="Ex: MOB-0350"></div>
+        <div class="fg"><label>Coleção</label><select><option>Inverno 27 (ativa)</option><option>Verão 28</option></select></div>
+        <div class="fg full"><label>Nome da peça</label><input type="text" id="nf-nome" placeholder="Ex: Blazer estruturado alfaiataria caramelo"></div>
+        <div class="fg"><label>Categoria</label><select><option>Alfaiataria</option><option>Vestidos</option><option>Couro / PU</option><option>Knitwear</option><option>Tops</option><option>Bottoms</option><option>Acessórios</option></select></div>
+        <div class="fg"><label>Designer responsável</label><input type="text" placeholder="Ex: Marina Dias"></div>
+
+        <div style="grid-column:span 2;border-top:1px solid var(--b1);padding-top:12px;margin-top:2px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Tecidos & materiais</div>
+        </div>
+        <div class="fg"><label>Tecido principal</label><select><option>TEC-001 — Crepe 300g</option><option>TEC-002 — Linho natural</option><option>TEC-003 — Couro PU</option><option>TEC-004 — Lã mista</option><option>TEC-005 — Tricot jersey</option><option>Outro (descrever)</option></select></div>
+        <div class="fg"><label>Gramatura / espessura</label><input type="text" placeholder="Ex: 300g/m² ou 1.2mm"></div>
+        <div class="fg"><label>Forro</label><input type="text" placeholder="Ex: Acetato 100%, sem forro..."></div>
+        <div class="fg"><label>Aviamentos principais</label><input type="text" placeholder="Ex: Zíper invisível, botões casca..."></div>
+
+        <div style="grid-column:span 2;border-top:1px solid var(--b1);padding-top:12px;margin-top:2px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Grade e cores</div>
+        </div>
+        <div class="fg full"><label>Grade de tamanhos</label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+            <button class="btn btn-pu" onclick="toggleGrade(this)" style="font-size:11px">PP</button>
+            <button class="btn btn-pu" onclick="toggleGrade(this)" style="font-size:11px">P</button>
+            <button class="btn btn-pu" onclick="toggleGrade(this)" style="font-size:11px">M</button>
+            <button class="btn btn-pu" onclick="toggleGrade(this)" style="font-size:11px">G</button>
+            <button class="btn btn-pu" onclick="toggleGrade(this)" style="font-size:11px">GG</button>
+            <button class="btn btn-o" onclick="toggleGrade(this)" style="font-size:11px">XGG</button>
+            <button class="btn btn-o" onclick="toggleGrade(this)" style="font-size:11px">Único</button>
+          </div>
+        </div>
+        <div class="fg full"><label>Cores disponíveis (Pantone)</label>
+          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:4px">
+            <div style="display:flex;align-items:center;gap:5px;padding:3px 9px;border:1px solid var(--b2);border-radius:6px;cursor:pointer;font-size:11px" onclick="toggleCorFicha(this)"><div style="width:12px;height:12px;border-radius:3px;background:#C4956A"></div>9062C Caramelo</div>
+            <div style="display:flex;align-items:center;gap:5px;padding:3px 9px;border:1px solid var(--b2);border-radius:6px;cursor:pointer;font-size:11px;background:var(--acd);border-color:var(--acb)" onclick="toggleCorFicha(this)"><div style="width:12px;height:12px;border-radius:3px;background:#F5F0E8;border:1px solid #DDD"></div>9221C Off-white</div>
+            <div style="display:flex;align-items:center;gap:5px;padding:3px 9px;border:1px solid var(--b2);border-radius:6px;cursor:pointer;font-size:11px" onclick="toggleCorFicha(this)"><div style="width:12px;height:12px;border-radius:3px;background:#1A1A1A"></div>Black C Preto</div>
+            <div style="display:flex;align-items:center;gap:5px;padding:3px 9px;border:1px solid var(--b2);border-radius:6px;cursor:pointer;font-size:11px" onclick="toggleCorFicha(this)"><div style="width:12px;height:12px;border-radius:3px;background:#888480"></div>7527C Cinza</div>
+          </div>
+        </div>
+
+        <div style="grid-column:span 2;border-top:1px solid var(--b1);padding-top:12px;margin-top:2px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Medidas principais</div>
+        </div>
+        <div class="fg"><label>Comprimento (tamanho M)</label><input type="text" placeholder="Ex: 68cm"></div>
+        <div class="fg"><label>Busto (tamanho M)</label><input type="text" placeholder="Ex: 92cm"></div>
+        <div class="fg"><label>Cintura (tamanho M)</label><input type="text" placeholder="Ex: 78cm"></div>
+        <div class="fg"><label>Quadril (tamanho M)</label><input type="text" placeholder="Ex: 100cm"></div>
+
+        <div style="grid-column:span 2;border-top:1px solid var(--b1);padding-top:12px;margin-top:2px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Custo e fornecedor</div>
+        </div>
+        <div class="fg"><label>Custo estimado de produção (R$)</label><input type="number" id="nf-custo" placeholder="0,00"></div>
+        <div class="fg"><label>Fornecedor de produção</label><select><option>Têxtil SP</option><option>Fio & Fibra</option><option>Couroart</option><option>Malha & Cia</option><option>A definir</option></select></div>
+        <div class="fg full"><label>Observações técnicas</label><textarea rows="2" placeholder="Detalhes de montagem, cuidados especiais de costura, notas para o fornecedor..."></textarea></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button class="btn btn-o" onclick="nav('fichas',document.querySelector('.ni[onclick*=fichas]'))">Cancelar</button>
+        <button class="btn btn-am" onclick="salvarFicha('revisao')">Salvar em revisão</button>
+        <button class="btn btn-ac" onclick="salvarFicha('aprovacao')">Enviar para aprovação →</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace">Fluxo da ficha técnica</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bld);border-radius:7px"><div style="font-size:11px;font-weight:600;color:var(--bl);width:90px;flex-shrink:0">Desenvolvimento</div><div style="font-size:11px;color:var(--t2)">Time de estilo criando a ficha</div></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--amd);border-radius:7px"><div style="font-size:11px;font-weight:600;color:var(--am);width:90px;flex-shrink:0">Em revisão</div><div style="font-size:11px;color:var(--t2)">Aguardando feedback de diretoria</div></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--grd);border-radius:7px"><div style="font-size:11px;font-weight:600;color:var(--gr);width:90px;flex-shrink:0">Aprovada</div><div style="font-size:11px;color:var(--t2)">Amostra solicitada automaticamente</div></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--pud);border-radius:7px"><div style="font-size:11px;font-weight:600;color:var(--pu);width:90px;flex-shrink:0">Em produção</div><div style="font-size:11px;color:var(--t2)">Ordem de compra gerada no ERP</div></div>
+        </div>
+      </div>
+      <div style="background:var(--acd);border:1px solid var(--acb);border-radius:var(--rl);padding:13px 15px">
+        <div style="font-size:9.5px;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-family:'DM Mono',monospace">Aprovação automática para ERP</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.65">Quando a ficha é aprovada, o sistema cria automaticamente o SKU no ERP (Bling/Linx) com a grade de cores e tamanhos, e solicita a amostra ao fornecedor via Módulo Fornecedores.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ INTEGRAÇÕES GLOBAIS ════ -->
+<div class="view" id="v-integracoes">
+  <div style="background:var(--acd);border:1px solid var(--acb);border-radius:var(--rl);padding:14px 18px;margin-bottom:2px">
+    <div style="font-size:12px;font-weight:600;color:var(--ac);margin-bottom:4px">Hub de integrações — FashionHub</div>
+    <div style="font-size:12px;color:var(--t2);line-height:1.7">Todas as integrações da plataforma em um só lugar. Dados entram e saem automaticamente — sem retrabalho manual entre sistemas. O ERP é o centro financeiro; o FashionHub é o centro operacional da marca.</div>
+  </div>
+
+  <div class="g2">
+    <!-- COLUNA ESQUERDA -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- ERP -->
+      <div class="card card-p">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:40px;height:40px;background:var(--grd);border:1.5px solid var(--grb);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600">ERP</div>
+            <div style="font-size:11px;color:var(--t3)">Bling · Linx Fashion · Totvs · Omie · SAP · Sankhya</div>
+          </div>
+          <span class="int-status int-on">Bling conectado</span>
+        </div>
+
+        <!-- FLUXO ERP -->
+        <div style="margin-bottom:12px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:'DM Mono',monospace">Fluxo de dados — ERP ↔ FashionHub</div>
+          <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:start">
+            <div style="background:var(--grd);border:1px solid var(--grb);border-radius:8px;padding:10px">
+              <div style="font-size:9px;color:var(--gr);font-family:'DM Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em">ERP → FashionHub</div>
+              <div style="display:flex;flex-direction:column;gap:4px;font-size:11.5px;color:var(--t2)">
+                <div>• Estoque por SKU/cor/tamanho</div>
+                <div>• NFs emitidas (produção e venda)</div>
+                <div>• Pedidos confirmados no ERP</div>
+                <div>• Histórico de compras (CRM)</div>
+                <div>• Contas a receber (crédito atacado)</div>
+                <div>• Cadastro de clientes</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;align-self:center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg>
+            </div>
+            <div style="background:var(--acd);border:1px solid var(--acb);border-radius:8px;padding:10px">
+              <div style="font-size:9px;color:var(--ac);font-family:'DM Mono',monospace;margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em">FashionHub → ERP</div>
+              <div style="display:flex;flex-direction:column;gap:4px;font-size:11.5px;color:var(--t2)">
+                <div>• Pedidos atacado aprovados → OC</div>
+                <div>• Pedidos produção → Ordem compra</div>
+                <div>• SKUs das fichas aprovadas</div>
+                <div>• Grade de produção confirmada</div>
+                <div>• Clientes CRM → cadastro ERP</div>
+                <div>• Cartela de cores e referências</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STATUS SYNC -->
+        <div style="background:var(--s2);border-radius:7px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-size:11.5px;color:var(--t2)">Última sincronização Bling</div>
+          <div style="font-size:11.5px;font-family:'DM Mono',monospace;color:var(--gr)">há 4 minutos</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px">
+          <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);margin-bottom:2px;font-family:'DM Mono',monospace">SKUs SINCR.</div><div style="font-size:14px;font-weight:700;color:var(--gr)">312</div></div>
+          <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);margin-bottom:2px;font-family:'DM Mono',monospace">NFs IMPORT.</div><div style="font-size:14px;font-weight:700;color:var(--gr)">89</div></div>
+          <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);margin-bottom:2px;font-family:'DM Mono',monospace">PEDIDOS SYNC</div><div style="font-size:14px;font-weight:700;color:var(--gr)">47</div></div>
+        </div>
+
+        <div style="border-top:1px solid var(--b1);padding-top:10px;margin-bottom:10px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:'DM Mono',monospace">Outros ERPs disponíveis</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div class="int-card" style="padding:9px 12px"><div class="int-info"><div class="int-name" style="font-size:12px">Linx Fashion</div><div class="int-desc">Varejo e atacado moda</div></div><span class="int-status int-off">Conectar</span></div>
+            <div class="int-card" style="padding:9px 12px"><div class="int-info"><div class="int-name" style="font-size:12px">Omie</div><div class="int-desc">PME, foco financeiro</div></div><span class="int-status int-off">Conectar</span></div>
+            <div class="int-card" style="padding:9px 12px"><div class="int-info"><div class="int-name" style="font-size:12px">Totvs</div><div class="int-desc">Enterprise</div></div><span class="int-status int-off">Conectar</span></div>
+            <div class="int-card" style="padding:9px 12px"><div class="int-info"><div class="int-name" style="font-size:12px">SAP</div><div class="int-desc">SAP API Hub</div></div><span class="int-status int-off">Conectar</span></div>
+          </div>
+        </div>
+        <button class="btn btn-o" style="width:100%;justify-content:center;font-size:11px" onclick="openM('m-config-erp')">Configurar integração ERP</button>
+      </div>
+
+    </div>
+
+    <!-- COLUNA DIREITA -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- E-COMMERCE -->
+      <div class="card card-p">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:38px;height:38px;background:var(--grd);border:1.5px solid var(--grb);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600">E-commerce</div><div style="font-size:11px;color:var(--t3)">Shopify · WooCommerce · VTEX · Nuvemshop</div></div>
+          <span class="int-status int-on">Shopify ativo</span>
+        </div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:8px">Produtos e SKUs sincronizados automaticamente. Vendas entram no CRM e no ERP. Estoque atualizado em tempo real.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+          <div style="background:var(--s2);border-radius:6px;padding:6px 9px;text-align:center"><div style="font-size:9px;color:var(--t3);margin-bottom:2px;font-family:'DM Mono',monospace">PRODUTOS SYNC</div><div style="font-size:14px;font-weight:700;color:var(--gr)">89</div></div>
+          <div style="background:var(--s2);border-radius:6px;padding:6px 9px;text-align:center"><div style="font-size:9px;color:var(--t3);margin-bottom:2px;font-family:'DM Mono',monospace">ÚLTIMA VENDA</div><div style="font-size:14px;font-weight:700;color:var(--gr)">1 min</div></div>
+        </div>
+        <button class="btn btn-o" style="width:100%;justify-content:center;font-size:11px" onclick="toast('Configurações Shopify abertas','')">Configurar webhook</button>
+      </div>
+
+      <!-- WHATSAPP -->
+      <div class="card card-p">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:38px;height:38px;background:var(--acd);border:1.5px solid var(--acb);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <div class="pulse" style="width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 8px var(--ac);animation:blink 2s ease-in-out infinite"></div>
+          </div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:600">WhatsApp — Agente IA</div><div style="font-size:11px;color:var(--t3)">Evolution API · Agente Fornecedores + Agente CRM</div></div>
+          <span class="int-status int-on">Ativo</span>
+        </div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:8px">Dois agentes ativos: <strong style="color:var(--t1)">Agente Fornecedores</strong> (amostras, pedidos, aprovações) e <strong style="color:var(--t1)">Agente CRM</strong> (abordagem ativa, cadastro, régua, campanhas).</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+          <div style="background:var(--acd);border-radius:6px;padding:6px 9px;text-align:center"><div style="font-size:9px;color:var(--ac);margin-bottom:2px;font-family:'DM Mono',monospace">MSG HOJE</div><div style="font-size:14px;font-weight:700;color:var(--ac)">142</div></div>
+          <div style="background:var(--acd);border-radius:6px;padding:6px 9px;text-align:center"><div style="font-size:9px;color:var(--ac);margin-bottom:2px;font-family:'DM Mono',monospace">ATIVOS AGORA</div><div style="font-size:14px;font-weight:700;color:var(--ac)">8</div></div>
+        </div>
+        <button class="btn btn-o" style="width:100%;justify-content:center;font-size:11px" onclick="toast('Configurações Evolution API abertas','')">Gerenciar agentes</button>
+      </div>
+
+      <!-- EMAIL + PDV -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="card card-p">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <div style="width:32px;height:32px;background:var(--bld);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div><div style="font-size:12px;font-weight:600">Email</div><div style="font-size:10px;color:var(--t3)">Resend</div></div>
+            <span class="int-status int-on" style="margin-left:auto">Ativo</span>
+          </div>
+          <div style="font-size:11px;color:var(--t2)">Alertas, boas-vindas, confirmações e régua de email.</div>
+        </div>
+        <div class="card card-p">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <div style="width:32px;height:32px;background:var(--pud);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--pu)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div><div style="font-size:12px;font-weight:600">PDV</div><div style="font-size:10px;color:var(--t3)">Linx Degust · Stone</div></div>
+            <span class="int-status int-cfg" style="margin-left:auto">Configurar</span>
+          </div>
+          <div style="font-size:11px;color:var(--t2)">Vendas físicas entram no CRM automaticamente.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════ INSTRUÇÕES ════ -->
+<div class="view" id="v-instrucoes">
+  <div style="max-width:820px">
+    <div style="background:var(--s1);border:1px solid var(--acb);border-radius:var(--rl);padding:20px 24px;margin-bottom:14px;display:flex;align-items:flex-start;gap:16px">
+      <div style="width:44px;height:44px;background:var(--pud);border:1.5px solid rgba(152,120,208,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pu)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 2,7 12,12 22,7 12,2"/><polyline points="2,17 12,22 22,17"/><polyline points="2,12 12,17 22,12"/></svg>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px">FashionHub Coleção & Estilo — Módulo 3</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6">Gestão completa do desenvolvimento de coleções: do briefing ao lookbook. Integra com M1 (Fornecedores) para amostras e produção, com M2 (Atacado) para comercial, com M6 (CRM) para preferências de clientes, e com o ERP para SKUs e ordens de compra.</div>
+        <div style="margin-top:10px"><button class="btn btn-pu" onclick="startTutorial()">▶ Iniciar tutorial</button></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Criar e gerir coleções</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Cada coleção tem briefing, moodboard, peças, calendário de desenvolvimento e progresso visual. Quando a coleção é criada, o calendário é gerado automaticamente com marcos padrão.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Fichas técnicas</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Cada peça tem uma ficha com tecido, grade, cores Pantone, medidas, custo e fornecedor. O fluxo é: Desenvolvimento → Revisão → Aprovação → Amostras (via M1) → Produção (ERP).</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Integração com ERP</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Fichas aprovadas viram SKUs no ERP automaticamente. A grade de produção vira OC (ordem de compra). O ERP devolve estoque em tempo real, NFs e dados financeiros.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Lookbook e comercial</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">O lookbook interno é alimentado com fotos das amostras aprovadas. Pode ser compartilhado com o time de Atacado para iniciar a venda antes do lançamento oficial.</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /body -->
+
+<!-- ════ MODALS ════ -->
+<div class="mo" id="m-nova-peca">
+  <div class="mbox">
+    <div class="mt">Adicionar peça à coleção<button class="mcls" onclick="closeM('m-nova-peca')">×</button></div>
+    <div class="ms">Adicione uma peça e crie a ficha técnica depois</div>
+    <div class="fgrid" style="gap:11px">
+      <div class="fg"><label>Referência</label><input type="text" placeholder="Ex: MOB-0350"></div>
+      <div class="fg"><label>Coleção</label><select><option>Inverno 27</option><option>Verão 28</option></select></div>
+      <div class="fg full"><label>Nome da peça</label><input type="text" placeholder="Ex: Vestido midi cetim champagne"></div>
+      <div class="fg"><label>Categoria</label><select><option>Alfaiataria</option><option>Vestidos</option><option>Couro / PU</option><option>Knitwear</option><option>Tops</option><option>Bottoms</option></select></div>
+      <div class="fg"><label>Designer</label><input type="text" placeholder="Responsável pela ficha"></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-nova-peca')">Cancelar</button>
+      <button class="btn btn-ac" onclick="closeM('m-nova-peca');toast('Peça adicionada — abra a ficha técnica para detalhar','')">Adicionar peça →</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="m-nova-cor">
+  <div class="mbox" style="width:440px">
+    <div class="mt">Adicionar cor à cartela<button class="mcls" onclick="closeM('m-nova-cor')">×</button></div>
+    <div class="ms">Adicione um código Pantone à cartela do Inverno 27</div>
+    <div class="fgrid" style="gap:11px">
+      <div class="fg"><label>Código Pantone</label><input type="text" placeholder="Ex: 7532C"></div>
+      <div class="fg"><label>Nome da cor</label><input type="text" placeholder="Ex: Terracota queimado"></div>
+      <div class="fg"><label>Hex aproximado</label><input type="color" style="height:40px;padding:2px 4px"></div>
+      <div class="fg"><label>Tipo</label><select><option>Cor principal</option><option>Cor secundária</option><option>Cor de contraste</option></select></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-nova-cor')">Cancelar</button>
+      <button class="btn btn-ac" onclick="closeM('m-nova-cor');toast('Cor adicionada à cartela do Inverno 27','')">Adicionar →</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="m-novo-material">
+  <div class="mbox">
+    <div class="mt">Cadastrar tecido / material<button class="mcls" onclick="closeM('m-novo-material')">×</button></div>
+    <div class="ms">Adicione um tecido ou aviamento ao catálogo</div>
+    <div class="fgrid" style="gap:11px">
+      <div class="fg"><label>Código interno</label><input type="text" placeholder="Ex: TEC-010"></div>
+      <div class="fg"><label>Tipo</label><select><option>Tecido principal</option><option>Forro</option><option>Entretela</option><option>Aviamento</option></select></div>
+      <div class="fg full"><label>Descrição</label><input type="text" placeholder="Ex: Seda 100% natural champagne 120g/m²"></div>
+      <div class="fg"><label>Composição</label><input type="text" placeholder="Ex: 100% Seda natural"></div>
+      <div class="fg"><label>Gramatura</label><input type="text" placeholder="Ex: 120g/m²"></div>
+      <div class="fg"><label>Fornecedor</label><select><option>Têxtil SP</option><option>Fio & Fibra</option><option>Couroart</option><option>Malha & Cia</option></select></div>
+      <div class="fg"><label>Preço por metro (R$)</label><input type="number" placeholder="0,00"></div>
+      <div class="fg"><label>Lead time (semanas)</label><input type="number" placeholder="4"></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-novo-material')">Cancelar</button>
+      <button class="btn btn-ac" onclick="closeM('m-novo-material');toast('Material cadastrado no catálogo','')">Cadastrar →</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="m-config-erp">
+  <div class="mbox" style="width:580px">
+    <div class="mt">Configurar integração ERP<button class="mcls" onclick="closeM('m-config-erp')">×</button></div>
+    <div class="ms">Configure a sincronização bidirecional com seu ERP</div>
+    <div class="fgrid" style="gap:11px">
+      <div class="fg full"><label>ERP</label>
+        <select onchange="toast('Documentação da integração carregada','')">
+          <option>Bling (recomendado para PME)</option>
+          <option>Linx Fashion</option>
+          <option>Omie</option>
+          <option>Totvs Datasul</option>
+          <option>SAP</option>
+          <option>Sankhya</option>
+        </select>
+      </div>
+      <div class="fg full"><label>API Key / Token de acesso</label><input type="password" placeholder="Cole aqui o token do Bling ou chave de API"></div>
+      <div class="fg"><label>Empresa / CNPJ no ERP</label><input type="text" placeholder="Código da empresa no ERP"></div>
+      <div class="fg"><label>Frequência de sincronização</label><select><option>Tempo real (webhook)</option><option>A cada 15 minutos</option><option>A cada hora</option></select></div>
+      <div style="grid-column:span 2;background:var(--s2);border-radius:8px;padding:11px 13px">
+        <div style="font-size:9.5px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;margin-bottom:8px">Dados para sincronizar</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:12px">
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" checked> Estoque e SKUs</label>
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" checked> NFs emitidas</label>
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" checked> Pedidos confirmados</label>
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" checked> Clientes (CRM sync)</label>
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox" checked> Ordens de compra (fichas)</label>
+          <label style="display:flex;align-items:center;gap:7px;cursor:pointer"><input type="checkbox"> Financeiro / contas a receber</label>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-config-erp')">Cancelar</button>
+      <button class="btn btn-am" onclick="closeM('m-config-erp');toast('Testando conexão com o ERP...','')">Testar conexão</button>
+      <button class="btn btn-ac" onclick="closeM('m-config-erp');toast('ERP conectado! Sincronização iniciada.','')">Conectar ERP →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toast-icon"></span><span id="toast-msg"></span></div>
+
+<!-- TUTORIAL -->
+<div id="tutorial-overlay" style="display:none;position:fixed;inset:0;z-index:900;pointer-events:none"><div style="position:absolute;inset:0;background:rgba(0,0,0,.7)"></div></div>
+<div id="tutorial-box" style="display:none;position:fixed;z-index:910;background:var(--s1);border:1px solid var(--acb);border-radius:14px;padding:20px 22px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.6)">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div id="tut-step-label" style="font-size:10px;font-family:'DM Mono',monospace;color:var(--ac);text-transform:uppercase;letter-spacing:.1em">Passo 1 de 8</div><div style="margin-left:auto;cursor:pointer;color:var(--t3);font-size:18px;line-height:1" onclick="endTutorial()">×</div></div>
+  <div id="tut-title" style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px;color:var(--t1)"></div>
+  <div id="tut-body" style="font-size:12.5px;color:var(--t2);line-height:1.65;margin-bottom:16px"></div>
+  <div style="display:flex;gap:6px;align-items:center"><div id="tut-dots" style="display:flex;gap:4px"></div><div style="margin-left:auto;display:flex;gap:6px"><button id="tut-prev" class="btn btn-o" onclick="tutStep(-1)" style="font-size:11px;padding:5px 11px">← Anterior</button><button id="tut-next" class="btn btn-ac" onclick="tutStep(1)" style="font-size:11px;padding:5px 14px">Próximo →</button></div></div>
+</div>
+
+<script>
+// ════ DADOS ════
+var COL_DATA = [
+  {id:'INV27', nome:'Inverno 27', temporada:'Inverno 2027', lancamento:'ago/26', pecas:32, status:'Em desenvolvimento', prog:66, cor:'pu',
+    categorias:['Alfaiataria (8)','Vestidos (6)','Couro / PU (5)','Knitwear (4)','Tops (9)'],
+    briefing:'Estrutura e fluidez — o poder da alfaiataria feminina contemporânea. Referências: Bottega Veneta A/W 23, Toteme, The Row. Paleta: tons terrosos quentes, off-whites e neutros profundos.'},
+  {id:'VER27', nome:'Verão 27', temporada:'Verão 2027', lancamento:'nov/25', pecas:28, status:'Lançada', prog:100, cor:'gr',
+    categorias:['Vestidos (8)','Tops (6)','Shorts / Saias (5)','Acessórios (4)','Knitwear (5)'],
+    briefing:'Leveza e movimento — o verão que abraça. Referências: Jacquemus SS23, Zimmermann. Paleta: brancos, terrosos claros e tons vibrantes de terracota.'},
+];
+
+// ════ NAV ════
+function nav(id, el) {
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('on'); });
+  var v = document.getElementById('v-' + id);
+  if (v) v.classList.add('on');
+  document.querySelectorAll('.ni').forEach(function(n){ n.classList.remove('on'); });
+  if (el) el.classList.add('on');
+  var titles = {
+    dashboard:'Dashboard',colecoes:'Coleções',
+    'nova-colecao':'Nova Coleção','detalhe-colecao':'Detalhe da Coleção',
+    fichas:'Fichas Técnicas','nova-ficha':'Nova Ficha Técnica',
+    aprovacao:'Aprovação de Fichas',calendario:'Calendário de Desenvolvimento',
+    moodboard:'Moodboard & Referências',materiais:'Tecidos & Aviamentos',
+    pantone:'Cartela de Cores',lookbook:'Lookbook Interno',
+    grade:'Grade de Produção',integracoes:'Integrações',instrucoes:'Instruções',
+  };
+  if (titles[id]) document.getElementById('page-title').textContent = titles[id];
+}
+
+function openM(id) { document.getElementById(id).classList.add('on'); }
+function closeM(id) { document.getElementById(id).classList.remove('on'); }
+
+function toast(msg, icon) {
+  var t = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = icon || '';
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3200);
+}
+
+// ════ DETALHE COLEÇÃO ════
+function abrirColecao(idx) {
+  var c = COL_DATA[idx];
+  var corMap = {pu:'var(--pu)',gr:'var(--gr)',ac:'var(--ac)'};
+  var cor = corMap[c.cor] || 'var(--ac)';
+  var catHtml = c.categorias.map(function(cat) {
+    return '<div style="background:var(--s2);border-radius:6px;padding:6px 10px;font-size:12px">' + cat + '</div>';
+  }).join('');
+  var html = '<div class="g4" style="margin-bottom:12px">';
+  html += '<div class="mc"><div class="mcl">Status</div><div class="mcv" style="font-size:14px;color:' + cor + '">' + c.status + '</div></div>';
+  html += '<div class="mc hi"><div class="mcl">Peças</div><div class="mcv">' + c.pecas + '</div><div class="mcs">planejadas</div></div>';
+  html += '<div class="mc"><div class="mcl">Lançamento</div><div class="mcv" style="font-size:16px">' + c.lancamento + '</div></div>';
+  html += '<div class="mc"><div class="mcl">Progresso</div><div class="mcv" style="color:' + cor + '">' + c.prog + '%</div></div>';
+  html += '</div>';
+  html += '<div class="g2">';
+  html += '<div class="card card-p"><div class="sh" style="margin-bottom:10px"><span class="sht">' + c.nome + ' — ' + c.temporada + '</span></div>';
+  html += '<div style="font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:12px">' + c.briefing + '</div>';
+  html += '<div class="pbar" style="height:6px;margin-bottom:6px"><div class="pbf" style="width:' + c.prog + '%;background:' + cor + '"></div></div>';
+  html += '<div style="font-size:11px;color:var(--t3);font-family:\'DM Mono\',monospace;margin-bottom:12px">' + c.prog + '% concluído</div>';
+  html += '<div style="display:flex;gap:7px"><button class="btn btn-o" onclick="nav(\'calendario\',document.querySelector(\'.ni[onclick*=calendario]\'))">Ver calendário</button><button class="btn btn-o" onclick="nav(\'fichas\',document.querySelector(\'.ni[onclick*=fichas]\'))">Ver fichas</button><button class="btn btn-ac" onclick="nav(\'moodboard\',document.querySelector(\'.ni[onclick*=moodboard]\'))">Moodboard</button></div></div>';
+  html += '<div style="display:flex;flex-direction:column;gap:10px"><div class="card card-p"><div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:\'DM Mono\',monospace">Categorias</div><div style="display:flex;flex-wrap:wrap;gap:6px">' + catHtml + '</div></div></div>';
+  html += '</div>';
+  document.getElementById('col-detalhe-content').innerHTML = html;
+  document.getElementById('page-title').textContent = c.nome;
+  nav('detalhe-colecao', null);
+}
+
+// ════ APROVAÇÃO ════
+function aprovarFicha(ref) {
+  toast('Ficha ' + ref + ' aprovada! Amostra solicitada automaticamente.', '');
+  var items = document.querySelectorAll('[data-ref="' + ref + '"]');
+  items.forEach(function(el){ el.remove(); });
+}
+
+function reprovarFicha(ref) {
+  toast('Ficha ' + ref + ' reprovada. Designer notificada para correções.', '');
+}
+
+// ════ NOVA FICHA ════
+function toggleGrade(btn) {
+  var isOn = btn.classList.contains('btn-pu');
+  btn.className = isOn ? 'btn btn-o' : 'btn btn-pu';
+  btn.style.fontSize = '11px';
+}
+
+function toggleCorFicha(el) {
+  var isOn = el.style.background === 'var(--acd)' || el.style.background.includes('acd');
+  el.style.background = isOn ? '' : 'var(--acd)';
+  el.style.borderColor = isOn ? 'var(--b2)' : 'var(--acb)';
+}
+
+function toggleCat(btn) {
+  var isOn = btn.classList.contains('btn-pu');
+  btn.className = isOn ? 'btn btn-o' : 'btn btn-pu';
+  btn.style.fontSize = '11px';
+}
+
+function salvarFicha(tipo) {
+  var ref = document.getElementById('nf-ref').value || 'MOB-XXXX';
+  var nome = document.getElementById('nf-nome').value || 'nova peça';
+  if (tipo === 'revisao') {
+    toast('Ficha ' + ref + ' salva em revisão.', '');
+  } else {
+    toast('Ficha ' + ref + ' enviada para aprovação!', '');
+    setTimeout(function(){ nav('aprovacao', document.querySelector('.ni[onclick*=aprovacao]')); }, 800);
+  }
+}
+
+// ════ COLEÇÃO ════
+function criarColecao() {
+  var nome = document.getElementById('nc-nome').value || 'nova coleção';
+  toast('Coleção "' + nome + '" criada! Calendário gerado automaticamente.', '');
+  setTimeout(function(){ nav('colecoes', document.querySelector('.ni[onclick*=colecoes]')); }, 700);
+}
+
+// ════ TEMA ════
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('fh-theme', next); } catch(e){}
+  var icon = document.getElementById('theme-icon');
+  if (icon) icon.textContent = next === 'light' ? '◑' : '◐';
+}
+
+// ════ TUTORIAL ════
+var TUT_STEPS = [
+  {title:'Bem-vindo ao Módulo Coleção & Estilo', body:'Gerencie o ciclo completo de desenvolvimento de coleções: briefing, fichas técnicas, aprovações, moodboard, calendário e grade de produção.', target:null, pos:'center'},
+  {title:'Dashboard — visão geral', body:'KPIs da coleção ativa, progresso por etapa, alertas de prazo e atividade recente. Tudo em uma tela.', target:'.ni[onclick*=dashboard]', pos:'right', navTo:'dashboard'},
+  {title:'Fichas técnicas', body:'Cada peça tem uma ficha com tecido, grade, cores Pantone, medidas e custo. O fluxo é: Desenvolvimento → Revisão → Aprovação → Amostras (M1) → ERP.', target:'.ni[onclick*=fichas]', pos:'right', navTo:'fichas'},
+  {title:'Aprovação de fichas', body:'Fichas enviadas pelo time de estilo ficam aqui aguardando aprovação. Aprovada → amostra é solicitada automaticamente ao fornecedor e o SKU é criado no ERP.', target:'.ni[onclick*=aprovacao]', pos:'right', navTo:'aprovacao'},
+  {title:'Calendário Gantt', body:'Visão temporal do desenvolvimento da coleção com barras por etapa. A linha laranja marca o dia de hoje. Etapas atrasadas aparecem em vermelho.', target:'.ni[onclick*=calendario]', pos:'right', navTo:'calendario'},
+  {title:'Moodboard & cartela', body:'Referências visuais e paleta Pantone da coleção. As cores da cartela são sincronizadas com as fichas técnicas e com o ERP.', target:'.ni[onclick*=moodboard]', pos:'right', navTo:'moodboard'},
+  {title:'Grade de produção', body:'Quantidade por peça, tamanho e fornecedor. O botão "Enviar ao ERP" cria as ordens de compra automaticamente. O botão "Criar pedidos de produção" abre os pedidos no M1.', target:'.ni[onclick*=grade]', pos:'right', navTo:'grade'},
+  {title:'Integrações — ERP e mais', body:'Hub central de integrações: ERP (Bling conectado), e-commerce (Shopify), WhatsApp (Evolution API), email (Resend) e PDV. Fluxo bidirecional com o ERP explicado visualmente.', target:'.ni[onclick*=integracoes]', pos:'right', navTo:'integracoes'},
+];
+
+var tutIdx = 0, tutHL = null;
+function startTutorial() {
+  tutIdx = 0;
+  document.getElementById('tutorial-overlay').style.display = 'block';
+  document.getElementById('tutorial-box').style.display = 'block';
+  renderTutStep();
+}
+function endTutorial() {
+  document.getElementById('tutorial-overlay').style.display = 'none';
+  document.getElementById('tutorial-box').style.display = 'none';
+  if (tutHL) { tutHL.remove(); tutHL = null; }
+}
+function tutStep(dir) {
+  tutIdx = Math.max(0, Math.min(TUT_STEPS.length - 1, tutIdx + dir));
+  renderTutStep();
+}
+function renderTutStep() {
+  var s = TUT_STEPS[tutIdx];
+  document.getElementById('tut-step-label').textContent = 'Passo ' + (tutIdx+1) + ' de ' + TUT_STEPS.length;
+  document.getElementById('tut-title').textContent = s.title;
+  document.getElementById('tut-body').textContent = s.body;
+  document.getElementById('tut-prev').style.display = tutIdx === 0 ? 'none' : '';
+  var nextBtn = document.getElementById('tut-next');
+  nextBtn.textContent = tutIdx === TUT_STEPS.length - 1 ? 'Concluir' : 'Próximo →';
+  nextBtn.onclick = tutIdx === TUT_STEPS.length - 1 ? endTutorial : function(){ tutStep(1); };
+  document.getElementById('tut-dots').innerHTML = TUT_STEPS.map(function(_, i){
+    return '<div style="width:6px;height:6px;border-radius:50%;background:' + (i === tutIdx ? 'var(--ac)' : 'var(--s4)') + '"></div>';
+  }).join('');
+  if (s.navTo) {
+    var navEl = document.querySelector('.ni[onclick*=' + s.navTo + ']');
+    nav(s.navTo, navEl);
+  }
+  if (tutHL) { tutHL.remove(); tutHL = null; }
+  if (s.target && s.pos !== 'center') {
+    setTimeout(function() {
+      var el = document.querySelector(s.target);
+      if (!el) return;
+      var r = el.getBoundingClientRect();
+      tutHL = document.createElement('div');
+      tutHL.style.cssText = 'position:fixed;z-index:905;border-radius:10px;box-shadow:0 0 0 4px var(--ac),0 0 0 8px rgba(232,101,10,.25);pointer-events:none;top:' + (r.top-4) + 'px;left:' + (r.left-4) + 'px;width:' + (r.width+8) + 'px;height:' + (r.height+8) + 'px';
+      document.body.appendChild(tutHL);
+      var box = document.getElementById('tutorial-box');
+      var left = r.right + 20, top = r.top + r.height/2 - 120;
+      if (left + 340 > window.innerWidth - 20) left = r.left - 360;
+      if (top < 10) top = 10;
+      box.style.left = left + 'px'; box.style.top = top + 'px'; box.style.transform = 'none';
+    }, 120);
+  } else {
+    var box = document.getElementById('tutorial-box');
+    box.style.left = '50%'; box.style.top = '50%'; box.style.transform = 'translate(-50%,-50%)';
+  }
+}
+
+// ════ ANIMAÇÕES ════
+window.addEventListener('load', function() {
+  document.querySelectorAll('.sv-fill,.pbf').forEach(function(f) {
+    var w = f.style.width; f.style.width = '0';
+    setTimeout(function(){ f.style.width = w; }, 300);
+  });
+});
+</script>
+</body>
+</html>

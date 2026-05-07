@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FashionHub — Atacado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090C;--s1:#0E0F14;--s2:#14151C;--s3:#1C1D26;--s4:#252630;
+  --b1:rgba(255,255,255,0.055);--b2:rgba(255,255,255,0.1);--b3:rgba(255,255,255,0.16);
+  --ac:#E8650A;--ac2:#FF7A1F;--acd:rgba(232,101,10,0.12);--acb:rgba(232,101,10,0.25);
+  --t1:#F0EDE8;--t2:#888480;--t3:#484440;--t4:#282420;
+  --gr:#4CAF80;--grd:rgba(76,175,128,0.10);--grb:rgba(76,175,128,0.22);
+  --re:#E06060;--red:rgba(224,96,96,0.10);
+  --am:#E0A840;--amd:rgba(224,168,64,0.10);
+  --bl:#6090D8;--bld:rgba(96,144,216,0.10);
+  --pu:#9878D0;--pud:rgba(152,120,208,0.10);
+  --r:10px;--rl:14px;
+
+/* ═══ TEMA DARK/LIGHT ═══ */
+[data-theme="light"] {
+  --bg:#F5F4F2;--s1:#FFFFFF;--s2:#F0EFEC;--s3:#E8E6E2;--s4:#DDD9D4;
+  --b1:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.12);--b3:rgba(0,0,0,0.18);
+  --ac:#E8650A;--ac2:#D45A08;--acd:rgba(232,101,10,0.09);--acb:rgba(232,101,10,0.22);
+  --t1:#1A1815;--t2:#5A5650;--t3:#9A9690;--t4:#C4C0BA;
+  --gr:#2E7D52;--grd:rgba(46,125,82,0.09);--grb:rgba(46,125,82,0.2);
+  --re:#C0392B;--red:rgba(192,57,43,0.08);
+  --am:#B8860B;--amd:rgba(184,134,11,0.09);
+  --bl:#2563EB;--bld:rgba(37,99,235,0.09);
+  --pu:#7C3AED;--pud:rgba(124,58,237,0.09);
+}
+*,*::before,*::after{transition:background .2s ease,color .2s ease,border-color .2s ease,box-shadow .2s ease}
+.btn,.ni,.mc{transition:all .15s !important}
+.theme-toggle{width:34px;height:20px;border-radius:10px;background:var(--s4);border:1px solid var(--b2);position:relative;cursor:pointer;flex-shrink:0;transition:background .2s ease !important}
+.theme-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;top:2px;left:2px;background:var(--t2);transition:transform .2s ease,background .2s ease !important}
+[data-theme="light"] .theme-toggle{background:var(--acd);border-color:var(--acb)}
+[data-theme="light"] .theme-toggle::after{transform:translateX(14px);background:var(--ac)}
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* BRAND BAR */
+.bbar{height:30px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0}
+.bl-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-right:2px;font-family:'DM Mono',monospace}
+.bc{padding:2px 10px;border-radius:4px;font-size:10.5px;cursor:pointer;border:1px solid var(--b1);background:transparent;color:var(--t2);transition:all .15s;font-family:'Instrument Sans',sans-serif}
+.bc:hover{background:var(--s2);color:var(--t1)}
+.bc.on{background:var(--acd);color:var(--ac);border-color:var(--acb)}
+.br{margin-left:auto;font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace}
+.brdot{width:5px;height:5px;border-radius:50%;background:var(--gr);box-shadow:0 0 5px var(--gr)}
+
+/* LAYOUT */
+.body{flex:1;display:flex;overflow:hidden}
+
+/* SIDEBAR */
+.sb{width:210px;flex-shrink:0;background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;height:100%;overflow-y:auto}
+.logo{padding:14px 14px 12px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:9px}
+.lm{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.03em}
+.lm b{color:var(--ac)}
+.lbadge{background:var(--acd);border:1px solid var(--acb);color:var(--ac);font-size:8px;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:3px;letter-spacing:.07em}
+nav{padding:7px;flex:1}
+.ng{margin-bottom:3px}
+.nl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);padding:7px 8px 3px;font-family:'DM Mono',monospace}
+.ni{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:7px;font-size:12.5px;color:var(--t2);cursor:pointer;transition:all .15s;margin-bottom:1px;border:1px solid transparent;user-select:none}
+.ni:hover{background:var(--s2);color:var(--t1)}
+.ni.on{background:var(--acd);color:var(--ac);border-color:var(--acb)}
+.nd{width:4px;height:4px;border-radius:50%;background:var(--t3);flex-shrink:0;transition:background .15s}
+.ni.on .nd{background:var(--ac)}
+.nb{margin-left:auto;font-size:9px;font-family:'DM Mono',monospace;padding:1px 5px;border-radius:99px}
+.nb-r{background:var(--red);color:var(--re)}
+.nb-a{background:var(--amd);color:var(--am)}
+.nb-p{background:var(--pud);color:var(--pu)}
+.nn{font-size:8px;background:var(--acd);color:var(--ac);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;margin-left:auto;border:1px solid var(--acb)}
+.sft{padding:10px;border-top:1px solid var(--b1)}
+.ws{background:var(--s2);border-radius:8px;padding:9px 11px;border:1px solid var(--b1)}
+.wsn{font-size:12px;font-weight:500}
+.wsp{font-size:10px;color:var(--t3);margin-top:1px;display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace}
+.pp{background:var(--acd);color:var(--ac);font-size:9px;padding:1px 5px;border-radius:3px;border:1px solid var(--acb)}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.tb{height:48px;flex-shrink:0;border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 18px;gap:10px;background:var(--s1)}
+.tbt{font-family:'Syne',sans-serif;font-size:13.5px;font-weight:700;letter-spacing:-.02em}
+.tbr{margin-left:auto;display:flex;align-items:center;gap:7px}
+.agente-pill{display:flex;align-items:center;gap:5px;background:var(--acd);border:1px solid var(--acb);padding:4px 10px;border-radius:99px;font-size:11px;color:var(--ac)}
+.pulse{width:5px;height:5px;border-radius:50%;background:var(--ac);box-shadow:0 0 4px var(--ac);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.btn{padding:5px 12px;border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+.btn-ac{background:var(--ac);color:#08090C}
+.btn-ac:hover{background:var(--ac2)}
+.btn-o{background:transparent;color:var(--t2);border:1px solid var(--b2)}
+.btn-o:hover{background:var(--s2);color:var(--t1)}
+.btn-gr{background:var(--grd);color:var(--gr);border:1px solid var(--grb)}
+.btn-re{background:var(--red);color:var(--re);border:1px solid rgba(224,96,96,.2)}
+.btn-am{background:var(--amd);color:var(--am);border:1px solid rgba(224,168,64,.2)}
+.btn-bl{background:var(--bld);color:var(--bl);border:1px solid rgba(96,144,216,.2)}
+
+.content{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.view{display:none;flex-direction:column;gap:12px}
+.view.on{display:flex}
+
+/* COMPONENTS */
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden}
+.sh{display:flex;align-items:center;gap:8px}
+.sht{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:-.02em}
+.shr{margin-left:auto;display:flex;gap:6px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:99px;font-size:10px;font-weight:500;font-family:'DM Mono',monospace}
+.b-ac{background:var(--acd);color:var(--ac);border:1px solid var(--acb)}
+.b-gr{background:var(--grd);color:var(--gr)}
+.b-re{background:var(--red);color:var(--re)}
+.b-am{background:var(--amd);color:var(--am)}
+.b-bl{background:var(--bld);color:var(--bl)}
+.b-pu{background:var(--pud);color:var(--pu)}
+.b-n{background:var(--s3);color:var(--t3);border:1px solid var(--b1)}
+.mc{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:13px 16px}
+.mc.hi{background:var(--acd);border-color:var(--acb)}
+.mc.hg{background:var(--grd);border-color:var(--grb)}
+.mc.hr{background:var(--red);border-color:rgba(224,96,96,.18)}
+.mc.ha{background:var(--amd);border-color:rgba(224,168,64,.18)}
+.mc.hb{background:var(--bld);border-color:rgba(96,144,216,.2)}
+.mcl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;font-family:'DM Mono',monospace}
+.mcv{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1}
+.mc.hi .mcv{color:var(--ac)}
+.mc.hg .mcv{color:var(--gr)}
+.mc.hr .mcv{color:var(--re)}
+.mc.ha .mcv{color:var(--am)}
+.mc.hb .mcv{color:var(--bl)}
+.mcs{font-size:10px;color:var(--t3);margin-top:2px;font-family:'DM Mono',monospace}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.mets-5{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.mets-3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:9px 13px;font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--b1);background:var(--s2);font-family:'DM Mono',monospace}
+td{padding:10px 13px;font-size:12.5px;color:var(--t1);border-bottom:1px solid var(--b1)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--s2)}
+
+/* SCORE BAR */
+.sv-row{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.sv-name{font-size:12px;color:var(--t1);width:160px;flex-shrink:0}
+.sv-bar{flex:1;height:3px;background:var(--s4);border-radius:99px;overflow:hidden}
+.sv-fill{height:100%;border-radius:99px;transition:width .6s ease}
+.sv-pct{font-size:11px;font-family:'DM Mono',monospace;min-width:30px;text-align:right}
+
+/* FORM */
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10.5px;color:var(--t2);font-weight:500}
+.fg input,.fg select,.fg textarea{background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:8px 11px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;color:var(--t1);outline:none;transition:border-color .15s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--ac)}
+.fg select option{background:var(--s2)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.full{grid-column:span 2}
+
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.mo.on{display:flex}
+.mbox{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);padding:22px;width:560px;max-width:96vw;max-height:92vh;overflow-y:auto}
+.mt{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;letter-spacing:-.02em}
+.ms{font-size:12px;color:var(--t3);margin-bottom:18px}
+.mact{display:flex;gap:7px;justify-content:flex-end;margin-top:18px}
+.mcls{cursor:pointer;color:var(--t3);font-size:18px;background:none;border:none;font-family:inherit;transition:color .15s;line-height:1}
+.mcls:hover{color:var(--t1)}
+
+/* TIMELINE */
+.tl-item{display:flex;gap:11px;align-items:flex-start;padding:10px 14px;border-bottom:1px solid var(--b1)}
+.tl-item:last-child{border-bottom:none}
+.tl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tl-content{flex:1}
+.tl-title{font-size:12.5px;color:var(--t1);font-weight:500;margin-bottom:2px}
+.tl-sub{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace}
+.tl-time{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace;flex-shrink:0}
+
+/* PROGRESS */
+.pbar{background:var(--s4);border-radius:99px;height:3px;overflow:hidden}
+.pbf{height:100%;border-radius:99px}
+
+/* TOAST */
+.toast{position:fixed;bottom:18px;right:18px;background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:10px 15px;font-size:12.5px;color:var(--t1);z-index:500;display:flex;align-items:center;gap:8px;transform:translateY(60px);opacity:0;transition:all .3s ease;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* CANAL BADGE */
+.canal{display:inline-flex;align-items:center;padding:3px 9px;border-radius:5px;font-size:10px;font-family:'DM Mono',monospace;font-weight:600;letter-spacing:.04em}
+.canal-at{background:var(--acd);color:var(--ac);border:1px solid var(--acb)}
+.canal-lp{background:var(--grd);color:var(--gr);border:1px solid var(--grb)}
+.canal-ec{background:var(--bld);color:var(--bl);border:1px solid rgba(96,144,216,.25)}
+.canal-rp{background:var(--pud);color:var(--pu);border:1px solid rgba(152,120,208,.25)}
+
+/* META BAR */
+.meta-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.meta-name{font-size:12px;font-weight:500;color:var(--t1);width:150px;flex-shrink:0}
+.meta-bar{flex:1;height:8px;background:var(--s4);border-radius:99px;overflow:hidden;position:relative}
+.meta-fill{height:100%;border-radius:99px;transition:width .6s ease}
+.meta-target{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.3)}
+.meta-vals{font-size:11px;font-family:'DM Mono',monospace;min-width:90px;text-align:right;color:var(--t3)}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--s4);border-radius:99px}
+</style>
+</head>
+<body>
+
+<!-- BRAND BAR -->
+<div class="bbar">
+  <span class="bl-label">Marca</span>
+  <button class="bc on" id="marca-ativa">Minha Marca</button>
+  <span style="width:1px;height:12px;background:var(--b1);margin:0 2px"></span>
+  <button class="bc" style="border-style:dashed" onclick="toast('Múltiplas marcas disponível na versão Pro','⭐')">+ Marca</button>
+  <div class="br"><div class="brdot"></div><span id="agente-status">Agente ativo</span></div>
+</div>
+
+<div class="body">
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="logo">
+    <div>
+      <div class="lm">Fashion<b>Hub</b></div>
+      <div style="font-size:8px;font-family:'DM Mono',monospace;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-top:2px">Atacado</div>
+    </div>
+    <span class="lbadge">MODA</span>
+  </div>
+  <nav>
+    <div class="ng">
+      <div class="nl">Visão Geral</div>
+      <div class="ni on" onclick="nav('dashboard',this)"><div class="nd"></div>Dashboard</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Clientes</div>
+      <div class="ni" onclick="nav('clientes',this)"><div class="nd"></div>Score & cadastro</div>
+      <div class="ni" onclick="nav('novo-cliente',this)"><div class="nd"></div>Cadastrar cliente<span class="nn">+</span></div>
+    </div>
+    <div class="ng">
+      <div class="nl">Pedidos</div>
+      <div class="ni" onclick="nav('pedidos',this)"><div class="nd"></div>Pedidos ativos<span class="nb nb-a">8</span></div>
+      <div class="ni" onclick="nav('novo-pedido',this)"><div class="nd"></div>Novo pedido<span class="nn">+</span></div>
+      <div class="ni" onclick="nav('historico-pedidos',this)"><div class="nd"></div>Histórico</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Comercial</div>
+      <div class="ni" onclick="nav('tabela-precos',this)"><div class="nd"></div>Tabela de preços</div>
+      <div class="ni" onclick="nav('representantes',this)"><div class="nd"></div>Representantes<span class="nb nb-r">2</span></div>
+      <div class="ni" onclick="nav('metas',this)"><div class="nd"></div>Metas por região</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Financeiro</div>
+      <div class="ni" onclick="nav('credito',this)"><div class="nd"></div>Crédito & adimplência<span class="nb nb-r">3</span></div>
+      <div class="ni" onclick="nav('faturamento',this)"><div class="nd"></div>Faturamento</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Inteligência</div>
+      <div class="ni" onclick="nav('performance',this)"><div class="nd"></div>Performance por ponto</div>
+      <div class="ni" onclick="nav('relatorio',this)"><div class="nd"></div>Relatório comercial</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Ajuda</div>
+      <div class="ni" onclick="nav('instrucoes',this)"><div class="nd"></div>Instruções do módulo</div>
+      <div class="ni" onclick="startTutorial()"><div class="nd"></div>Tutorial interativo<span class="nn">▶</span></div>
+    </div>
+  </nav>
+  <div class="sft">
+    <div class="ws">
+      <div class="wsn">Coleção Inverno 27</div>
+      <div class="wsp"><span class="pp">Atacado</span> em andamento</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+<div class="tb">
+  <span class="tbt" id="page-title">Dashboard</span>
+  <div class="tbr">
+    <div class="agente-pill"><div class="pulse"></div>Agente ativo</div>
+    <button class="btn btn-o" style="font-size:11px;padding:4px 10px">↓ Exportar</button>
+    <button class="btn btn-ac" onclick="openM('m-novo-ped')">+ Pedido</button>
+  </div>
+</div>
+
+<div class="content">
+<!-- ═══════ DASHBOARD ═══════ -->
+<div class="view on" id="v-dashboard">
+  <div class="mets-5">
+    <div class="mc hi"><div class="mcl">Faturamento mês</div><div class="mcv" style="font-size:17px">R$1,4M</div><div class="mcs">+18% vs mês ant.</div></div>
+    <div class="mc hg"><div class="mcl">Pedidos ativos</div><div class="mcv">8</div><div class="mcs">R$ 284.000</div></div>
+    <div class="mc ha"><div class="mcl">Clientes ativos</div><div class="mcv">47</div><div class="mcs">300+ pontos total</div></div>
+    <div class="mc hr"><div class="mcl">Inadimplência</div><div class="mcv">3</div><div class="mcs">R$ 38.400 em aberto</div></div>
+    <div class="mc hb"><div class="mcl">Meta do mês</div><div class="mcv">73%</div><div class="mcs">R$ 1,4M de R$ 1,9M</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px">
+    <!-- PEDIDOS RECENTES -->
+    <div class="card" style="padding:16px">
+      <div class="sh" style="margin-bottom:12px">
+        <span class="sht">Últimos pedidos</span>
+        <div class="shr">
+          <button class="btn btn-o" style="font-size:11px;padding:4px 9px" onclick="nav('pedidos',document.querySelector('.ni[onclick*=pedidos]'))">Ver todos</button>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Pedido</th><th>Cliente</th><th>Valor</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0082</span></td><td>Modas Vila Nova</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 48.200</td><td><span class="badge b-gr">Faturado <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></span></td></tr>
+          <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0081</span></td><td>Boutique Elegance</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 31.600</td><td><span class="badge b-am">Em separação</span></td></tr>
+          <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0080</span></td><td>Clothes & Style</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 22.800</td><td><span class="badge b-am">Em separação</span></td></tr>
+          <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0079</span></td><td>Fashion Store SP</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 67.400</td><td><span class="badge b-re">Inadimplente</span></td></tr>
+          <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0078</span></td><td>Look do Dia MG</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 19.800</td><td><span class="badge b-bl">Pendente pagto.</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- ALERTAS + METAS -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card" style="padding:16px">
+        <div class="sh" style="margin-bottom:12px"><span class="sht">Alertas comerciais</span></div>
+        <div class="tl-item"><div class="tl-dot" style="background:var(--re)"></div><div class="tl-content"><div class="tl-title">Fashion Store SP — vencimento há 12 dias</div><div class="tl-sub">R$ 67.400 · 3º aviso sem retorno</div></div><span class="tl-time">hoje</span></div>
+        <div class="tl-item"><div class="tl-dot" style="background:var(--re)"></div><div class="tl-content"><div class="tl-title">Guarda-roupa RJ — limite de crédito atingido</div><div class="tl-sub">Novo pedido bloqueado · R$ 45.000 pendente</div></div><span class="tl-time">ontem</span></div>
+        <div class="tl-item"><div class="tl-dot" style="background:var(--am)"></div><div class="tl-content"><div class="tl-title">3 clientes sem pedido há 90+ dias</div><div class="tl-sub">Reativação necessária · Inverno 27</div></div><span class="tl-time">3 dias</span></div>
+        <div class="tl-item" style="border-bottom:none"><div class="tl-dot" style="background:var(--gr)"></div><div class="tl-content"><div class="tl-title">Boutique Elegance — maior pedido do mês</div><div class="tl-sub">R$ 31.600 · Inverno 27 completo</div></div><span class="tl-time">2 dias</span></div>
+      </div>
+      <!-- META GERAL -->
+      <div class="card" style="padding:16px">
+        <div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Meta mensal — Inverno 27</div>
+        <div style="display:flex;align-items:flex-end;gap:6px;margin-bottom:8px">
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--ac);line-height:1">73%</div>
+          <div style="font-size:11px;color:var(--t3);margin-bottom:4px;font-family:'DM Mono',monospace">R$1,4M / R$1,9M</div>
+        </div>
+        <div class="pbar" style="height:6px;margin-bottom:10px"><div class="pbf" style="width:73%;background:var(--ac)"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+          <div style="background:var(--s2);border-radius:6px;padding:7px 9px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Falta atingir</div><div style="font-size:13px;font-weight:600;color:var(--am)">R$ 504.000</div></div>
+          <div style="background:var(--s2);border-radius:6px;padding:7px 9px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Dias restantes</div><div style="font-size:13px;font-weight:600;color:var(--t1)">8 dias</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERFORMANCE REPRESENTANTES -->
+  <div class="card" style="padding:16px">
+    <div class="sh" style="margin-bottom:14px"><span class="sht">Performance representantes — mês atual</span></div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      <div class="meta-row"><span class="meta-name">Carla Mendonça — SP Interior</span><div class="meta-bar"><div class="meta-fill" style="width:91%;background:var(--gr)"></div><div class="meta-target" style="left:100%"></div></div><span class="meta-vals" style="color:var(--gr)">R$490K / R$540K · 91%</span></div>
+      <div class="meta-row"><span class="meta-name">Paulo Nobre — Sul</span><div class="meta-bar"><div class="meta-fill" style="width:78%;background:var(--ac)"></div></div><span class="meta-vals" style="color:var(--ac)">R$312K / R$400K · 78%</span></div>
+      <div class="meta-row"><span class="meta-name">Ana Lima — RJ+ES</span><div class="meta-bar"><div class="meta-fill" style="width:64%;background:var(--am)"></div></div><span class="meta-vals" style="color:var(--am)">R$256K / R$400K · 64%</span></div>
+      <div class="meta-row" style="margin-bottom:0"><span class="meta-name">Roberto Alves — Norte+NE</span><div class="meta-bar"><div class="meta-fill" style="width:42%;background:var(--re)"></div></div><span class="meta-vals" style="color:var(--re)">R$168K / R$400K · 42%</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ CLIENTES ═══════ -->
+<div class="view" id="v-clientes">
+  <div class="mets-5">
+    <div class="mc hi"><div class="mcl">Clientes ativos</div><div class="mcv">47</div><div class="mcs">multimarca + loja</div></div>
+    <div class="mc hg"><div class="mcl">Score médio</div><div class="mcv">76%</div><div class="mcs">+3% vs coleção ant.</div></div>
+    <div class="mc ha"><div class="mcl">Ticket médio</div><div class="mcv" style="font-size:17px">R$28.400</div><div class="mcs">por pedido</div></div>
+    <div class="mc hr"><div class="mcl">Inadimplentes</div><div class="mcv">3</div><div class="mcs">R$ 38.400 em risco</div></div>
+    <div class="mc"><div class="mcl">Novos este mês</div><div class="mcv">4</div><div class="mcs">convertidos</div></div>
+  </div>
+
+  <div class="card">
+    <div style="padding:11px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px">
+      <span class="sht">Base de clientes atacado</span>
+      <div class="shr">
+        <input type="text" placeholder="Buscar cliente, cidade, CNPJ..." style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 10px;font-family:'Instrument Sans',sans-serif;font-size:12px;color:var(--t1);outline:none;width:200px">
+        <select style="font-size:11px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 9px;color:var(--t2);font-family:'Instrument Sans',sans-serif"><option>Todos os tipos</option><option>Multimarca</option><option>Loja própria multimarca</option><option>Boutique</option><option>E-commerce</option></select>
+        <select style="font-size:11px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 9px;color:var(--t2);font-family:'Instrument Sans',sans-serif"><option>Todos os representantes</option><option>Carla Mendonça</option><option>Paulo Nobre</option><option>Ana Lima</option><option>Roberto Alves</option></select>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Cliente</th><th>Tipo</th><th>Cidade/UF</th><th>Representante</th><th>Score</th><th>Ticket médio</th><th>Último pedido</th><th>Limite crédito</th><th>Status</th><th></th></tr></thead>
+      <tbody id="clientes-tbody">
+        <tr>
+          <td><strong>Boutique Elegance</strong><br><span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">CLI-001</span></td>
+          <td><span class="badge b-ac">Boutique</span></td>
+          <td style="font-size:11.5px;color:var(--t3)">São Paulo – SP</td>
+          <td style="font-size:12px">Carla Mendonça</td>
+          <td><span style="color:var(--gr);font-family:'DM Mono',monospace;font-weight:600">92%</span></td>
+          <td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 34.200</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">2 dias</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">R$80K <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td>
+          <td><span class="badge b-gr">Ativo</span></td>
+          <td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirCliente(0)">Ver</button></td>
+        </tr>
+        <tr>
+          <td><strong>Modas Vila Nova</strong><br><span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">CLI-002</span></td>
+          <td><span class="badge b-bl">Multimarca</span></td>
+          <td style="font-size:11.5px;color:var(--t3)">Campinas – SP</td>
+          <td style="font-size:12px">Carla Mendonça</td>
+          <td><span style="color:var(--gr);font-family:'DM Mono',monospace;font-weight:600">88%</span></td>
+          <td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 28.800</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">hoje</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">R$60K <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td>
+          <td><span class="badge b-gr">Ativo</span></td>
+          <td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirCliente(1)">Ver</button></td>
+        </tr>
+        <tr>
+          <td><strong>Look do Dia MG</strong><br><span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">CLI-003</span></td>
+          <td><span class="badge b-bl">Multimarca</span></td>
+          <td style="font-size:11.5px;color:var(--t3)">Belo Horizonte – MG</td>
+          <td style="font-size:12px">Ana Lima</td>
+          <td><span style="color:var(--ac);font-family:'DM Mono',monospace;font-weight:600">79%</span></td>
+          <td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 22.400</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">5 dias</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">R$40K <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td>
+          <td><span class="badge b-gr">Ativo</span></td>
+          <td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirCliente(2)">Ver</button></td>
+        </tr>
+        <tr>
+          <td><strong>Fashion Store SP</strong><br><span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">CLI-004</span></td>
+          <td><span class="badge b-bl">Multimarca</span></td>
+          <td style="font-size:11.5px;color:var(--t3)">Santos – SP</td>
+          <td style="font-size:12px">Carla Mendonça</td>
+          <td><span style="color:var(--re);font-family:'DM Mono',monospace;font-weight:600">38%</span></td>
+          <td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 31.200</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">18 dias</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--re)">R$67,4K VENCIDO</td>
+          <td><span class="badge b-re">Inadimplente</span></td>
+          <td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirCliente(3)">Ver</button></td>
+        </tr>
+        <tr>
+          <td><strong>Clothes & Style</strong><br><span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">CLI-005</span></td>
+          <td><span class="badge b-pu">Boutique premium</span></td>
+          <td style="font-size:11.5px;color:var(--t3)">Florianópolis – SC</td>
+          <td style="font-size:12px">Paulo Nobre</td>
+          <td><span style="color:var(--gr);font-family:'DM Mono',monospace;font-weight:600">85%</span></td>
+          <td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 41.800</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">3 dias</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">R$100K <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td>
+          <td><span class="badge b-gr">Ativo</span></td>
+          <td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirCliente(4)">Ver</button></td>
+        </tr>
+        <tr>
+          <td><strong>Estilo Único RJ</strong><br><span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">CLI-006</span></td>
+          <td><span class="badge b-bl">Multimarca</span></td>
+          <td style="font-size:11.5px;color:var(--t3)">Rio de Janeiro – RJ</td>
+          <td style="font-size:12px">Ana Lima</td>
+          <td><span style="color:var(--am);font-family:'DM Mono',monospace;font-weight:600">61%</span></td>
+          <td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 18.600</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">32 dias</td>
+          <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--am)">R$30K</td>
+          <td><span class="badge b-am">Inativo 30d</span></td>
+          <td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirCliente(5)">Ver</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════ DETALHE CLIENTE ═══════ -->
+<div class="view" id="v-cliente-detalhe">
+  <div id="cliente-detalhe-content"><!-- preenchido por abrirCliente() --></div>
+</div>
+
+<!-- ═══════ CADASTRAR CLIENTE ═══════ -->
+<div class="view" id="v-novo-cliente">
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:14px">
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:18px">
+      <!-- BUSCA CNPJ -->
+      <div style="background:var(--acd);border:1px solid var(--acb);border-radius:9px;padding:13px 16px;margin-bottom:16px">
+        <div style="font-size:9.5px;color:var(--ac);text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px;font-family:'DM Mono',monospace">● Consulta automática por CNPJ — Receita Federal</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input id="nc-cnpj-input" type="text" maxlength="18" placeholder="00.000.000/0001-00"
+            oninput="this.value=formatCNPJ(this.value)"
+            onkeydown="if(event.key==='Enter')buscarCNPJCliente()"
+            style="flex:1;background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:9px 12px;font-family:'DM Mono',monospace;font-size:13px;color:var(--t1);outline:none;letter-spacing:.05em">
+          <button class="btn btn-ac" onclick="buscarCNPJCliente()" style="padding:9px 16px;font-size:12px;flex-shrink:0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Buscar</button>
+        </div>
+        <div id="nc-cnpj-status" style="display:none;margin-top:8px;padding:7px 11px;border-radius:6px;font-size:11.5px;font-weight:500"></div>
+      </div>
+
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace">Dados do cliente</div>
+      <div class="fgrid">
+        <div class="fg full"><label>Razão social</label><input type="text" id="nc-razao" placeholder="Preenchido pelo CNPJ"></div>
+        <div class="fg full"><label>Nome fantasia / Como chamamos</label><input type="text" id="nc-nome" placeholder="Ex: Boutique Elegance"></div>
+        <div class="fg"><label>CNPJ</label><input type="text" id="nc-cnpj-display" placeholder="Preenchido pelo CNPJ" readonly style="opacity:.7"></div>
+        <div class="fg"><label>Tipo de cliente</label><select id="nc-tipo"><option>Multimarca</option><option>Boutique</option><option>Boutique premium</option><option>Loja de departamento</option><option>E-commerce</option><option>Outlet</option></select></div>
+        <div class="fg"><label>CEP</label><input type="text" id="nc-cep" placeholder="Preenchido pelo CNPJ" readonly style="opacity:.7"></div>
+        <div class="fg"><label>Cidade / Estado</label><input type="text" id="nc-cidade" placeholder="Preenchido pelo CNPJ" readonly style="opacity:.7"></div>
+        <div class="fg full"><label>Endereço completo</label><input type="text" id="nc-endereco" placeholder="Preenchido pelo CNPJ" readonly style="opacity:.7"></div>
+        <div style="grid-column:span 2;border-top:1px solid var(--b1);padding-top:12px;margin-top:2px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Contato & comercial</div>
+        </div>
+        <div class="fg"><label>Nome do comprador/responsável</label><input type="text" id="nc-contato" placeholder="Ex: Fernanda Costa"></div>
+        <div class="fg"><label>Cargo</label><input type="text" placeholder="Ex: Gerente de Compras"></div>
+        <div class="fg"><label>WhatsApp</label><input type="text" id="nc-wpp" placeholder="(11) 99999-0000"></div>
+        <div class="fg"><label>E-mail comercial</label><input type="email" id="nc-email" placeholder="compras@cliente.com.br"></div>
+        <div class="fg"><label>Representante responsável</label>
+          <select><option>Carla Mendonça — SP Interior</option><option>Paulo Nobre — Sul</option><option>Ana Lima — RJ+ES</option><option>Roberto Alves — Norte+NE</option><option>Direto (sem representante)</option></select>
+        </div>
+        <div class="fg"><label>Região comercial</label>
+          <select><option>SP Capital</option><option>SP Interior</option><option>Sul</option><option>RJ + ES</option><option>MG</option><option>Norte + NE</option></select>
+        </div>
+        <div style="grid-column:span 2;border-top:1px solid var(--b1);padding-top:12px;margin-top:2px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Condições financeiras</div>
+        </div>
+        <div class="fg"><label>Limite de crédito (R$)</label><input type="text" placeholder="Ex: 50.000"></div>
+        <div class="fg"><label>Prazo de pagamento padrão</label><select><option>30 dias</option><option>28 dias boleto</option><option>45 dias</option><option>30/60 dias</option><option>À vista</option></select></div>
+        <div class="fg"><label>Canal de venda</label><select><option>Atacado direto</option><option>Via representante</option><option>Showroom</option><option>Online B2B</option></select></div>
+        <div class="fg"><label>Tabela de preço aplicável</label><select><option>Tabela Atacado — Padrão</option><option>Tabela Atacado — Premium</option><option>Tabela Representante</option></select></div>
+        <div class="fg full"><label>Observações / perfil do cliente</label><textarea rows="2" placeholder="Perfil de compra, categorias preferidas, sazonalidade, histórico..."></textarea></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+        <button class="btn btn-o" onclick="nav('clientes',document.querySelector('.ni[onclick*=clientes]'))">Cancelar</button>
+        <button class="btn btn-ac" onclick="salvarCliente()">Cadastrar cliente →</button>
+      </div>
+    </div>
+    <!-- DIREITO -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:16px">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace">Checklist de cadastro</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;align-items:center;gap:9px;font-size:12px"><div style="width:18px;height:18px;border-radius:50%;background:var(--grd);border:1.5px solid var(--gr);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--gr);flex-shrink:0"></div>CNPJ consultado e dados preenchidos</div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:var(--t3)"><div style="width:18px;height:18px;border-radius:50%;border:1.5px dashed var(--t3);flex-shrink:0"></div>Limite de crédito definido</div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:var(--t3)"><div style="width:18px;height:18px;border-radius:50%;border:1.5px dashed var(--t3);flex-shrink:0"></div>Representante vinculado</div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:var(--t3)"><div style="width:18px;height:18px;border-radius:50%;border:1.5px dashed var(--t3);flex-shrink:0"></div>Tabela de preço aplicada</div>
+          <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:var(--t3)"><div style="width:18px;height:18px;border-radius:50%;border:1.5px dashed var(--t3);flex-shrink:0"></div>Primeiro pedido registrado</div>
+        </div>
+      </div>
+      <div style="background:var(--acd);border:1px solid var(--acb);border-radius:var(--rl);padding:14px 16px">
+        <div style="font-size:9.5px;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-family:'DM Mono',monospace"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> Análise de crédito automática</div>
+        <div style="font-size:11.5px;color:var(--t2);line-height:1.6">Após o cadastro, o Agente consulta o histórico de pagamento e sugere automaticamente um limite de crédito inicial baseado no perfil do cliente e na região. Você pode ajustar manualmente antes de salvar.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PEDIDOS ATIVOS ═══════ -->
+<div class="view" id="v-pedidos">
+  <div class="mets">
+    <div class="mc ha"><div class="mcl">Em separação</div><div class="mcv">5</div><div class="mcs">R$ 148.000</div></div>
+    <div class="mc hb"><div class="mcl">Faturados</div><div class="mcv">3</div><div class="mcs">aguard. confirmação</div></div>
+    <div class="mc hr"><div class="mcl">Com problema</div><div class="mcv">1</div><div class="mcs">divergência de grade</div></div>
+    <div class="mc hg"><div class="mcl">Total em aberto</div><div class="mcv" style="font-size:17px">R$284K</div><div class="mcs">8 pedidos</div></div>
+  </div>
+  <div class="card">
+    <div style="padding:11px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px">
+      <span class="sht">Pedidos ativos — Inverno 27</span>
+      <div class="shr">
+        <select style="font-size:11px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 9px;color:var(--t2);font-family:'Instrument Sans',sans-serif"><option>Todos os status</option><option>Em separação</option><option>Faturado</option><option>Problema</option></select>
+        <button class="btn btn-o" style="font-size:11px;padding:4px 10px">↓ Exportar</button>
+        <button class="btn btn-ac" onclick="openM('m-novo-ped')">+ Novo pedido</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Pedido</th><th>Cliente</th><th>Representante</th><th>Itens</th><th>Valor bruto</th><th>Desconto</th><th>Valor líquido</th><th>Prazo entrega</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0083</span></td><td>Clothes & Style</td><td style="font-size:11.5px;color:var(--t2)">Paulo Nobre</td><td style="font-family:'DM Mono',monospace;font-size:11px">12 refs</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 48.000</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">5%</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 45.600</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">15/05 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td><td><span class="badge b-am">Em separação</span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirPedido('ATK-0083')">Ver</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0082</span></td><td>Modas Vila Nova</td><td style="font-size:11.5px;color:var(--t2)">Carla Mendonça</td><td style="font-family:'DM Mono',monospace;font-size:11px">8 refs</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 50.760</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">5%</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 48.200</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">10/05 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td><td><span class="badge b-gr">Faturado <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirPedido('ATK-0082')">Ver</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0081</span></td><td>Boutique Elegance</td><td style="font-size:11.5px;color:var(--t2)">Carla Mendonça</td><td style="font-family:'DM Mono',monospace;font-size:11px">15 refs</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 33.270</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ac)">0%</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 33.270</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--am)">18/05 →</td><td><span class="badge b-am">Em separação</span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirPedido('ATK-0081')">Ver</button></td></tr>
+        <tr style="background:rgba(224,96,96,.04)"><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0080</span></td><td>Clothes & Style</td><td style="font-size:11.5px;color:var(--t2)">Paulo Nobre</td><td style="font-family:'DM Mono',monospace;font-size:11px">6 refs</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 24.000</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">5%</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 22.800</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--re)">12/05 ATRASADO</td><td><span class="badge b-re">Divergência grade</span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirPedido('ATK-0080')">Ver</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0079</span></td><td>Fashion Store SP</td><td style="font-size:11.5px;color:var(--t2)">Carla Mendonça</td><td style="font-family:'DM Mono',monospace;font-size:11px">22 refs</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 70.950</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">5%</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 67.400</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">05/05 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td><td><span class="badge b-re">Inadimplente</span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="abrirPedido('ATK-0079')">Ver</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════ NOVO PEDIDO ═══════ -->
+<div class="view" id="v-novo-pedido">
+  <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:14px">
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:18px">
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;font-family:'DM Mono',monospace">Novo pedido de atacado</div>
+      <div class="fgrid">
+        <div class="fg full"><label>Cliente</label><select id="np-cliente" onchange="npAtualizarCliente()"><option value="">Selecione o cliente...</option><option value="0">Boutique Elegance — São Paulo SP</option><option value="1">Modas Vila Nova — Campinas SP</option><option value="2">Look do Dia MG — Belo Horizonte MG</option><option value="3">Clothes & Style — Florianópolis SC</option><option value="4">Estilo Único RJ — Rio de Janeiro RJ</option><option value="" disabled style="color:#666;font-style:italic">— Fashion Store SP (bloqueado — inadimplente)</option></select></div>
+        <div class="fg"><label>Representante</label><input type="text" id="np-rep" placeholder="Preenchido pelo cliente" readonly style="opacity:.7"></div>
+        <div class="fg"><label>Tabela de preço</label><select id="np-tabela"><option>Atacado Padrão</option><option>Atacado Premium</option><option>Representante</option></select></div>
+        <div class="fg"><label>Coleção</label><select><option>Inverno 27</option><option>Verão 27</option><option>Oriente</option></select></div>
+        <div class="fg"><label>Prazo de entrega</label><input type="date" id="np-prazo"></div>
+        <div class="fg"><label>Condição de pagamento</label><select id="np-pgto"><option>30 dias boleto</option><option>28 dias boleto</option><option>45 dias</option><option>30/60 dias</option><option>À vista — 5% desc. adicional</option></select></div>
+      </div>
+
+      <div style="border-top:1px solid var(--b1);margin-top:14px;padding-top:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:'DM Mono',monospace">Itens do pedido</div>
+          <button class="btn btn-o" style="font-size:10px;padding:3px 8px" onclick="adicionarItem()">+ Adicionar referência</button>
+        </div>
+        <table style="margin-bottom:12px">
+          <thead><tr><th>Referência</th><th>Descrição</th><th>Grade</th><th>Qtd</th><th>Preço unit.</th><th>Total</th><th></th></tr></thead>
+          <tbody id="np-itens">
+            <tr id="np-item-1"><td><input type="text" placeholder="MOB-0291" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t1);outline:none;width:90px"></td><td><input type="text" placeholder="Blazer alfaiataria" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-size:11.5px;color:var(--t1);outline:none;width:150px"></td><td><input type="text" placeholder="P/M/G" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-size:11px;color:var(--t1);outline:none;width:70px"></td><td><input type="number" placeholder="6" id="np-qtd-1" oninput="npCalcItem(1)" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t1);outline:none;width:55px"></td><td><input type="number" placeholder="320" id="np-preco-1" oninput="npCalcItem(1)" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t1);outline:none;width:80px"></td><td><span id="np-total-1" style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600;color:var(--ac)">—</span></td><td><button onclick="removerItem(1)" style="background:none;border:none;color:var(--re);cursor:pointer;font-size:14px">×</button></td></tr>
+            <tr id="np-item-2"><td><input type="text" placeholder="MOB-0318" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t1);outline:none;width:90px"></td><td><input type="text" placeholder="Calça pantalona" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-size:11.5px;color:var(--t1);outline:none;width:150px"></td><td><input type="text" placeholder="P/M/G/GG" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-size:11px;color:var(--t1);outline:none;width:70px"></td><td><input type="number" placeholder="8" id="np-qtd-2" oninput="npCalcItem(2)" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t1);outline:none;width:55px"></td><td><input type="number" placeholder="280" id="np-preco-2" oninput="npCalcItem(2)" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t1);outline:none;width:80px"></td><td><span id="np-total-2" style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600;color:var(--ac)">—</span></td><td><button onclick="removerItem(2)" style="background:none;border:none;color:var(--re);cursor:pointer;font-size:14px">×</button></td></tr>
+          </tbody>
+        </table>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn btn-o">Cancelar</button>
+          <button class="btn btn-ac" onclick="criarPedidoAtacado()">Criar pedido →</button>
+        </div>
+      </div>
+    </div>
+    <!-- RESUMO PEDIDO -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:16px">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace">Resumo do pedido</div>
+        <div id="np-resumo-cliente" style="background:var(--s2);border-radius:7px;padding:12px;margin-bottom:10px;display:none">
+          <div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em">Cliente selecionado</div>
+          <div id="np-cli-nome" style="font-size:13px;font-weight:600;margin-bottom:2px"></div>
+          <div id="np-cli-info" style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace"></div>
+          <div id="np-cli-credito" style="font-size:11px;margin-top:5px"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--b1)"><span style="color:var(--t2)">Subtotal</span><span id="np-subtotal" style="font-family:'DM Mono',monospace">R$ 0,00</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--b1)"><span style="color:var(--t2)">Desconto</span><span id="np-desconto-val" style="font-family:'DM Mono',monospace;color:var(--gr)">— R$ 0,00</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13.5px;font-weight:600;padding:8px 0"><span>Total líquido</span><span id="np-total-liq" style="font-family:'DM Mono',monospace;color:var(--ac)">R$ 0,00</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:11.5px;padding:4px 0;color:var(--t3)"><span>Comissão representante (5%)</span><span id="np-comissao" style="font-family:'DM Mono',monospace">R$ 0,00</span></div>
+        </div>
+      </div>
+      <div style="background:var(--acd);border:1px solid var(--acb);border-radius:var(--rl);padding:14px 16px">
+        <div style="font-size:9.5px;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-family:'DM Mono',monospace"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> Análise de crédito</div>
+        <div id="np-credito-msg" style="font-size:11.5px;color:var(--t2);line-height:1.6">Selecione o cliente para ver análise de crédito e limite disponível.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ HISTÓRICO PEDIDOS ═══════ -->
+<div class="view" id="v-historico-pedidos">
+  <div class="mets">
+    <div class="mc hg"><div class="mcl">Total faturado 2026</div><div class="mcv" style="font-size:16px">R$4,8M</div><div class="mcs">YTD</div></div>
+    <div class="mc hi"><div class="mcl">Pedidos 2026</div><div class="mcv">164</div><div class="mcs">Inverno + Verão</div></div>
+    <div class="mc"><div class="mcl">Ticket médio</div><div class="mcv" style="font-size:16px">R$29.200</div><div class="mcs">por pedido</div></div>
+    <div class="mc hg"><div class="mcl">Taxa conversão</div><div class="mcv">78%</div><div class="mcs">proposta → pedido</div></div>
+  </div>
+  <div class="card">
+    <div style="padding:11px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px">
+      <span class="sht">Histórico completo de pedidos</span>
+      <div class="shr">
+        <select style="font-size:11px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:4px 9px;color:var(--t2);font-family:'Instrument Sans',sans-serif"><option>2026 — Todas as coleções</option><option>Inverno 27</option><option>Verão 27</option></select>
+        <button class="btn btn-o" style="font-size:11px;padding:4px 10px">↓ Exportar</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Pedido</th><th>Data</th><th>Cliente</th><th>Representante</th><th>Coleção</th><th>Valor líquido</th><th>Pagamento</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0082</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">28/04</td><td>Modas Vila Nova</td><td style="font-size:11.5px;color:var(--t2)">Carla Mendonça</td><td><span class="badge b-n">Inverno 27</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 48.200</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">Pago <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg> 28/05</td><td><span class="badge b-gr">Faturado</span></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0077</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">22/04</td><td>Boutique Elegance</td><td style="font-size:11.5px;color:var(--t2)">Carla Mendonça</td><td><span class="badge b-n">Inverno 27</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 29.800</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">Pago <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td><td><span class="badge b-gr">Faturado</span></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0074</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">15/04</td><td>Look do Dia MG</td><td style="font-size:11.5px;color:var(--t2)">Ana Lima</td><td><span class="badge b-n">Inverno 27</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 19.800</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--am)">Vence 15/05</td><td><span class="badge b-am">Aguard. pgto.</span></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0071</span></td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">08/04</td><td>Clothes & Style</td><td style="font-size:11.5px;color:var(--t2)">Paulo Nobre</td><td><span class="badge b-n">Verão 27</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 38.400</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">Pago <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td><td><span class="badge b-gr">Faturado</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════ TABELA DE PREÇOS ═══════ -->
+<div class="view" id="v-tabela-precos">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+    <div style="display:flex;gap:4px">
+      <button id="tab-at" class="btn btn-ac" onclick="switchTabPreco('at')" style="font-size:12px;padding:6px 14px">Atacado Padrão</button>
+      <button id="tab-pr" class="btn btn-o" onclick="switchTabPreco('pr')" style="font-size:12px;padding:6px 14px">Atacado Premium</button>
+      <button id="tab-rp" class="btn btn-o" onclick="switchTabPreco('rp')" style="font-size:12px;padding:6px 14px">Representante</button>
+      <button id="tab-lp" class="btn btn-o" onclick="switchTabPreco('lp')" style="font-size:12px;padding:6px 14px">Loja Própria</button>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:7px">
+      <button class="btn btn-o" style="font-size:11px">↓ Exportar tabela</button>
+      <button class="btn btn-ac" onclick="toast('Edição de tabela de preços em modo seguro','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>')">Editar preços</button>
+    </div>
+  </div>
+
+  <div style="background:var(--s1);border:1px solid var(--acb);border-radius:var(--rl);padding:12px 16px;margin-bottom:12px;display:flex;gap:12px;align-items:center">
+    <div style="font-size:12px;color:var(--t2)"><span id="tabela-nome-label" style="color:var(--ac);font-weight:600">Atacado Padrão</span> — Válida para coleção Inverno 27. Desconto comercial de 5% para pedidos acima de R$30.000. Margem mínima: 2,4× o custo de produção.</div>
+    <span class="badge b-gr" style="flex-shrink:0">Ativa <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></span>
+  </div>
+
+  <div class="card" id="tabela-precos-body">
+    <div style="padding:11px 14px;border-bottom:1px solid var(--b1)"><span class="sht">Referências — Inverno 27</span></div>
+    <table>
+      <thead><tr><th>Referência</th><th>Descrição</th><th>Categoria</th><th>Custo produção</th><th>Preço atacado</th><th>Markup</th><th>Preço sugerido varejo</th><th>Margem varejo</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0291</span></td><td>Blazer estruturado alfaiataria</td><td><span class="badge b-pu">Alfaiataria</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--t3)">R$ 138</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 320</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">2,3×</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 680</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">53%</td><td><span class="badge b-gr">Ativo</span></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0318</span></td><td>Calça pantalona linho</td><td><span class="badge b-bl">Bottoms</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--t3)">R$ 112</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 280</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">2,5×</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 580</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">52%</td><td><span class="badge b-gr">Ativo</span></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0304</span></td><td>Vestido midi crepe</td><td><span class="badge b-ac">Vestidos</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--t3)">R$ 148</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 360</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">2,4×</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 760</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">53%</td><td><span class="badge b-gr">Ativo</span></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0327</span></td><td>Tricot oversize caramelo</td><td><span class="badge b-am">Knitwear</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--t3)">R$ 94</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 220</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">2,3×</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 460</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">52%</td><td><span class="badge b-gr">Ativo</span></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0299</span></td><td>Saia midi couro PU</td><td><span class="badge b-pu">Couro</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--t3)">R$ 168</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 380</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">2,3×</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 820</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">54%</td><td><span class="badge b-gr">Ativo</span></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px">MOB-0312</span></td><td>Blusa transpassada viscose</td><td><span class="badge b-bl">Tops</span></td><td style="font-family:'DM Mono',monospace;font-size:11.5px;color:var(--t3)">R$ 72</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 165</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--am)">2,3×</td><td style="font-family:'DM Mono',monospace;font-size:11.5px">R$ 340</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">52%</td><td><span class="badge b-gr">Ativo</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════ REPRESENTANTES ═══════ -->
+<div class="view" id="v-representantes">
+  <div class="mets">
+    <div class="mc hi"><div class="mcl">Representantes ativos</div><div class="mcv">4</div><div class="mcs">cobertura nacional</div></div>
+    <div class="mc hg"><div class="mcl">Comissão a pagar (mês)</div><div class="mcv" style="font-size:16px">R$60,3K</div><div class="mcs">calculada automaticamente</div></div>
+    <div class="mc hr"><div class="mcl">Alertas de meta</div><div class="mcv">2</div><div class="mcs">abaixo de 60%</div></div>
+    <div class="mc ha"><div class="mcl">Clientes por rep. (média)</div><div class="mcv">11,8</div><div class="mcs">carteira ativa</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <!-- Carla -->
+    <div class="card" style="padding:16px">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
+        <div style="width:38px;height:38px;border-radius:9px;background:var(--grd);border:1.5px solid var(--grb);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--gr);flex-shrink:0">CM</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;margin-bottom:2px">Carla Mendonça</div><div style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">SP Interior · 18 clientes · FORN-REP-001</div></div>
+        <span class="badge b-gr">91% da meta</span>
+      </div>
+      <div class="pbar" style="height:6px;margin-bottom:10px"><div class="pbf" style="width:91%;background:var(--gr)"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Faturamento mês</div><div style="font-size:13px;font-weight:600;color:var(--gr)">R$ 490.000</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Meta</div><div style="font-size:13px;font-weight:600">R$ 540.000</div></div>
+        <div style="background:var(--acd);border:1px solid var(--acb);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--ac);font-family:'DM Mono',monospace;margin-bottom:2px">Comissão (5%)</div><div style="font-size:13px;font-weight:600;color:var(--ac)">R$ 24.500</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Pedidos mês</div><div style="font-size:13px;font-weight:600">34 pedidos</div></div>
+      </div>
+      <div style="display:flex;gap:6px"><button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="verCarteira('Carla Mendonça','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>')">Ver carteira</button><button class="btn btn-gr" style="font-size:11px;flex:1;justify-content:center" onclick="toast('Comissão de Carla Mendonça aprovada para pagamento','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>')">Aprovar comissão</button></div>
+    </div>
+
+    <!-- Paulo -->
+    <div class="card" style="padding:16px">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
+        <div style="width:38px;height:38px;border-radius:9px;background:var(--acd);border:1.5px solid var(--acb);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--ac);flex-shrink:0">PN</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;margin-bottom:2px">Paulo Nobre</div><div style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">Sul · 14 clientes · FORN-REP-002</div></div>
+        <span class="badge b-ac">78% da meta</span>
+      </div>
+      <div class="pbar" style="height:6px;margin-bottom:10px"><div class="pbf" style="width:78%;background:var(--ac)"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Faturamento mês</div><div style="font-size:13px;font-weight:600;color:var(--ac)">R$ 312.000</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Meta</div><div style="font-size:13px;font-weight:600">R$ 400.000</div></div>
+        <div style="background:var(--acd);border:1px solid var(--acb);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--ac);font-family:'DM Mono',monospace;margin-bottom:2px">Comissão (5%)</div><div style="font-size:13px;font-weight:600;color:var(--ac)">R$ 15.600</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Pedidos mês</div><div style="font-size:13px;font-weight:600">22 pedidos</div></div>
+      </div>
+      <div style="display:flex;gap:6px"><button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="toast('Ver carteira de Paulo Nobre','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>')">Ver carteira</button><button class="btn btn-ac" style="font-size:11px;flex:1;justify-content:center" onclick="toast('Comissão de Paulo Nobre aprovada','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>')">Aprovar comissão</button></div>
+    </div>
+
+    <!-- Ana -->
+    <div class="card" style="padding:16px">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
+        <div style="width:38px;height:38px;border-radius:9px;background:var(--amd);border:1.5px solid rgba(224,168,64,.25);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--am);flex-shrink:0">AL</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;margin-bottom:2px">Ana Lima</div><div style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">RJ + ES · 10 clientes · FORN-REP-003</div></div>
+        <span class="badge b-am">64% da meta</span>
+      </div>
+      <div class="pbar" style="height:6px;margin-bottom:10px"><div class="pbf" style="width:64%;background:var(--am)"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Faturamento mês</div><div style="font-size:13px;font-weight:600;color:var(--am)">R$ 256.000</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Meta</div><div style="font-size:13px;font-weight:600">R$ 400.000</div></div>
+        <div style="background:var(--amd);border:1px solid rgba(224,168,64,.2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--am);font-family:'DM Mono',monospace;margin-bottom:2px">Comissão (5%)</div><div style="font-size:13px;font-weight:600;color:var(--am)">R$ 12.800</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Pedidos mês</div><div style="font-size:13px;font-weight:600">18 pedidos</div></div>
+      </div>
+      <div style="background:var(--amd);border:1px solid rgba(224,168,64,.2);border-radius:7px;padding:9px 12px;font-size:11.5px;color:var(--t2);margin-bottom:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Ana está 36% abaixo da meta. Sugestão: ativar 3 clientes inativos no RJ com campanha de pré-venda do Inverno 27.</div>
+      <div style="display:flex;gap:6px"><button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="verCarteira('Ana Lima')">Ver carteira</button><button class="btn btn-am" style="font-size:11px;flex:1;justify-content:center" onclick="toast('Plano de recuperação enviado para Ana Lima','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>')">Plano de recuperação</button></div>
+    </div>
+
+    <!-- Roberto -->
+    <div class="card" style="padding:16px">
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
+        <div style="width:38px;height:38px;border-radius:9px;background:var(--red);border:1.5px solid rgba(224,96,96,.3);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--re);flex-shrink:0">RA</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;margin-bottom:2px">Roberto Alves</div><div style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">Norte + NE · 5 clientes · FORN-REP-004</div></div>
+        <span class="badge b-re">42% da meta</span>
+      </div>
+      <div class="pbar" style="height:6px;margin-bottom:10px"><div class="pbf" style="width:42%;background:var(--re)"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px">
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Faturamento mês</div><div style="font-size:13px;font-weight:600;color:var(--re)">R$ 168.000</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Meta</div><div style="font-size:13px;font-weight:600">R$ 400.000</div></div>
+        <div style="background:var(--red);border:1px solid rgba(224,96,96,.2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--re);font-family:'DM Mono',monospace;margin-bottom:2px">Comissão (5%)</div><div style="font-size:13px;font-weight:600;color:var(--re)">R$ 8.400</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">Pedidos mês</div><div style="font-size:13px;font-weight:600">11 pedidos</div></div>
+      </div>
+      <div style="background:var(--red);border:1px solid rgba(224,96,96,.2);border-radius:7px;padding:9px 12px;font-size:11.5px;color:var(--t2);margin-bottom:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Roberto está 58% abaixo da meta — 2º mês consecutivo. Revisar carteira e considerar reestruturação da cobertura Norte/NE.</div>
+      <div style="display:flex;gap:6px"><button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="verCarteira('Roberto Alves')">Ver carteira</button><button class="btn btn-re" style="font-size:11px;flex:1;justify-content:center" onclick="openM('m-alerta-rep')">Acionar gestão</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ METAS POR REGIÃO ═══════ -->
+<div class="view" id="v-metas">
+  <div class="mets">
+    <div class="mc hi"><div class="mcl">Meta total mês</div><div class="mcv" style="font-size:17px">R$1,74M</div><div class="mcs">todas as regiões</div></div>
+    <div class="mc hg"><div class="mcl">Realizado</div><div class="mcv" style="font-size:17px">R$1,22M</div><div class="mcs">70% atingido</div></div>
+    <div class="mc ha"><div class="mcl">Falta atingir</div><div class="mcv" style="font-size:17px">R$520K</div><div class="mcs">8 dias úteis</div></div>
+    <div class="mc"><div class="mcl">Regiões no alvo</div><div class="mcv">2 / 4</div><div class="mcs">acima de 75%</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px">
+    <div class="card" style="padding:16px">
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;font-family:'DM Mono',monospace">Performance por região — mês atual</div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px"><span style="font-weight:600">SP Interior <span style="color:var(--t3);font-weight:400">— Carla Mendonça</span></span><span style="font-family:'DM Mono',monospace;color:var(--gr)">R$490K / R$540K · 91%</span></div>
+          <div class="pbar" style="height:8px"><div class="pbf" style="width:91%;background:var(--gr)"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px"><span style="font-weight:600">Sul <span style="color:var(--t3);font-weight:400">— Paulo Nobre</span></span><span style="font-family:'DM Mono',monospace;color:var(--ac)">R$312K / R$400K · 78%</span></div>
+          <div class="pbar" style="height:8px"><div class="pbf" style="width:78%;background:var(--ac)"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px"><span style="font-weight:600">RJ + ES <span style="color:var(--t3);font-weight:400">— Ana Lima</span></span><span style="font-family:'DM Mono',monospace;color:var(--am)">R$256K / R$400K · 64%</span></div>
+          <div class="pbar" style="height:8px"><div class="pbf" style="width:64%;background:var(--am)"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12px"><span style="font-weight:600">Norte + NE <span style="color:var(--t3);font-weight:400">— Roberto Alves</span></span><span style="font-family:'DM Mono',monospace;color:var(--re)">R$168K / R$400K · 42%</span></div>
+          <div class="pbar" style="height:8px"><div class="pbf" style="width:42%;background:var(--re)"></div></div>
+        </div>
+        <div style="border-top:1px solid var(--b1);padding-top:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12.5px;font-weight:600"><span>Total nacional</span><span style="font-family:'DM Mono',monospace;color:var(--ac)">R$1,22M / R$1,74M · 70%</span></div>
+          <div class="pbar" style="height:10px"><div class="pbf" style="width:70%;background:var(--ac)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card" style="padding:16px">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace">Top 5 clientes do mês</div>
+        <div class="sv-row"><span class="sv-name">Clothes & Style</span><div class="sv-bar"><div class="sv-fill" style="width:90%;background:var(--gr)"></div></div><span class="sv-pct" style="color:var(--gr)">R$90K</span></div>
+        <div class="sv-row"><span class="sv-name">Boutique Elegance</span><div class="sv-bar"><div class="sv-fill" style="width:75%;background:var(--gr)"></div></div><span class="sv-pct" style="color:var(--gr)">R$75K</span></div>
+        <div class="sv-row"><span class="sv-name">Modas Vila Nova</span><div class="sv-bar"><div class="sv-fill" style="width:60%;background:var(--ac)"></div></div><span class="sv-pct" style="color:var(--ac)">R$60K</span></div>
+        <div class="sv-row"><span class="sv-name">Fashion Store SP</span><div class="sv-bar"><div class="sv-fill" style="width:50%;background:var(--ac)"></div></div><span class="sv-pct" style="color:var(--ac)">R$50K</span></div>
+        <div class="sv-row" style="margin-bottom:0"><span class="sv-name">Look do Dia MG</span><div class="sv-bar"><div class="sv-fill" style="width:40%;background:var(--am)"></div></div><span class="sv-pct" style="color:var(--am)">R$40K</span></div>
+      </div>
+      <div class="card" style="padding:16px">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Top categorias</div>
+        <div class="sv-row"><span class="sv-name">Alfaiataria</span><div class="sv-bar"><div class="sv-fill" style="width:88%;background:var(--pu)"></div></div><span class="sv-pct">R$380K</span></div>
+        <div class="sv-row"><span class="sv-name">Vestidos</span><div class="sv-bar"><div class="sv-fill" style="width:72%;background:var(--ac)"></div></div><span class="sv-pct">R$310K</span></div>
+        <div class="sv-row"><span class="sv-name">Couro</span><div class="sv-bar"><div class="sv-fill" style="width:55%;background:var(--gr)"></div></div><span class="sv-pct">R$236K</span></div>
+        <div class="sv-row" style="margin-bottom:0"><span class="sv-name">Knitwear</span><div class="sv-bar"><div class="sv-fill" style="width:38%;background:var(--bl)"></div></div><span class="sv-pct">R$164K</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ CRÉDITO & ADIMPLÊNCIA ═══════ -->
+<div class="view" id="v-credito">
+  <div class="mets">
+    <div class="mc hr"><div class="mcl">Inadimplentes</div><div class="mcv">3</div><div class="mcs">R$ 38.400 em risco</div></div>
+    <div class="mc ha"><div class="mcl">Vencendo em 7 dias</div><div class="mcv">5</div><div class="mcs">R$ 142.800</div></div>
+    <div class="mc hg"><div class="mcl">Em dia</div><div class="mcv">39</div><div class="mcs">clientes adimplentes</div></div>
+    <div class="mc hi"><div class="mcl">Limite total concedido</div><div class="mcv" style="font-size:16px">R$2,8M</div><div class="mcs">base ativa</div></div>
+  </div>
+
+  <!-- INADIMPLENTES -->
+  <div style="background:var(--s1);border:1px solid rgba(224,96,96,.22);border-radius:var(--rl);overflow:hidden;margin-bottom:10px">
+    <div style="padding:10px 14px;background:rgba(224,96,96,.07);border-bottom:1px solid rgba(224,96,96,.15)">
+      <span style="font-size:9px;font-family:'DM Mono',monospace;color:var(--re);text-transform:uppercase;letter-spacing:.1em;font-weight:600">● Inadimplentes — Ação imediata</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--re)"></div>
+      <div class="tl-content">
+        <div class="tl-title">Fashion Store SP — ATK-0079 · 12 dias vencido</div>
+        <div class="tl-sub">R$ 67.400 · Prazo era 18/04 · 3 cobranças sem retorno · Score: 38%</div>
+      </div>
+      <div style="display:flex;gap:5px;flex-shrink:0">
+        <button class="btn btn-re" style="font-size:10px;padding:3px 8px" onclick="toast('Cobrança jurídica ativada para Fashion Store SP','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 12h18"/><path d="M3 6l9-3 9 3"/><path d="M3 18l9 3 9-3"/></svg>')">Acionar jurídico</button>
+        <button class="btn btn-o" style="font-size:10px;padding:3px 8px" onclick="toast('Bloquear novos pedidos de Fashion Store SP','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>')">Bloquear pedidos</button>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:var(--re)"></div>
+      <div class="tl-content">
+        <div class="tl-title">Guarda-roupa RJ — ATK-0075 · 8 dias vencido</div>
+        <div class="tl-sub">R$ 24.800 · Prazo era 22/04 · Promessa de pagamento não cumprida</div>
+      </div>
+      <div style="display:flex;gap:5px;flex-shrink:0">
+        <button class="btn btn-re" style="font-size:10px;padding:3px 8px" onclick="toast('Notificação formal enviada para Guarda-roupa RJ','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>')">Notificação formal</button>
+        <button class="btn btn-am" style="font-size:10px;padding:3px 8px" onclick="toast('Negociação de parcelamento aberta','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>')">Negociar parcelamento</button>
+      </div>
+    </div>
+    <div class="tl-item" style="border-bottom:none">
+      <div class="tl-dot" style="background:var(--am)"></div>
+      <div class="tl-content">
+        <div class="tl-title">Estilo Único RJ — ATK-0073 · 3 dias vencido</div>
+        <div class="tl-sub">R$ 18.600 · Prazo era 27/04 · Primeiro atraso — cliente histórico</div>
+      </div>
+      <div style="display:flex;gap:5px;flex-shrink:0">
+        <button class="btn btn-am" style="font-size:10px;padding:3px 8px" onclick="toast('Lembrete gentil enviado para Estilo Único RJ','<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>')">Cobrar gentilmente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENCENDO EM BREVE -->
+  <div style="background:var(--s1);border:1px solid rgba(224,168,64,.2);border-radius:var(--rl);overflow:hidden">
+    <div style="padding:10px 14px;background:rgba(224,168,64,.06);border-bottom:1px solid rgba(224,168,64,.14)">
+      <span style="font-size:9px;font-family:'DM Mono',monospace;color:var(--am);text-transform:uppercase;letter-spacing:.1em;font-weight:600">● Vencendo em 7 dias — Atenção</span>
+    </div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--am)"></div><div class="tl-content"><div class="tl-title">Boutique Elegance — ATK-0081 · vence 05/05</div><div class="tl-sub">R$ 33.270 · 5 dias · histórico de pagamento excelente</div></div><button class="btn btn-o" style="font-size:10px;padding:3px 8px;flex-shrink:0" onclick="toast('Lembrete enviado para Boutique Elegance','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.64 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>')">Lembrete</button></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--am)"></div><div class="tl-content"><div class="tl-title">Look do Dia MG — ATK-0074 · vence 07/05</div><div class="tl-sub">R$ 19.800 · 7 dias</div></div><button class="btn btn-o" style="font-size:10px;padding:3px 8px;flex-shrink:0" onclick="toast('Lembrete enviado para Look do Dia MG','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.64 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>')">Lembrete</button></div>
+    <div class="tl-item" style="border-bottom:none"><div class="tl-dot" style="background:var(--am)"></div><div class="tl-content"><div class="tl-title">Clothes & Style — ATK-0083 · vence 08/05</div><div class="tl-sub">R$ 45.600 · 8 dias</div></div><button class="btn btn-o" style="font-size:10px;padding:3px 8px;flex-shrink:0" onclick="toast('Lembrete enviado para Clothes & Style','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.64 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>')">Lembrete</button></div>
+  </div>
+</div>
+
+<!-- ═══════ FATURAMENTO ═══════ -->
+<div class="view" id="v-faturamento">
+  <div class="mets">
+    <div class="mc hg"><div class="mcl">Faturado este mês</div><div class="mcv" style="font-size:17px">R$1,4M</div><div class="mcs">28 notas emitidas</div></div>
+    <div class="mc ha"><div class="mcl">Aguard. faturamento</div><div class="mcv">5</div><div class="mcs">pedidos prontos</div></div>
+    <div class="mc hb"><div class="mcl">NFs emitidas</div><div class="mcv">28</div><div class="mcs">este mês</div></div>
+    <div class="mc"><div class="mcl">Devoluções</div><div class="mcv">2</div><div class="mcs">em processo</div></div>
+  </div>
+  <div class="card">
+    <div style="padding:11px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px">
+      <span class="sht">Faturamento — Maio 2026</span>
+      <div class="shr">
+        <button class="btn btn-o" style="font-size:11px;padding:4px 10px">↓ Exportar</button>
+        <button class="btn btn-ac" onclick="toast('Faturamento em lote disponível na versão Pro','⭐')">Faturar selecionados</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Pedido</th><th>Cliente</th><th>NF</th><th>Valor</th><th>Emissão</th><th>Vencimento</th><th>Status pagamento</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0082</span></td><td>Modas Vila Nova</td><td style="font-family:'DM Mono',monospace;font-size:11px">NF-e 14.821</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 48.200</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">28/04</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">28/05 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td><td><span class="badge b-gr">Pago <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="toast('NF-e 14.821 — PDF aberto','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> NF</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0077</span></td><td>Boutique Elegance</td><td style="font-family:'DM Mono',monospace;font-size:11px">NF-e 14.812</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 29.800</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">22/04</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gr)">22/05 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></td><td><span class="badge b-gr">Pago <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle"><polyline points="20,6 9,17 4,12"/></svg></span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="toast('NF-e 14.812 — PDF aberto','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> NF</button></td></tr>
+        <tr style="background:rgba(96,144,216,.04)"><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0081</span></td><td>Boutique Elegance</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--am)">Aguard. fat.</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 33.270</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">—</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--am)">vence 05/05</td><td><span class="badge b-am">Aguard. faturamento</span></td><td><button class="btn btn-ac" style="font-size:10px;padding:2px 7px" onclick="toast('Pedido ATK-0081 enviado para faturamento','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>')">Faturar</button></td></tr>
+        <tr><td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ATK-0079</span></td><td>Fashion Store SP</td><td style="font-family:'DM Mono',monospace;font-size:11px">NF-e 14.798</td><td style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600">R$ 67.400</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">05/04</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--re)">18/04 VENCIDO</td><td><span class="badge b-re">Inadimplente <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 7px" onclick="toast('NF-e 14.798 — PDF aberto','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> NF</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════ PERFORMANCE POR PONTO ═══════ -->
+<div class="view" id="v-performance">
+  <div class="mets-5">
+    <div class="mc hi"><div class="mcl">Pontos monitorados</div><div class="mcv">47</div><div class="mcs">clientes ativos</div></div>
+    <div class="mc hg"><div class="mcl">Com boa performance</div><div class="mcv">31</div><div class="mcs">acima do esperado</div></div>
+    <div class="mc ha"><div class="mcl">Em observação</div><div class="mcv">10</div><div class="mcs">queda ou estagnação</div></div>
+    <div class="mc hr"><div class="mcl">Sem pedido 60+ dias</div><div class="mcv">6</div><div class="mcs">risco de perda</div></div>
+    <div class="mc"><div class="mcl">Sell-through médio</div><div class="mcv">68%</div><div class="mcs">Verão 27</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:12px">
+    <div class="card" style="padding:16px">
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;font-family:'DM Mono',monospace">Sell-through por ponto — Verão 27</div>
+      <div class="sv-row"><span class="sv-name">Boutique Elegance</span><div class="sv-bar"><div class="sv-fill" style="width:92%;background:var(--gr)"></div></div><span class="sv-pct" style="color:var(--gr)">92%</span></div>
+      <div class="sv-row"><span class="sv-name">Clothes & Style</span><div class="sv-bar"><div class="sv-fill" style="width:84%;background:var(--gr)"></div></div><span class="sv-pct" style="color:var(--gr)">84%</span></div>
+      <div class="sv-row"><span class="sv-name">Modas Vila Nova</span><div class="sv-bar"><div class="sv-fill" style="width:78%;background:var(--ac)"></div></div><span class="sv-pct" style="color:var(--ac)">78%</span></div>
+      <div class="sv-row"><span class="sv-name">Look do Dia MG</span><div class="sv-bar"><div class="sv-fill" style="width:64%;background:var(--am)"></div></div><span class="sv-pct" style="color:var(--am)">64%</span></div>
+      <div class="sv-row"><span class="sv-name">Estilo Único RJ</span><div class="sv-bar"><div class="sv-fill" style="width:51%;background:var(--am)"></div></div><span class="sv-pct" style="color:var(--am)">51%</span></div>
+      <div class="sv-row" style="margin-bottom:0"><span class="sv-name">Fashion Store SP</span><div class="sv-bar"><div class="sv-fill" style="width:38%;background:var(--re)"></div></div><span class="sv-pct" style="color:var(--re)">38%</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card" style="padding:16px">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace">Recomendações da IA</div>
+        <div style="background:var(--grd);border:1px solid var(--grb);border-radius:7px;padding:10px 12px;margin-bottom:8px;font-size:11.5px;color:var(--t2);line-height:1.6"><strong style="color:var(--gr)">Priorizar:</strong> Boutique Elegance e Clothes & Style têm sell-through acima de 80% — aumentar limite de crédito e oferecer acesso antecipado ao Inverno 27.</div>
+        <div style="background:var(--red);border:1px solid rgba(224,96,96,.22);border-radius:7px;padding:10px 12px;margin-bottom:8px;font-size:11.5px;color:var(--t2);line-height:1.6"><strong style="color:var(--re)">Atenção:</strong> Fashion Store SP com 38% de sell-through e inadimplência ativa — rever parceria antes do Inverno 27.</div>
+        <div style="background:var(--amd);border:1px solid rgba(224,168,64,.2);border-radius:7px;padding:10px 12px;font-size:11.5px;color:var(--t2);line-height:1.6"><strong style="color:var(--am)">Oportunidade:</strong> 6 clientes sem pedido há 60+ dias. Campanha de pré-venda Inverno 27 pode reativar 4 deles com desconto de grade completa.</div>
+      </div>
+      <div class="card" style="padding:16px">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Categorias mais vendidas — Verão 27</div>
+        <div class="sv-row"><span class="sv-name">Vestidos</span><div class="sv-bar"><div class="sv-fill" style="width:88%;background:var(--ac)"></div></div><span class="sv-pct">88%</span></div>
+        <div class="sv-row"><span class="sv-name">Couro / PU</span><div class="sv-bar"><div class="sv-fill" style="width:78%;background:var(--ac)"></div></div><span class="sv-pct">78%</span></div>
+        <div class="sv-row" style="margin-bottom:0"><span class="sv-name">Jeans premium</span><div class="sv-bar"><div class="sv-fill" style="width:62%;background:var(--am)"></div></div><span class="sv-pct">62%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ RELATÓRIO COMERCIAL ═══════ -->
+<div class="view" id="v-relatorio">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+    <select style="font-size:12px;background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:6px 11px;color:var(--t1);font-family:'Instrument Sans',sans-serif"><option>Inverno 27 — Mês atual</option><option>Inverno 27 — YTD</option><option>Verão 27 — Completo</option><option>2026 — Acumulado</option></select>
+    <button class="btn btn-o" style="font-size:11px;padding:5px 12px;margin-left:auto">↓ Exportar PDF</button>
+  </div>
+
+  <div class="mets-5" style="margin-bottom:12px">
+    <div class="mc hi"><div class="mcl">Faturamento</div><div class="mcv" style="font-size:16px">R$1,4M</div><div class="mcs">+18% vs mai/25</div></div>
+    <div class="mc hg"><div class="mcl">Pedidos</div><div class="mcv">42</div><div class="mcs">este mês</div></div>
+    <div class="mc ha"><div class="mcl">Ticket médio</div><div class="mcv" style="font-size:16px">R$33,3K</div><div class="mcs">+8% vs mai/25</div></div>
+    <div class="mc"><div class="mcl">Novos clientes</div><div class="mcv">4</div><div class="mcs">CAC médio R$1.200</div></div>
+    <div class="mc hg"><div class="mcl">Taxa recompra</div><div class="mcv">84%</div><div class="mcs">clientes que voltaram</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+    <div class="card" style="padding:16px">
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;font-family:'DM Mono',monospace">Faturamento por representante</div>
+      <div class="sv-row"><span class="sv-name">Carla Mendonça</span><div class="sv-bar"><div class="sv-fill" style="width:91%;background:var(--gr)"></div></div><span class="sv-pct" style="color:var(--gr)">R$490K</span></div>
+      <div class="sv-row"><span class="sv-name">Paulo Nobre</span><div class="sv-bar"><div class="sv-fill" style="width:58%;background:var(--ac)"></div></div><span class="sv-pct" style="color:var(--ac)">R$312K</span></div>
+      <div class="sv-row"><span class="sv-name">Ana Lima</span><div class="sv-bar"><div class="sv-fill" style="width:48%;background:var(--am)"></div></div><span class="sv-pct" style="color:var(--am)">R$256K</span></div>
+      <div class="sv-row" style="margin-bottom:0"><span class="sv-name">Roberto Alves</span><div class="sv-bar"><div class="sv-fill" style="width:31%;background:var(--re)"></div></div><span class="sv-pct" style="color:var(--re)">R$168K</span></div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;font-family:'DM Mono',monospace">Faturamento por categoria</div>
+      <div class="sv-row"><span class="sv-name">Alfaiataria</span><div class="sv-bar"><div class="sv-fill" style="width:88%;background:var(--pu)"></div></div><span class="sv-pct">R$380K</span></div>
+      <div class="sv-row"><span class="sv-name">Vestidos</span><div class="sv-bar"><div class="sv-fill" style="width:72%;background:var(--ac)"></div></div><span class="sv-pct">R$310K</span></div>
+      <div class="sv-row"><span class="sv-name">Couro</span><div class="sv-bar"><div class="sv-fill" style="width:55%;background:var(--gr)"></div></div><span class="sv-pct">R$236K</span></div>
+      <div class="sv-row"><span class="sv-name">Knitwear</span><div class="sv-bar"><div class="sv-fill" style="width:38%;background:var(--bl)"></div></div><span class="sv-pct">R$164K</span></div>
+      <div class="sv-row" style="margin-bottom:0"><span class="sv-name">Tops + Outros</span><div class="sv-bar"><div class="sv-fill" style="width:23%;background:var(--t2)"></div></div><span class="sv-pct">R$100K</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:16px">
+    <div style="font-size:9.5px;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-family:'DM Mono',monospace">● Recomendações da IA — baseadas nos dados do período</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:var(--grd);border:1px solid var(--grb);border-radius:8px;padding:12px 14px"><div style="font-size:10px;color:var(--gr);font-family:'DM Mono',monospace;margin-bottom:5px">EXPANDIR</div><div style="font-size:12.5px;font-weight:500;margin-bottom:4px">Região Sul — Paulo Nobre</div><div style="font-size:11.5px;color:var(--t2);line-height:1.55">78% da meta com ticket médio 22% acima da média nacional. Sul tem espaço para mais 8–12 clientes. Prioridade: Curitiba e região metropolitana.</div></div>
+      <div style="background:var(--red);border:1px solid rgba(224,96,96,.22);border-radius:8px;padding:12px 14px"><div style="font-size:10px;color:var(--re);font-family:'DM Mono',monospace;margin-bottom:5px">REVISAR</div><div style="font-size:12.5px;font-weight:500;margin-bottom:4px">Norte + NE — Roberto Alves</div><div style="font-size:11.5px;color:var(--t2);line-height:1.55">42% da meta — 2º mês. 5 clientes na carteira vs média de 12 por representante. Considerar reestruturação ou substituição antes do Inverno 27.</div></div>
+      <div style="background:var(--acd);border:1px solid var(--acb);border-radius:8px;padding:12px 14px"><div style="font-size:10px;color:var(--ac);font-family:'DM Mono',monospace;margin-bottom:5px">PRIORIZAR</div><div style="font-size:12.5px;font-weight:500;margin-bottom:4px">Categoria Alfaiataria</div><div style="font-size:11.5px;color:var(--t2);line-height:1.55">R$380K faturados com sell-through de 88% no Verão. É o diferencial de marca mais vendido. Dobrar a grade disponível no Inverno 27 e criar exclusividade para clientes premium.</div></div>
+      <div style="background:var(--amd);border:1px solid rgba(224,168,64,.2);border-radius:8px;padding:12px 14px"><div style="font-size:10px;color:var(--am);font-family:'DM Mono',monospace;margin-bottom:5px">MONITORAR</div><div style="font-size:12.5px;font-weight:500;margin-bottom:4px">Outlet na base de clientes</div><div style="font-size:11.5px;color:var(--t2);line-height:1.55">Fashion Store SP com 38% de sell-through e inadimplência. Dois outros clientes com perfil similar. Risco de virar canal de liquidação — prejudica percepção de marca.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ INSTRUÇÕES ═══════ -->
+<div class="view" id="v-instrucoes">
+  <div style="max-width:820px">
+    <div style="background:var(--s1);border:1px solid var(--acb);border-radius:var(--rl);padding:20px 24px;margin-bottom:14px;display:flex;align-items:flex-start;gap:16px">
+      <div style="width:44px;height:44px;background:var(--acd);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.79 0l-8-4A2 2 0 0 1 2 16.76V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.78 0z"/><polyline points="2.32,6.16 12,11 21.68,6.16"/><line x1="12" y1="22.76" x2="12" y2="11"/></svg></div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px">FashionHub — Módulo Atacado</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6">Gestão completa do canal atacado: clientes multimarca, pedidos, tabela de preços, representantes, comissões, crédito e faturamento. Feito para marcas com 10 a 500+ pontos de venda.</div>
+        <div style="margin-top:10px"><button class="btn btn-ac" onclick="startTutorial()" style="font-size:12px">▶ Iniciar tutorial interativo</button></div>
+      </div>
+    </div>
+
+    <!-- FLUXO -->
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:18px 22px;margin-bottom:14px">
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:14px;font-family:'DM Mono',monospace">Fluxo operacional — do cadastro ao faturamento</div>
+      <div style="display:flex;align-items:center;gap:0;overflow-x:auto;padding-bottom:4px">
+        <div style="text-align:center;flex-shrink:0;width:100px"><div style="width:40px;height:40px;background:var(--acd);border:1.5px solid var(--acb);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M2 3h20v4H2z"/><path d="M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7"/></svg></div><div style="font-size:11px;font-weight:600">1. Cadastrar</div><div style="font-size:10px;color:var(--t3)">Cliente</div></div>
+        <div style="flex-shrink:0;color:var(--t3);font-size:18px;padding:0 4px;margin-bottom:20px">→</div>
+        <div style="text-align:center;flex-shrink:0;width:100px"><div style="width:40px;height:40px;background:var(--pud);border:1.5px solid rgba(152,120,208,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div style="font-size:11px;font-weight:600">2. Definir</div><div style="font-size:10px;color:var(--t3)">Crédito</div></div>
+        <div style="flex-shrink:0;color:var(--t3);font-size:18px;padding:0 4px;margin-bottom:20px">→</div>
+        <div style="text-align:center;flex-shrink:0;width:100px"><div style="width:40px;height:40px;background:var(--bld);border:1.5px solid rgba(96,144,216,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div><div style="font-size:11px;font-weight:600">3. Receber</div><div style="font-size:10px;color:var(--t3)">Pedido</div></div>
+        <div style="flex-shrink:0;color:var(--t3);font-size:18px;padding:0 4px;margin-bottom:20px">→</div>
+        <div style="text-align:center;flex-shrink:0;width:100px"><div style="width:40px;height:40px;background:var(--amd);border:1.5px solid rgba(224,168,64,.22);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.79 0l-8-4A2 2 0 0 1 2 16.76V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.78 0z"/><polyline points="2.32,6.16 12,11 21.68,6.16"/><line x1="12" y1="22.76" x2="12" y2="11"/></svg></div><div style="font-size:11px;font-weight:600">4. Separar</div><div style="font-size:10px;color:var(--t3)">& conferir</div></div>
+        <div style="flex-shrink:0;color:var(--t3);font-size:18px;padding:0 4px;margin-bottom:20px">→</div>
+        <div style="text-align:center;flex-shrink:0;width:100px"><div style="width:40px;height:40px;background:var(--grd);border:1.5px solid var(--grb);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg></div><div style="font-size:11px;font-weight:600">5. Faturar</div><div style="font-size:10px;color:var(--t3)">NF-e</div></div>
+        <div style="flex-shrink:0;color:var(--t3);font-size:18px;padding:0 4px;margin-bottom:20px">→</div>
+        <div style="text-align:center;flex-shrink:0;width:100px"><div style="width:40px;height:40px;background:var(--grd);border:1.5px solid var(--grb);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg></div><div style="font-size:11px;font-weight:600">6. Receber</div><div style="font-size:10px;color:var(--t3)">Pagamento</div></div>
+      </div>
+    </div>
+
+    <!-- GUIA POR SEÇÃO -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div style="font-size:14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M2 3h20v4H2z"/><path d="M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7"/></svg></div><div style="font-size:12px;font-weight:600">Clientes Atacado</div></div><div style="font-size:11.5px;color:var(--t2);line-height:1.7"><span style="color:var(--ac);font-weight:500">Score & cadastro</span> — base de clientes com score automático (pontualidade, volume, sell-through). Clique em "Ver" para abrir o detalhe completo de qualquer cliente.<br><span style="color:var(--ac);font-weight:500">Cadastrar</span> — CNPJ preenche dados automaticamente via Receita Federal.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div style="font-size:14px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div><div style="font-size:12px;font-weight:600">Pedidos</div></div><div style="font-size:11.5px;color:var(--t2);line-height:1.7"><span style="color:var(--ac);font-weight:500">Novo pedido</span> — selecione o cliente para ver limite de crédito disponível. O cálculo de valor, desconto e comissão acontece em tempo real conforme você adiciona itens.<br><span style="color:var(--ac);font-weight:500">Histórico</span> — todos os pedidos filtrados por coleção e período.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div style="font-size:14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div style="font-size:12px;font-weight:600">Comercial</div></div><div style="font-size:11.5px;color:var(--t2);line-height:1.7"><span style="color:var(--ac);font-weight:500">Tabela de preços</span> — 4 canais com markup e margem calculados. Edição protegida por confirmação.<br><span style="color:var(--ac);font-weight:500">Representantes</span> — performance e comissão calculada automaticamente. Alertas quando abaixo de 60% da meta.<br><span style="color:var(--ac);font-weight:500">Metas</span> — visão nacional com breakdown por região.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div style="font-size:14px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div><div style="font-size:12px;font-weight:600">Financeiro</div></div><div style="font-size:11.5px;color:var(--t2);line-height:1.7"><span style="color:var(--ac);font-weight:500">Crédito & adimplência</span> — inadimplentes em vermelho com botão de ação direta (acionar jurídico, bloquear pedidos, negociar). Vencimentos nos próximos 7 dias em amarelo.<br><span style="color:var(--ac);font-weight:500">Faturamento</span> — status de NF por pedido com botão de faturar.</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /body -->
+
+<!-- MODALS -->
+<div class="mo" id="m-novo-ped">
+  <div class="mbox" style="width:620px">
+    <div class="mt">Novo pedido rápido<button class="mcls" onclick="closeM('m-novo-ped')">×</button></div>
+    <div class="ms">Para pedido completo com grade, acesse Pedidos → Novo pedido</div>
+    <div class="fgrid" style="gap:11px">
+      <div class="fg full"><label>Cliente</label><select><option>Boutique Elegance</option><option>Modas Vila Nova</option><option>Look do Dia MG</option><option>Clothes & Style</option></select></div>
+      <div class="fg"><label>Coleção</label><select><option>Inverno 27</option><option>Verão 27</option></select></div>
+      <div class="fg"><label>Valor estimado (R$)</label><input type="text" placeholder="Ex: 25.000"></div>
+      <div class="fg"><label>Prazo de entrega</label><input type="date"></div>
+      <div class="fg full"><label>Observações</label><textarea rows="2" placeholder="Referências, condições especiais..."></textarea></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-novo-ped')">Cancelar</button>
+      <button class="btn btn-ac" onclick="closeM('m-novo-ped');toast('Pedido criado! Acesse Pedidos para detalhar a grade.','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>')">Criar pedido →</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="m-alerta-rep">
+  <div class="mbox">
+    <div class="mt">Acionar gestão — Roberto Alves<button class="mcls" onclick="closeM('m-alerta-rep')">×</button></div>
+    <div class="ms">Roberto está 58% abaixo da meta pelo 2º mês consecutivo. Escolha a ação:</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:12px 14px;cursor:pointer" onclick="closeM('m-alerta-rep');toast('Reunião de alinhamento agendada com Roberto Alves','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>')"><div style="font-size:12.5px;font-weight:500;margin-bottom:3px">Reunião de alinhamento</div><div style="font-size:11px;color:var(--t3)">Agendar encontro para revisar carteira, estratégia e barreiras da região</div></div>
+      <div style="background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:12px 14px;cursor:pointer" onclick="closeM('m-alerta-rep');toast('Plano de recuperação ativado para Norte+NE','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>')"><div style="font-size:12.5px;font-weight:500;margin-bottom:3px">Plano de recuperação (90 dias)</div><div style="font-size:11px;color:var(--t3)">Meta reduzida temporariamente + suporte de campanha + 3 clientes estratégicos indicados pela marca</div></div>
+      <div style="background:var(--red);border:1px solid rgba(224,96,96,.2);border-radius:8px;padding:12px 14px;cursor:pointer" onclick="closeM('m-alerta-rep');toast('Processo de substituição iniciado','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>')"><div style="font-size:12.5px;font-weight:500;margin-bottom:3px;color:var(--re)">Iniciar processo de substituição</div><div style="font-size:11px;color:var(--t3)">Mapear candidatos para a região Norte+NE e planejar transição de carteira</div></div>
+    </div>
+    <div class="mact"><button class="btn btn-o" onclick="closeM('m-alerta-rep')">Cancelar</button></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toast-icon"></span><span id="toast-msg"></span></div>
+
+<!-- TUTORIAL -->
+<div id="tutorial-overlay" style="display:none;position:fixed;inset:0;z-index:900;pointer-events:none"><div style="position:absolute;inset:0;background:rgba(0,0,0,.7)"></div></div>
+<div id="tutorial-box" style="display:none;position:fixed;z-index:910;background:var(--s1);border:1px solid var(--acb);border-radius:14px;padding:20px 22px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.6)">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--ac);text-transform:uppercase;letter-spacing:.1em" id="tut-step-label">Passo 1 de 8</div><div style="margin-left:auto;cursor:pointer;color:var(--t3);font-size:18px;line-height:1" onclick="endTutorial()">×</div></div>
+  <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px;color:var(--t1)" id="tut-title"></div>
+  <div style="font-size:12.5px;color:var(--t2);line-height:1.65;margin-bottom:16px" id="tut-body"></div>
+  <div style="display:flex;gap:6px;align-items:center"><div style="display:flex;gap:4px" id="tut-dots"></div><div style="margin-left:auto;display:flex;gap:6px"><button class="btn btn-o" id="tut-prev" onclick="tutStep(-1)" style="font-size:11px;padding:5px 11px">← Anterior</button><button class="btn btn-ac" id="tut-next" onclick="tutStep(1)" style="font-size:11px;padding:5px 14px">Próximo →</button></div></div>
+</div>
+<style>.tut-highlight{position:fixed;z-index:905;border-radius:10px;box-shadow:0 0 0 4px var(--ac),0 0 0 8px rgba(232,101,10,.25);pointer-events:none;transition:all .4s ease}</style>
+
+<script>
+// ═══════════════════════════════════
+// DADOS DOS CLIENTES
+// ═══════════════════════════════════
+const CLI_DATA = [
+  { id:'CLI-001', nome:'Boutique Elegance', tipo:'Boutique', score:92, pontualidade:96,
+    cidade:'São Paulo', uf:'SP', rep:'Carla Mendonça', ticket:'R$ 34.200', limite:'R$ 80.000',
+    status:'Ativo', statusBadge:'b-gr', cnpj:'11.222.333/0001-44',
+    contato:'Fernanda Costa', wpp:'(11) 98800-1100', email:'compras@boutiqueelegance.com.br',
+    creditoUsado: 33270, creditoTotal: 80000,
+    pedidos:[
+      {id:'ATK-0081',data:'26/04',valor:'R$ 33.270',status:'Em separação',statusBadge:'b-am'},
+      {id:'ATK-0077',data:'22/04',valor:'R$ 29.800',status:'Faturado',statusBadge:'b-gr'},
+      {id:'ATK-0068',data:'10/03',valor:'R$ 41.200',status:'Pago',statusBadge:'b-gr'},
+    ]
+  },
+  { id:'CLI-002', nome:'Modas Vila Nova', tipo:'Multimarca', score:88, pontualidade:91,
+    cidade:'Campinas', uf:'SP', rep:'Carla Mendonça', ticket:'R$ 28.800', limite:'R$ 60.000',
+    status:'Ativo', statusBadge:'b-gr', cnpj:'22.333.444/0001-55',
+    contato:'Rodrigo Silva', wpp:'(19) 99200-2200', email:'comercial@modasvilanova.com.br',
+    creditoUsado: 48200, creditoTotal: 60000,
+    pedidos:[
+      {id:'ATK-0082',data:'28/04',valor:'R$ 48.200',status:'Faturado',statusBadge:'b-gr'},
+      {id:'ATK-0071',data:'01/04',valor:'R$ 22.400',status:'Pago',statusBadge:'b-gr'},
+    ]
+  },
+  { id:'CLI-003', nome:'Look do Dia MG', tipo:'Multimarca', score:79, pontualidade:82,
+    cidade:'Belo Horizonte', uf:'MG', rep:'Ana Lima', ticket:'R$ 22.400', limite:'R$ 40.000',
+    status:'Ativo', statusBadge:'b-gr', cnpj:'33.444.555/0001-66',
+    contato:'Patricia Alves', wpp:'(31) 98700-3300', email:'compras@lookdodiamg.com.br',
+    creditoUsado: 19800, creditoTotal: 40000,
+    pedidos:[
+      {id:'ATK-0074',data:'15/04',valor:'R$ 19.800',status:'Aguard. pagto.',statusBadge:'b-am'},
+      {id:'ATK-0063',data:'10/03',valor:'R$ 18.600',status:'Pago',statusBadge:'b-gr'},
+    ]
+  },
+  { id:'CLI-004', nome:'Fashion Store SP', tipo:'Multimarca', score:38, pontualidade:42,
+    cidade:'Santos', uf:'SP', rep:'Carla Mendonça', ticket:'R$ 31.200', limite:'R$ 70.000',
+    status:'Inadimplente', statusBadge:'b-re', cnpj:'44.555.666/0001-77',
+    contato:'Marcos Ferreira', wpp:'(13) 97700-4400', email:'adm@fashionstoresp.com.br',
+    creditoUsado: 67400, creditoTotal: 70000,
+    pedidos:[
+      {id:'ATK-0079',data:'05/04',valor:'R$ 67.400',status:'VENCIDO 12d',statusBadge:'b-re'},
+      {id:'ATK-0069',data:'05/03',valor:'R$ 28.800',status:'Pago',statusBadge:'b-gr'},
+    ]
+  },
+  { id:'CLI-005', nome:'Clothes & Style', tipo:'Boutique premium', score:85, pontualidade:88,
+    cidade:'Florianópolis', uf:'SC', rep:'Paulo Nobre', ticket:'R$ 41.800', limite:'R$ 100.000',
+    status:'Ativo', statusBadge:'b-gr', cnpj:'55.666.777/0001-88',
+    contato:'Juliana Ramos', wpp:'(48) 99300-5500', email:'juliana@clothesestyle.com.br',
+    creditoUsado: 68400, creditoTotal: 100000,
+    pedidos:[
+      {id:'ATK-0083',data:'29/04',valor:'R$ 45.600',status:'Em separação',statusBadge:'b-am'},
+      {id:'ATK-0080',data:'18/04',valor:'R$ 22.800',status:'Divergência grade',statusBadge:'b-re'},
+      {id:'ATK-0071',data:'08/04',valor:'R$ 38.400',status:'Pago',statusBadge:'b-gr'},
+    ]
+  },
+  { id:'CLI-006', nome:'Estilo Único RJ', tipo:'Multimarca', score:61, pontualidade:65,
+    cidade:'Rio de Janeiro', uf:'RJ', rep:'Ana Lima', ticket:'R$ 18.600', limite:'R$ 30.000',
+    status:'Inativo 30d', statusBadge:'b-am', cnpj:'66.777.888/0001-99',
+    contato:'Luisa Campos', wpp:'(21) 98600-6600', email:'luisa@estilounicorj.com.br',
+    creditoUsado: 18600, creditoTotal: 30000,
+    pedidos:[
+      {id:'ATK-0073',data:'28/03',valor:'R$ 18.600',status:'VENCIDO 3d',statusBadge:'b-re'},
+      {id:'ATK-0061',data:'01/03',valor:'R$ 16.800',status:'Pago',statusBadge:'b-gr'},
+    ]
+  }
+];
+
+// ═══════════════════════════════════
+// NAVEGAÇÃO
+// ═══════════════════════════════════
+function nav(id, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+  const v = document.getElementById('v-' + id);
+  if (v) v.classList.add('on');
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  if (el) el.classList.add('on');
+  const titles = {
+    dashboard: 'Dashboard',
+    clientes: 'Score & Cadastro de Clientes',
+    'novo-cliente': 'Cadastrar Novo Cliente',
+    'cliente-detalhe': 'Detalhe do Cliente',
+    pedidos: 'Pedidos Ativos',
+    'novo-pedido': 'Novo Pedido de Atacado',
+    'historico-pedidos': 'Histórico de Pedidos',
+    'tabela-precos': 'Tabela de Preços por Canal',
+    representantes: 'Representantes & Comissões',
+    metas: 'Metas por Região',
+    credito: 'Crédito & Adimplência',
+    faturamento: 'Faturamento',
+    performance: 'Performance por Ponto de Venda',
+    relatorio: 'Relatório Comercial',
+    instrucoes: 'Instruções do Módulo',
+  };
+  if (titles[id]) document.getElementById('page-title').textContent = titles[id];
+}
+
+function openM(id) { document.getElementById(id).classList.add('on') }
+function closeM(id) { document.getElementById(id).classList.remove('on') }
+
+function toast(msg, icon) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = icon || '';
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ═══════════════════════════════════
+// DETALHE CLIENTE DINÂMICO
+// ═══════════════════════════════════
+function abrirCliente(idx) {
+  var c = CLI_DATA[idx];
+  var sc = c.score;
+  var scCor = sc>=85?'var(--gr)':sc>=65?'var(--ac)':sc>=45?'var(--am)':'var(--re)';
+  var creditoPct = Math.round(c.creditoUsado/c.creditoTotal*100);
+  var creditoCor = creditoPct>=90?'var(--re)':creditoPct>=70?'var(--am)':'var(--gr)';
+  var creditoUsadoFmt = 'R$ ' + c.creditoUsado.toLocaleString('pt-BR');
+  var creditoTotalFmt = 'R$ ' + c.creditoTotal.toLocaleString('pt-BR');
+  var creditoDisp = c.creditoTotal - c.creditoUsado;
+  var creditoDispFmt = 'R$ ' + creditoDisp.toLocaleString('pt-BR');
+  var scClass = sc>=85?'hg':sc>=65?'hi':'hr';
+  var credClass = creditoPct>=90?'hr':creditoPct>=70?'ha':'hg';
+
+  var pedidosRows = '';
+  c.pedidos.forEach(function(p) {
+    pedidosRows += '<tr>' +
+      '<td><span style="font-family:monospace;font-size:11px;color:var(--t3)">' + p.id + '</span></td>' +
+      '<td style="font-family:monospace;font-size:11px;color:var(--t3)">' + p.data + '</td>' +
+      '<td style="font-family:monospace;font-size:11.5px;font-weight:600">' + p.valor + '</td>' +
+      '<td><span class="badge ' + p.statusBadge + '">' + p.status + '</span></td>' +
+    '</tr>';
+  });
+
+  var html = '';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">';
+  html += '<div class="mc ' + scClass + '"><div class="mcl">Score geral</div><div class="mcv">' + sc + '%</div><div class="mcs">pontualidade ' + c.pontualidade + '%</div></div>';
+  html += '<div class="mc hi"><div class="mcl">Ticket médio</div><div class="mcv" style="font-size:16px">' + c.ticket + '</div><div class="mcs">por pedido</div></div>';
+  html += '<div class="mc ' + credClass + '"><div class="mcl">Crédito usado</div><div class="mcv" style="font-size:16px">' + creditoPct + '%</div><div class="mcs">' + creditoUsadoFmt + ' / ' + creditoTotalFmt + '</div></div>';
+  html += '</div>';
+  html += '<div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px">';
+  html += '<div class="card" style="padding:16px">';
+  html += '<div class="sh" style="margin-bottom:14px"><span class="sht">' + c.nome + '</span><span class="badge ' + c.statusBadge + '" style="margin-left:8px">' + c.status + '</span></div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">';
+  html += '<div style="background:var(--s2);border-radius:7px;padding:9px 11px"><div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;font-family:monospace">Contato</div><div style="font-size:12px">' + c.contato + '</div><div style="font-size:10px;color:var(--t3)">' + c.email + '</div></div>';
+  html += '<div style="background:var(--s2);border-radius:7px;padding:9px 11px"><div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;font-family:monospace">WhatsApp</div><div style="font-size:12px">' + c.wpp + '</div></div>';
+  html += '<div style="background:var(--s2);border-radius:7px;padding:9px 11px"><div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;font-family:monospace">CNPJ</div><div style="font-size:12px">' + c.cnpj + '</div></div>';
+  html += '<div style="background:var(--s2);border-radius:7px;padding:9px 11px"><div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;font-family:monospace">Representante</div><div style="font-size:12px">' + c.rep + '</div></div>';
+  html += '</div>';
+  html += '<div style="background:var(--s2);border-radius:7px;padding:10px 12px;margin-bottom:10px">';
+  html += '<div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;font-family:monospace">Uso de crédito</div>';
+  html += '<div style="display:flex;justify-content:space-between;font-size:11px;font-family:monospace;margin-bottom:5px"><span>Usado: ' + creditoUsadoFmt + '</span><span style="color:' + creditoCor + '">' + creditoPct + '%</span></div>';
+  html += '<div class="pbar" style="height:6px"><div class="pbf" style="width:' + creditoPct + '%;background:' + creditoCor + '"></div></div>';
+  html += '<div style="font-size:10px;color:var(--t3);margin-top:4px">Disponível: ' + creditoDispFmt + '</div>';
+  html += '</div>';
+  html += '<div style="display:flex;gap:6px">';
+  html += '<button class="btn btn-ac" style="flex:1;justify-content:center;font-size:11px" onclick="openM(\'m-novo-ped\')">Novo pedido</button>';
+  html += '<button class="btn btn-o" style="flex:1;justify-content:center;font-size:11px" onclick="toast(\'Ajuste de limite requer aprovação financeira\',\'\')" >Ajustar crédito</button>';
+  html += '</div></div>';
+  html += '<div class="card" style="padding:16px">';
+  html += '<div class="sh" style="margin-bottom:12px"><span class="sht">Histórico de pedidos</span></div>';
+  html += '<table><thead><tr><th>Pedido</th><th>Data</th><th>Valor</th><th>Status</th></tr></thead><tbody>' + pedidosRows + '</tbody></table>';
+  html += '</div></div>';
+
+  document.getElementById('cliente-detalhe-content').innerHTML = html;
+  document.getElementById('page-title').textContent = c.nome;
+  nav('cliente-detalhe', null);
+}
+
+function abrirPedido(id) {
+  toast(`Abrindo pedido ${id}...`,'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>');
+}
+
+// ═══════════════════════════════════
+// NOVO PEDIDO — cálculos
+// ═══════════════════════════════════
+const NP_CLI = [
+  {nome:'Boutique Elegance', rep:'Carla Mendonça', limite:'R$ 80.000', disponivel:'R$ 46.730', score:92, ok:true},
+  {nome:'Modas Vila Nova', rep:'Carla Mendonça', limite:'R$ 60.000', disponivel:'R$ 11.800', score:88, ok:true},
+  {nome:'Look do Dia MG', rep:'Ana Lima', limite:'R$ 40.000', disponivel:'R$ 20.200', score:79, ok:true},
+  {nome:'Clothes & Style', rep:'Paulo Nobre', limite:'R$ 100.000', disponivel:'R$ 31.600', score:85, ok:true},
+  {nome:'Estilo Único RJ', rep:'Ana Lima', limite:'R$ 30.000', disponivel:'R$ 11.400', score:61, ok:false},
+];
+let npItemCount = 2;
+
+function npAtualizarCliente() {
+  const idx = document.getElementById('np-cliente').value;
+  const resumo = document.getElementById('np-resumo-cliente');
+  const msg = document.getElementById('np-credito-msg');
+  if (idx === '') { resumo.style.display = 'none'; return; }
+  const c = NP_CLI[parseInt(idx)];
+  document.getElementById('np-rep').value = c.rep;
+  resumo.style.display = 'block';
+  document.getElementById('np-cli-nome').textContent = c.nome;
+  document.getElementById('np-cli-info').textContent = `Rep: ${c.rep} · Score: ${c.score}%`;
+  document.getElementById('np-cli-credito').innerHTML = 'Crédito disponível: <strong style="color:' + (c.ok ? 'var(--gr)' : 'var(--re)') + '">' + c.disponivel + '</strong>';
+  msg.innerHTML = c.ok
+    ? '<span style="color:var(--gr)">Crédito disponível: <strong>' + c.disponivel + '</strong></span><br><span style="font-size:11px;color:var(--t3)">Limite total: ' + c.limite + ' · Score: ' + c.score + '%</span>'
+    : `<span style="color:var(--am)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Cliente com score baixo (${c.score}%). Verifique histórico antes de confirmar o pedido.</span>`;
+}
+
+function npCalcItem(n) {
+  const qtd = parseFloat(document.getElementById(`np-qtd-${n}`).value)||0;
+  const preco = parseFloat(document.getElementById(`np-preco-${n}`).value)||0;
+  const total = qtd * preco;
+  const el = document.getElementById(`np-total-${n}`);
+  if (el) el.textContent = total > 0 ? 'R$' + total.toLocaleString('pt-BR',{minimumFractionDigits:2}) : '—';
+  npCalcTotal();
+}
+
+function npCalcTotal() {
+  let sub = 0;
+  for (let i = 1; i <= npItemCount; i++) {
+    const qtd = parseFloat(document.getElementById(`np-qtd-${i}`)?.value)||0;
+    const preco = parseFloat(document.getElementById(`np-preco-${i}`)?.value)||0;
+    sub += qtd * preco;
+  }
+  const desc = sub * 0.05;
+  const liq = sub - desc;
+  const com = liq * 0.05;
+  document.getElementById('np-subtotal').textContent = 'R$' + sub.toLocaleString('pt-BR',{minimumFractionDigits:2});
+  document.getElementById('np-desconto-val').textContent = '— R$' + desc.toLocaleString('pt-BR',{minimumFractionDigits:2});
+  document.getElementById('np-total-liq').textContent = 'R$' + liq.toLocaleString('pt-BR',{minimumFractionDigits:2});
+  document.getElementById('np-comissao').textContent = 'R$' + com.toLocaleString('pt-BR',{minimumFractionDigits:2});
+}
+
+function adicionarItem() {
+  npItemCount++;
+  const n = npItemCount;
+  const tr = document.createElement('tr');
+  tr.id = `np-item-${n}`;
+  tr.innerHTML = `<td><input type="text" placeholder="MOB-0000" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t1);outline:none;width:90px"></td><td><input type="text" placeholder="Descrição" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-size:11.5px;color:var(--t1);outline:none;width:150px"></td><td><input type="text" placeholder="Grade" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-size:11px;color:var(--t1);outline:none;width:70px"></td><td><input type="number" placeholder="0" id="np-qtd-${n}" oninput="npCalcItem(${n})" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t1);outline:none;width:55px"></td><td><input type="number" placeholder="0" id="np-preco-${n}" oninput="npCalcItem(${n})" style="background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:5px 8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t1);outline:none;width:80px"></td><td><span id="np-total-${n}" style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:600;color:var(--ac)">—</span></td><td><button onclick="removerItem(${n})" style="background:none;border:none;color:var(--re);cursor:pointer;font-size:14px">×</button></td>`;
+  document.getElementById('np-itens').appendChild(tr);
+}
+
+function removerItem(n) {
+  const tr = document.getElementById(`np-item-${n}`);
+  if (tr) tr.remove();
+  npCalcTotal();
+}
+
+function criarPedidoAtacado() {
+  var cli = document.getElementById('np-cliente').value;
+  var prazo = document.getElementById('np-prazo').value;
+  if (!prazo) { toast('Informe o prazo de entrega', ''); return; }
+  if (!cli) { toast('Selecione o cliente antes de criar o pedido','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'); return; }
+  toast('Pedido ATK-0084 criado com sucesso!','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>');
+  setTimeout(() => nav('pedidos', document.querySelector('.ni[onclick*="pedidos"]')), 800);
+}
+
+function salvarCliente() {
+  const nome = document.getElementById('nc-nome').value || document.getElementById('nc-razao').value;
+  if (!nome) { toast('Informe o nome do cliente','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'); return; }
+  toast(`${nome} cadastrado com sucesso!`,'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>');
+  setTimeout(() => nav('clientes', document.querySelector('.ni[onclick*="clientes"]')), 800);
+}
+
+// ═══════════════════════════════════
+// CNPJ CLIENTE
+// ═══════════════════════════════════
+function formatCNPJ(v) {
+  v = v.replace(/\D/g,'').slice(0,14);
+  if (v.length > 12) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/,'$1.$2.$3/$4-$5');
+  else if (v.length > 8) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d*).*/,'$1.$2.$3/$4');
+  else if (v.length > 5) v = v.replace(/^(\d{2})(\d{3})(\d*).*/,'$1.$2.$3');
+  else if (v.length > 2) v = v.replace(/^(\d{2})(\d*).*/,'$1.$2');
+  return v;
+}
+function setVal(id, val) { const el = document.getElementById(id); if(el) el.value = val; }
+function fmtFone(f) {
+  f = f.replace(/\D/g,'');
+  if (f.length===11) return `(${f.slice(0,2)}) ${f.slice(2,7)}-${f.slice(7)}`;
+  if (f.length===10) return `(${f.slice(0,2)}) ${f.slice(2,6)}-${f.slice(6)}`;
+  return f;
+}
+async function buscarCNPJCliente() {
+  const raw = document.getElementById('nc-cnpj-input').value.replace(/\D/g,'');
+  if (raw.length !== 14) { mostrarStatusNC('error','CNPJ deve ter 14 dígitos'); return; }
+  mostrarStatusNC('loading','Consultando Receita Federal...');
+  try {
+    const r = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${raw}`);
+    if (!r.ok) throw new Error('não encontrado');
+    const d = await r.json();
+    setVal('nc-razao', d.razao_social||'');
+    setVal('nc-nome', d.nome_fantasia||d.razao_social||'');
+    setVal('nc-cnpj-display', document.getElementById('nc-cnpj-input').value);
+    setVal('nc-cep', d.cep?(d.cep.replace(/\D/g,'').replace(/(\d{5})(\d{3})/,'$1-$2')):'');
+    setVal('nc-cidade', [d.municipio, d.uf].filter(Boolean).join(' – '));
+    setVal('nc-endereco', [d.logradouro, d.numero, d.complemento, d.bairro].filter(Boolean).join(', '));
+    setVal('nc-wpp', d.ddd_telefone_1?fmtFone(d.ddd_telefone_1):'');
+    setVal('nc-email', (d.email||'').toLowerCase());
+    const ativa = (d.descricao_situacao_cadastral||'').toUpperCase().includes('ATIVA');
+    mostrarStatusNC(ativa?'ok':'warn', ativa?` CNPJ Ativo · ${d.razao_social}`:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Situação: ${d.descricao_situacao_cadastral}`);
+    toast('Dados de ' + (d.razao_social || 'empresa') + ' preenchidos', '');
+  } catch(e) {
+    mostrarStatusNC('error','CNPJ não encontrado ou erro na consulta');
+  }
+}
+function mostrarStatusNC(tipo, msg) {
+  const el = document.getElementById('nc-cnpj-status');
+  if (!el) return;
+  const cores = {loading:'var(--t3)',ok:'var(--gr)',warn:'var(--am)',error:'var(--re)'};
+  const bgs = {loading:'var(--s3)',ok:'var(--grd)',warn:'var(--amd)',error:'var(--red)'};
+  el.style.display = 'flex'; el.style.background = bgs[tipo]; el.style.color = cores[tipo];
+  el.style.border = `1px solid ${cores[tipo]}44`; el.textContent = tipo==='loading'? '... '+msg : msg;
+}
+
+// ═══════════════════════════════════
+// TABELA DE PREÇOS — TABS
+// ═══════════════════════════════════
+function switchTabPreco(tab) {
+  ['at','pr','rp','lp'].forEach(t => {
+    const btn = document.getElementById(`tab-${t}`);
+    btn.className = t===tab ? 'btn btn-ac' : 'btn btn-o';
+  });
+  const nomes = {at:'Atacado Padrão',pr:'Atacado Premium',rp:'Representante',lp:'Loja Própria'};
+  document.getElementById('tabela-nome-label').textContent = nomes[tab];
+}
+
+// ═══════════════════════════════════
+// TUTORIAL
+// ═══════════════════════════════════
+const TUT_STEPS = [
+  {title:'Bem-vindo ao FashionHub Atacado',body:'Este tutorial guia pelos principais fluxos do módulo em 7 passos. Clique em Próximo para começar.',target:null,pos:'center'},
+  {title:'Dashboard — visão comercial',body:'O Dashboard mostra faturamento do mês, meta, performance dos representantes e pedidos recentes. É a primeira tela para abrir toda manhã.',target:'.ni[onclick*="dashboard"]',pos:'right',nav:'dashboard'},
+  {title:'Clientes — base atacado',body:'Veja todos os clientes com score, limite de crédito e status. Clique em "Ver" para abrir o detalhe com histórico de pedidos e uso de crédito. O score considera pontualidade, volume e sell-through.',target:'.ni[onclick*="clientes"]',pos:'right',nav:'clientes'},
+  {title:'Cadastrar cliente com CNPJ',body:'Digite o CNPJ e clique em Buscar — os dados da Receita Federal preenchem automaticamente. Defina o limite de crédito, representante e tabela de preço antes de salvar.',target:'.ni[onclick*="novo-cliente"]',pos:'right',nav:'novo-cliente'},
+  {title:'Novo pedido com cálculo ao vivo',body:'Selecione o cliente e o sistema mostra o crédito disponível. Adicione referências linha por linha — subtotal, desconto e comissão calculam em tempo real. Adicione quantas referências precisar.',target:'.ni[onclick*="novo-pedido"]',pos:'right',nav:'novo-pedido'},
+  {title:'Representantes & comissões',body:'Veja performance de cada representante com barra de meta. A comissão é calculada automaticamente sobre o faturamento. Representantes abaixo de 60% recebem alerta automático.',target:'.ni[onclick*="representantes"]',pos:'right',nav:'representantes'},
+  {title:'Crédito & adimplência',body:'Inadimplentes em vermelho com ações diretas: acionar jurídico, bloquear pedidos ou negociar parcelamento. Vencimentos nos próximos 7 dias em amarelo para acionar antes do prazo.',target:'.ni[onclick*="credito"]',pos:'right',nav:'credito'},
+  {title:'Tutorial concluído! <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M12 3v1m6.36-.36-.71.71M21 12h-1m.36 6.36-.71-.71M12 21v-1m-6.36.36.71-.71M3 12h1m-.36-6.36.71.71M17 12a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"/></svg>',body:'Você conheceu os principais fluxos do Módulo Atacado. Explore também a Tabela de Preços, Metas por Região e o Relatório Comercial com recomendações da IA.',target:null,pos:'center'},
+];
+let tutIdx=0, tutHL=null;
+function startTutorial(){tutIdx=0;document.getElementById('tutorial-overlay').style.display='block';document.getElementById('tutorial-box').style.display='block';renderTutStep();}
+function endTutorial(){document.getElementById('tutorial-overlay').style.display='none';document.getElementById('tutorial-box').style.display='none';if(tutHL){tutHL.remove();tutHL=null;}}
+function tutStep(dir){tutIdx=Math.max(0,Math.min(TUT_STEPS.length-1,tutIdx+dir));renderTutStep();}
+function renderTutStep(){
+  const s=TUT_STEPS[tutIdx];
+  document.getElementById('tut-step-label').textContent=`Passo ${tutIdx+1} de ${TUT_STEPS.length}`;
+  document.getElementById('tut-title').textContent=s.title;
+  document.getElementById('tut-body').textContent=s.body;
+  document.getElementById('tut-prev').style.display=tutIdx===0?'none':'';
+  const nextBtn=document.getElementById('tut-next');
+  nextBtn.textContent=tutIdx===TUT_STEPS.length-1?' Concluir':'Próximo →';
+  nextBtn.onclick=tutIdx===TUT_STEPS.length-1?endTutorial:()=>tutStep(1);
+  document.getElementById('tut-dots').innerHTML=TUT_STEPS.map(function(_,i){ return '<div style="width:6px;height:6px;border-radius:50%;background:' + (i===tutIdx?'var(--ac)':'var(--s4)') + '"></div>'; }).join('');
+  if(s.nav){const el=document.querySelector('.ni[onclick*=' + s.nav + ']');if(el){nav(s.nav,el);}}
+  if(tutHL){tutHL.remove();tutHL=null;}
+  if(s.target&&s.pos!=='center'){
+    setTimeout(()=>{
+      const el=document.querySelector(s.target);
+      if(!el)return;
+      const r=el.getBoundingClientRect();
+      tutHL=document.createElement('div');tutHL.className='tut-highlight';
+      tutHL.style.cssText=`top:${r.top-4}px;left:${r.left-4}px;width:${r.width+8}px;height:${r.height+8}px`;
+      document.body.appendChild(tutHL);
+      const box=document.getElementById('tutorial-box'),bw=340,bh=240;
+      let left=r.right+20,top=r.top+r.height/2-bh/2;
+      if(left+bw>window.innerWidth-20)left=r.left-bw-20;
+      if(top<10)top=10;if(top+bh>window.innerHeight-10)top=window.innerHeight-bh-10;
+      box.style.left=left+'px';box.style.top=top+'px';box.style.transform='none';
+    },120);
+  } else {
+    const box=document.getElementById('tutorial-box');
+    box.style.left='50%';box.style.top='50%';box.style.transform='translate(-50%,-50%)';
+  }
+}
+
+
+// ═══ SISTEMA DE ROLES ═══
+var ROLE_CONFIG = {
+  admin:         { label:'Administrador', cor:'#E8650A', sidebar_ocultar:[], readonly:false },
+  representante: { label:'Representante', cor:'#4CAF80', sidebar_ocultar:['tabela-precos','credito','faturamento','performance','relatorio'], readonly:false, filtro_ativo:true },
+  financeiro:    { label:'Financeiro',    cor:'#6090D8', sidebar_ocultar:['tabela-precos','representantes','metas','novo-pedido'], readonly:true },
+  estilo:        { label:'Estilo',        cor:'#9878D0', sidebar_ocultar:['tabela-precos','representantes','metas','credito','faturamento','performance','relatorio','novo-pedido'], readonly:false },
+  compras:       { label:'Compras',       cor:'#E0A840', sidebar_ocultar:['tabela-precos','representantes','metas'], readonly:false },
+};
+var REP_CARTEIRAS = {
+  0: { nome:'Carla Mendonça', regiao:'SP Interior', clientes:[0,1,3] },
+  1: { nome:'Paulo Nobre',    regiao:'Sul',         clientes:[4] },
+  2: { nome:'Ana Lima',       regiao:'RJ + ES',     clientes:[2,5] },
+};
+function initRoles() {
+  var params = new URLSearchParams(window.location.search);
+  var role = params.get('role') || 'admin';
+  var repIdx = parseInt(params.get('rep') || '-1');
+  var cfg = ROLE_CONFIG[role] || ROLE_CONFIG.admin;
+  window.FH_ROLE = role; window.FH_REP_IDX = repIdx; window.FH_CFG = cfg;
+  var statusEl = document.getElementById('agente-status');
+  if (statusEl) {
+    var rep = repIdx >= 0 ? REP_CARTEIRAS[repIdx] : null;
+    statusEl.textContent = 'Agente ativo' + (rep ? ' · ' + cfg.label + ' — ' + rep.regiao : '');
+  }
+  cfg.sidebar_ocultar.forEach(function(id) {
+    var el = document.querySelector('.ni[onclick*=' + id + ']');
+    if (el) el.style.display = 'none';
+  });
+  if (cfg.readonly) {
+    document.querySelectorAll('.btn-ac, .btn-gr').forEach(function(btn) {
+      btn.style.opacity = '0.4'; btn.style.pointerEvents = 'none';
+    });
+  }
+  if (role !== 'admin') mostrarBannerRole(role, repIdx, cfg);
+  if (role === 'representante' && repIdx >= 0) setTimeout(function(){ aplicarFiltroRep(repIdx); }, 200);
+}
+function mostrarBannerRole(role, repIdx, cfg) {
+  var rep = repIdx >= 0 ? REP_CARTEIRAS[repIdx] : null;
+  var banner = document.createElement('div');
+  banner.style.cssText = 'position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--s2);border:1px solid ' + cfg.cor + '44;border-radius:9px;padding:8px 16px;font-size:11.5px;color:var(--t2);z-index:400;display:flex;align-items:center;gap:8px;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.4)';
+  banner.innerHTML = '<span style="color:' + cfg.cor + ';font-weight:600">' + cfg.label + (rep ? ' — ' + rep.nome : '') + '</span><span style="color:var(--t3)">·</span><span>' + (rep ? 'Carteira: ' + rep.regiao : 'Acesso limitado') + '</span><a href="fashionhub-login.html" style="color:var(--t3);font-size:10px;margin-left:4px;text-decoration:none;font-family:monospace">Sair →</a>';
+  document.body.appendChild(banner);
+}
+function aplicarFiltroRep(repIdx) {
+  var carteira = REP_CARTEIRAS[repIdx];
+  if (!carteira) return;
+  var rows = document.querySelectorAll('#clientes-tbody tr');
+  rows.forEach(function(row, i) {
+    if (carteira.clientes.indexOf(i) === -1) row.style.display = 'none';
+  });
+}
+
+
+// ═══ DADOS DOS PEDIDOS ═══
+var PEDIDOS_DATA = {
+  'ATK-0083': {id:'ATK-0083',cliente:'Clothes & Style',rep:'Paulo Nobre',colecao:'Inverno 27',data:'29/04/2026',prazo:'15/05/2026',status:'Em separação',statusBadge:'b-am',pgto:'30 dias boleto',desconto:'5%',total:'R$ 45.600',bruto:'R$ 48.000',comissao:'R$ 2.280',obs:'',
+    itens:[{ref:'MOB-0291',desc:'Blazer alfaiataria',grade:'P(2)/M(4)/G(4)/GG(2)',qtd:12,unit:'R$ 320',total:'R$ 3.840'},{ref:'MOB-0304',desc:'Vestido midi crepe',grade:'P(4)/M(4)/G(2)/GG(2)',qtd:12,unit:'R$ 360',total:'R$ 4.320'},{ref:'MOB-0318',desc:'Calça pantalona linho',grade:'P(4)/M(6)/G(4)/GG(2)',qtd:16,unit:'R$ 280',total:'R$ 4.480'},{ref:'MOB-0327',desc:'Tricot oversize caramelo',grade:'P(4)/M(6)/G(4)',qtd:14,unit:'R$ 220',total:'R$ 3.080'},{ref:'MOB-0299',desc:'Saia midi couro PU',grade:'P(4)/M(6)/G(4)/GG(2)',qtd:16,unit:'R$ 380',total:'R$ 6.080'}]
+  },
+  'ATK-0082': {id:'ATK-0082',cliente:'Modas Vila Nova',rep:'Carla Mendonça',colecao:'Inverno 27',data:'28/04/2026',prazo:'10/05/2026',status:'Faturado',statusBadge:'b-gr',pgto:'30 dias boleto',desconto:'5%',total:'R$ 48.200',bruto:'R$ 50.760',comissao:'R$ 2.410',obs:'',
+    itens:[{ref:'MOB-0291',desc:'Blazer alfaiataria',grade:'P(2)/M(4)/G(2)',qtd:8,unit:'R$ 320',total:'R$ 2.560'},{ref:'MOB-0304',desc:'Vestido midi crepe',grade:'P(2)/M(4)/G(4)/GG(2)',qtd:12,unit:'R$ 360',total:'R$ 4.320'},{ref:'MOB-0318',desc:'Calça pantalona linho',grade:'P(4)/M(6)/G(4)',qtd:14,unit:'R$ 280',total:'R$ 3.920'}]
+  },
+  'ATK-0081': {id:'ATK-0081',cliente:'Boutique Elegance',rep:'Carla Mendonça',colecao:'Inverno 27',data:'26/04/2026',prazo:'18/05/2026',status:'Em separação',statusBadge:'b-am',pgto:'30 dias boleto',desconto:'0%',total:'R$ 33.270',bruto:'R$ 33.270',comissao:'R$ 1.664',obs:'',
+    itens:[{ref:'MOB-0291',desc:'Blazer alfaiataria',grade:'P(2)/M(4)/G(4)/GG(2)/XGG(2)',qtd:14,unit:'R$ 320',total:'R$ 4.480'},{ref:'MOB-0299',desc:'Saia midi couro PU',grade:'P(2)/M(4)/G(4)/GG(2)',qtd:12,unit:'R$ 380',total:'R$ 4.560'},{ref:'MOB-0327',desc:'Tricot oversize caramelo',grade:'P(4)/M(6)/G(4)/GG(2)',qtd:16,unit:'R$ 220',total:'R$ 3.520'}]
+  },
+  'ATK-0080': {id:'ATK-0080',cliente:'Clothes & Style',rep:'Paulo Nobre',colecao:'Inverno 27',data:'18/04/2026',prazo:'12/05/2026',status:'Divergência de grade',statusBadge:'b-re',pgto:'30 dias boleto',desconto:'5%',total:'R$ 22.800',bruto:'R$ 24.000',comissao:'R$ 1.140',obs:'Grade do MOB-0304 diverge do pedido: cliente pediu 4 un. GG mas estoque tem 2. Aguardando confirmação.',
+    itens:[{ref:'MOB-0304',desc:'Vestido midi crepe',grade:'P(2)/M(2)/G(2)/GG(2)',qtd:8,unit:'R$ 360',total:'R$ 2.880'},{ref:'MOB-0312',desc:'Blusa transpassada viscose',grade:'P(4)/M(6)/G(4)/GG(2)',qtd:16,unit:'R$ 165',total:'R$ 2.640'}]
+  },
+  'ATK-0079': {id:'ATK-0079',cliente:'Fashion Store SP',rep:'Carla Mendonça',colecao:'Inverno 27',data:'05/04/2026',prazo:'05/04/2026',status:'INADIMPLENTE — 12 dias vencido',statusBadge:'b-re',pgto:'30 dias boleto',desconto:'5%',total:'R$ 67.400',bruto:'R$ 70.950',comissao:'R$ 3.370',obs:'Pagamento venceu em 18/04. 3 cobranças sem retorno. Processo jurídico iniciado.',
+    itens:[{ref:'MOB-0291',desc:'Blazer alfaiataria',grade:'P(4)/M(8)/G(6)/GG(4)/XGG(2)',qtd:24,unit:'R$ 320',total:'R$ 7.680'},{ref:'MOB-0304',desc:'Vestido midi crepe',grade:'P(4)/M(8)/G(6)/GG(4)',qtd:22,unit:'R$ 360',total:'R$ 7.920'},{ref:'MOB-0318',desc:'Calça pantalona linho',grade:'P(4)/M(8)/G(6)/GG(4)',qtd:22,unit:'R$ 280',total:'R$ 6.160'},{ref:'MOB-0299',desc:'Saia midi couro PU',grade:'P(4)/M(6)/G(6)/GG(4)/XGG(2)',qtd:22,unit:'R$ 380',total:'R$ 8.360'},{ref:'MOB-0327',desc:'Tricot oversize caramelo',grade:'P(4)/M(8)/G(6)/GG(4)',qtd:22,unit:'R$ 220',total:'R$ 4.840'}]
+  }
+};
+
+function abrirPedido(id) {
+  var ped = PEDIDOS_DATA[id];
+  if (!ped) { toast('Pedido nao encontrado',''); return; }
+  var modal = document.getElementById('m-ped-detalhe');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'm-ped-detalhe';
+    modal.className = 'mo';
+    document.body.appendChild(modal);
+  }
+  var rows = '';
+  ped.itens.forEach(function(i) {
+    rows += '<tr><td style="font-family:monospace;font-size:11px">' + i.ref + '</td><td style="font-size:12px">' + i.desc + '</td><td style="font-family:monospace;font-size:11px;color:var(--t3)">' + i.grade + '</td><td style="font-family:monospace;font-size:11.5px;text-align:center">' + i.qtd + '</td><td style="font-family:monospace;font-size:11.5px">' + i.unit + '</td><td style="font-family:monospace;font-size:11.5px;font-weight:600;color:var(--ac)">' + i.total + '</td></tr>';
+  });
+  var obsHtml = ped.obs ? '<div style="background:var(--red);border:1px solid rgba(224,96,96,.22);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--re);margin-bottom:14px">' + ped.obs + '</div>' : '';
+  var html = '<div class="mbox" style="width:680px">';
+  html += '<div class="mt">Pedido ' + ped.id + '<button class="mcls" onclick="closeM(\'m-ped-detalhe\')">x</button></div>';
+  html += '<div class="ms">' + ped.cliente + ' · ' + ped.colecao + ' · ' + ped.data + '</div>';
+  html += obsHtml;
+  html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">';
+  html += '<div style="background:var(--s2);border-radius:7px;padding:9px 11px"><div style="font-size:9px;color:var(--t3);font-family:monospace;text-transform:uppercase;margin-bottom:3px">Status</div><span class="badge ' + ped.statusBadge + '">' + ped.status + '</span></div>';
+  html += '<div style="background:var(--s2);border-radius:7px;padding:9px 11px"><div style="font-size:9px;color:var(--t3);font-family:monospace;text-transform:uppercase;margin-bottom:3px">Valor liquido</div><div style="font-size:14px;font-weight:700;color:var(--ac)">' + ped.total + '</div></div>';
+  html += '<div style="background:var(--s2);border-radius:7px;padding:9px 11px"><div style="font-size:9px;color:var(--t3);font-family:monospace;text-transform:uppercase;margin-bottom:3px">Representante</div><div style="font-size:12px">' + ped.rep + '</div></div>';
+  html += '<div style="background:var(--s2);border-radius:7px;padding:9px 11px"><div style="font-size:9px;color:var(--t3);font-family:monospace;text-transform:uppercase;margin-bottom:3px">Comissao (5%)</div><div style="font-size:12px;color:var(--ac)">' + ped.comissao + '</div></div>';
+  html += '</div>';
+  html += '<div style="background:var(--s1);border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin-bottom:14px">';
+  html += '<div style="padding:9px 13px;background:var(--s2);border-bottom:1px solid var(--b1);font-size:9px;color:var(--t3);font-family:monospace;text-transform:uppercase;letter-spacing:.08em">Itens do pedido</div>';
+  html += '<table><thead><tr><th>Ref.</th><th>Descricao</th><th>Grade</th><th style="text-align:center">Qtd</th><th>Unit.</th><th>Total</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+  html += '<div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--b1)">';
+  html += '<div style="font-size:12px;color:var(--t2)">Desconto: <strong>' + ped.desconto + '</strong> &nbsp; Bruto: <strong>' + ped.bruto + '</strong> &nbsp; Pagamento: <strong>' + ped.pgto + '</strong></div>';
+  html += '<div style="display:flex;gap:7px"><button class="btn btn-o" onclick="toast(\'Romaneio gerado\',\'\')" >Romaneio</button><button class="btn btn-ac" onclick="toast(\'Enviado para faturamento\',\'\')" >Faturar</button></div></div></div>';
+  modal.innerHTML = html;
+  openM('m-ped-detalhe');
+}
+
+
+function verCarteira(repNome) {
+  nav('clientes', document.querySelector('.ni[onclick*=clientes]'));
+  setTimeout(function() {
+    var rows = document.querySelectorAll('#clientes-tbody tr');
+    var found = 0;
+    rows.forEach(function(row) {
+      var repCell = row.cells[3];
+      if (repCell) {
+        var visible = repCell.textContent.trim() === repNome;
+        row.style.display = visible ? '' : 'none';
+        if (visible) found++;
+      }
+    });
+    var ex = document.getElementById('filtro-rep-badge');
+    if (ex) ex.remove();
+    var b = document.createElement('div');
+    b.id = 'filtro-rep-badge';
+    b.style.cssText = 'position:fixed;top:56px;left:50%;transform:translateX(-50%);background:var(--acd);border:1px solid var(--acb);border-radius:7px;padding:7px 16px;font-size:12px;color:var(--ac);z-index:300;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.4)';
+    b.innerHTML = 'Filtrando: <strong>' + repNome + '</strong> &nbsp;(' + found + ' clientes)&nbsp;<button onclick="limparFiltroRep()" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:18px;line-height:1">x</button>';
+    document.body.appendChild(b);
+    toast('Carteira de ' + repNome + ' — ' + found + ' clientes', '');
+  }, 150);
+}
+function limparFiltroRep() {
+  document.querySelectorAll('#clientes-tbody tr').forEach(function(r) { r.style.display = ''; });
+  var b = document.getElementById('filtro-rep-badge');
+  if (b) b.remove();
+}
+
+// Score bars animation
+document.addEventListener('DOMContentLoaded', initRoles);
+window.addEventListener('load',()=>{
+  document.querySelectorAll('.sv-fill,.meta-fill,.pbf').forEach(f=>{
+    const w=f.style.width; f.style.width='0';
+    setTimeout(()=>{f.style.width=w;},300);
+  });
+});
+
+// ═══ TEMA DARK/LIGHT ═══
+(function(){
+  var saved = '';
+  try { saved = localStorage.getItem('fh-theme') || 'dark'; } catch(e){ saved='dark'; }
+  document.documentElement.setAttribute('data-theme', saved);
+  document.documentElement.style.colorScheme = saved;
+})();
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  document.documentElement.style.colorScheme = next;
+  try { localStorage.setItem('fh-theme', next); } catch(e){}
+  var icon = document.getElementById('theme-icon');
+  if (icon) icon.textContent = next === 'light' ? '◑' : '◐';
+}
+
+</script>
+</body>
+</html>

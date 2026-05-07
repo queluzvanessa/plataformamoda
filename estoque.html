@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FashionHub — Estoque & Grade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090C;--s1:#0E0F14;--s2:#14151C;--s3:#1C1D26;--s4:#252630;
+  --b1:rgba(255,255,255,0.055);--b2:rgba(255,255,255,0.1);--b3:rgba(255,255,255,0.16);
+  --ac:#E8650A;--ac2:#FF7A1F;--acd:rgba(232,101,10,0.12);--acb:rgba(232,101,10,0.25);
+  --t1:#F0EDE8;--t2:#888480;--t3:#484440;--t4:#282420;
+  --gr:#4CAF80;--grd:rgba(76,175,128,0.10);--grb:rgba(76,175,128,0.22);
+  --re:#E06060;--red:rgba(224,96,96,0.10);--reb:rgba(224,96,96,0.22);
+  --am:#E0A840;--amd:rgba(224,168,64,0.10);--amb:rgba(224,168,64,0.22);
+  --bl:#6090D8;--bld:rgba(96,144,216,0.10);--blb:rgba(96,144,216,0.22);
+  --pu:#9878D0;--pud:rgba(152,120,208,0.10);--pub:rgba(152,120,208,0.22);
+  --r:10px;--rl:14px;
+[data-theme="light"]{
+  --bg:#F5F4F2;--s1:#FFFFFF;--s2:#F0EFEC;--s3:#E8E6E2;--s4:#DDD9D4;
+  --b1:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.12);--b3:rgba(0,0,0,0.18);
+  --ac:#E8650A;--acd:rgba(232,101,10,0.09);--acb:rgba(232,101,10,0.22);
+  --t1:#1A1815;--t2:#5A5650;--t3:#9A9690;--t4:#C4C0BA;
+  --gr:#2E7D52;--grd:rgba(46,125,82,0.09);--grb:rgba(46,125,82,0.2);
+  --re:#C0392B;--red:rgba(192,57,43,0.08);--reb:rgba(192,57,43,0.2);
+  --am:#B8860B;--amd:rgba(184,134,11,0.09);--amb:rgba(184,134,11,0.2);
+  --bl:#2563EB;--bld:rgba(37,99,235,0.09);--blb:rgba(37,99,235,0.2);
+  --pu:#7C3AED;--pud:rgba(124,58,237,0.09);--pub:rgba(124,58,237,0.2);
+}
+*,*::before,*::after{transition:background .2s,color .2s,border-color .2s}
+.btn,.ni,.mc{transition:all .15s !important}
+.theme-toggle{width:34px;height:20px;border-radius:10px;background:var(--s4);border:1px solid var(--b2);position:relative;cursor:pointer;flex-shrink:0}
+.theme-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;top:2px;left:2px;background:var(--t2);transition:transform .2s,background .2s !important}
+[data-theme="light"] .theme-toggle{background:var(--acd);border-color:var(--acb)}
+[data-theme="light"] .theme-toggle::after{transform:translateX(14px);background:var(--ac)}
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.bbar{height:30px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0}
+.bl-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;font-family:'DM Mono',monospace}
+.bc{padding:2px 10px;border-radius:4px;font-size:10.5px;cursor:pointer;border:1px solid var(--b1);background:transparent;color:var(--t2)}
+.bc:hover{background:var(--s2);color:var(--t1)}
+.bc.on{background:var(--acd);color:var(--ac);border-color:var(--acb)}
+.br{margin-left:auto;font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace}
+.brdot{width:5px;height:5px;border-radius:50%;background:var(--gr);box-shadow:0 0 5px var(--gr)}
+.body{flex:1;display:flex;overflow:hidden}
+.sb{width:210px;flex-shrink:0;background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;height:100%;overflow-y:auto}
+.logo{padding:14px 14px 12px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:9px}
+.lm{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.03em}
+.lm b{color:var(--ac)}
+.lbadge{background:var(--bld);border:1px solid var(--blb);color:var(--bl);font-size:8px;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:3px;letter-spacing:.07em}
+nav{padding:7px;flex:1}
+.ng{margin-bottom:3px}
+.nl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);padding:7px 8px 3px;font-family:'DM Mono',monospace}
+.ni{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:7px;font-size:12.5px;color:var(--t2);cursor:pointer;margin-bottom:1px;border:1px solid transparent;user-select:none}
+.ni:hover{background:var(--s2);color:var(--t1)}
+.ni.on{background:var(--bld);color:var(--bl);border-color:var(--blb)}
+.nd{width:4px;height:4px;border-radius:50%;background:var(--t3);flex-shrink:0}
+.ni.on .nd{background:var(--bl)}
+.nb{margin-left:auto;font-size:9px;font-family:'DM Mono',monospace;padding:1px 5px;border-radius:99px}
+.nb-r{background:var(--red);color:var(--re)}
+.nb-a{background:var(--amd);color:var(--am)}
+.nn{font-size:8px;background:var(--bld);color:var(--bl);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;margin-left:auto;border:1px solid var(--blb)}
+.sft{padding:10px;border-top:1px solid var(--b1)}
+.ws{background:var(--s2);border-radius:8px;padding:9px 11px;border:1px solid var(--b1)}
+.wsn{font-size:12px;font-weight:500}
+.wsp{font-size:10px;color:var(--t3);margin-top:1px;display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace}
+.pp{background:var(--bld);color:var(--bl);font-size:9px;padding:1px 5px;border-radius:3px;border:1px solid var(--blb)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.tb{height:48px;flex-shrink:0;border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 18px;gap:10px;background:var(--s1)}
+.tbt{font-family:'Syne',sans-serif;font-size:13.5px;font-weight:700;letter-spacing:-.02em}
+.tbr{margin-left:auto;display:flex;align-items:center;gap:7px}
+.pulse{width:5px;height:5px;border-radius:50%;background:var(--gr);box-shadow:0 0 4px var(--gr);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.btn{padding:5px 12px;border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px}
+.btn-ac{background:var(--ac);color:#08090C}
+.btn-ac:hover{background:var(--ac2)}
+.btn-o{background:transparent;color:var(--t2);border:1px solid var(--b2)}
+.btn-o:hover{background:var(--s2);color:var(--t1)}
+.btn-gr{background:var(--grd);color:var(--gr);border:1px solid var(--grb)}
+.btn-re{background:var(--red);color:var(--re);border:1px solid rgba(224,96,96,.2)}
+.btn-am{background:var(--amd);color:var(--am);border:1px solid rgba(224,168,64,.2)}
+.btn-bl{background:var(--bld);color:var(--bl);border:1px solid rgba(96,144,216,.2)}
+.content{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.view{display:none;flex-direction:column;gap:12px}
+.view.on{display:flex}
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden}
+.card-p{padding:16px 18px}
+.sh{display:flex;align-items:center;gap:8px}
+.sht{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:-.02em}
+.shr{margin-left:auto;display:flex;gap:6px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:99px;font-size:10px;font-weight:500;font-family:'DM Mono',monospace}
+.b-gr{background:var(--grd);color:var(--gr)}.b-re{background:var(--red);color:var(--re)}.b-am{background:var(--amd);color:var(--am)}.b-bl{background:var(--bld);color:var(--bl)}.b-n{background:var(--s3);color:var(--t3);border:1px solid var(--b1)}
+.mc{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:13px 16px}
+.mc.hi{background:var(--acd);border-color:var(--acb)}.mc.hg{background:var(--grd);border-color:var(--grb)}.mc.hr{background:var(--red);border-color:rgba(224,96,96,.18)}.mc.ha{background:var(--amd);border-color:rgba(224,168,64,.18)}.mc.hb{background:var(--bld);border-color:rgba(96,144,216,.2)}
+.mcl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;font-family:'DM Mono',monospace}
+.mcv{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1}
+.mc.hi .mcv{color:var(--ac)}.mc.hg .mcv{color:var(--gr)}.mc.hr .mcv{color:var(--re)}.mc.ha .mcv{color:var(--am)}.mc.hb .mcv{color:var(--bl)}
+.mcs{font-size:10px;color:var(--t3);margin-top:2px;font-family:'DM Mono',monospace}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:9px 13px;font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--b1);background:var(--s2);font-family:'DM Mono',monospace}
+td{padding:10px 13px;font-size:12.5px;color:var(--t1);border-bottom:1px solid var(--b1)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--s2)}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10.5px;color:var(--t2);font-weight:500}
+.fg input,.fg select,.fg textarea{background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:8px 11px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;color:var(--t1);outline:none;width:100%}
+.fg input:focus,.fg select:focus{border-color:var(--bl)}
+.fg select option{background:var(--s2)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.full{grid-column:span 2}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.mo.on{display:flex}
+.mbox{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);padding:22px;width:560px;max-width:96vw;max-height:92vh;overflow-y:auto}
+.mt{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;letter-spacing:-.02em}
+.ms{font-size:12px;color:var(--t3);margin-bottom:18px}
+.mact{display:flex;gap:7px;justify-content:flex-end;margin-top:18px}
+.mcls{cursor:pointer;color:var(--t3);font-size:18px;background:none;border:none;line-height:1}
+.mcls:hover{color:var(--t1)}
+.tl-item{display:flex;gap:11px;align-items:flex-start;padding:10px 14px;border-bottom:1px solid var(--b1)}
+.tl-item:last-child{border-bottom:none}
+.tl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tl-content{flex:1}
+.tl-title{font-size:12.5px;font-weight:500;margin-bottom:2px}
+.tl-sub{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace}
+.tl-time{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace;flex-shrink:0}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:10px 15px;font-size:12.5px;color:var(--t1);z-index:500;display:flex;align-items:center;gap:8px;transform:translateY(60px);opacity:0;transition:all .3s ease;max-width:340px}
+.toast.show{transform:translateY(0);opacity:1}
+.grade-table{border-collapse:collapse;width:100%;font-size:12px}
+.grade-table th{padding:7px 10px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);font-family:'DM Mono',monospace;background:var(--s2);border:1px solid var(--b1)}
+.grade-table td{padding:6px 10px;border:1px solid var(--b1);text-align:center;font-family:'DM Mono',monospace;font-size:12px}
+.grade-table tr:hover td{background:var(--s3)}
+.grade-table td.ref{text-align:left;font-family:'Instrument Sans',sans-serif;font-weight:500;color:var(--t1);min-width:200px}
+.cell-ok{color:var(--gr)}
+.cell-low{color:var(--am);background:rgba(224,168,64,.06)}
+.cell-zero{color:var(--re);background:rgba(224,96,96,.07)}
+.loja-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:14px 16px;position:relative;overflow:hidden}
+.loja-card:hover{border-color:var(--bl);background:var(--s2)}
+.loja-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--loja-color,var(--bl))}
+.transf-card{background:var(--s2);border:1px solid var(--b1);border-radius:9px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.transf-card:hover{border-color:var(--bl)}
+.int-status{font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:4px}
+.int-on{background:var(--grd);color:var(--gr);border:1px solid var(--grb)}
+.ruptura-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--b1)}
+.ruptura-row:last-child{border-bottom:none}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--s4);border-radius:99px}
+</style>
+</head>
+<body>
+<div class="bbar">
+  <span class="bl-label">Marca</span>
+  <button class="bc on">Minha Marca</button>
+  <span style="width:1px;height:12px;background:var(--b1);margin:0 2px"></span>
+  <button class="bc" style="border-style:dashed" onclick="toast('Múltiplas marcas disponível na versão Pro')">+ Marca</button>
+  <div class="br"><div class="brdot"></div><span>ERP sincronizado</span></div>
+</div>
+<div class="body">
+<aside class="sb">
+  <div class="logo">
+    <div><div class="lm">Fashion<b>Hub</b></div><div style="font-size:8px;font-family:'DM Mono',monospace;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-top:2px">Estoque & Grade</div></div>
+    <span class="lbadge">M4</span>
+  </div>
+  <nav>
+    <div class="ng">
+      <div class="nl">Visão Geral</div>
+      <div class="ni on" onclick="nav('dashboard',this)"><div class="nd"></div>Dashboard</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Estoque</div>
+      <div class="ni" onclick="nav('grade',this)"><div class="nd"></div>Grade cor × tamanho</div>
+      <div class="ni" onclick="nav('saldo-lojas',this)"><div class="nd"></div>Saldo por loja</div>
+      <div class="ni" onclick="nav('rupturas',this)"><div class="nd"></div>Alertas de ruptura<span class="nb nb-r">7</span></div>
+    </div>
+    <div class="ng">
+      <div class="nl">Movimentações</div>
+      <div class="ni" onclick="nav('transferencia',this)"><div class="nd"></div>Nova transferência<span class="nn">+</span></div>
+      <div class="ni" onclick="nav('transferencias-ativas',this)"><div class="nd"></div>Transferências ativas<span class="nb nb-a">3</span></div>
+      <div class="ni" onclick="nav('historico',this)"><div class="nd"></div>Histórico completo</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Gestão</div>
+      <div class="ni" onclick="nav('lojas',this)"><div class="nd"></div>Lojas & depósito</div>
+      <div class="ni" onclick="nav('relatorio',this)"><div class="nd"></div>Relatório de giro</div>
+      <div class="ni" onclick="nav('integracoes',this)"><div class="nd"></div>Integrações ERP</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Ajuda</div>
+      <div class="ni" onclick="nav('instrucoes',this)"><div class="nd"></div>Instruções do módulo</div>
+    </div>
+  </nav>
+  <div class="sft">
+    <div class="ws"><div class="wsn">Loja + Depósito</div><div class="wsp"><span class="pp">M4</span> 4 unidades ativas</div></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding:4px 2px">
+      <span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">tema</span>
+      <div class="theme-toggle" onclick="toggleTheme()"></div>
+    </div>
+  </div>
+</aside>
+<div class="main">
+<div class="tb">
+  <div class="tbt" id="page-title">Dashboard</div>
+  <div class="tbr">
+    <span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">Inverno 27 · Temporada ativa</span>
+    <button class="btn btn-bl" onclick="toast('Sincronizando estoque com ERP Bling...')">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4 1,10 7,10"/><path d="M3.51 15a9 9 0 1 0 .49-3.17"/></svg>
+      Sync ERP
+    </button>
+    <button class="btn btn-ac" onclick="openM('m-entrada')">+ Entrada</button>
+  </div>
+</div>
+<div class="content">
+
+<!-- DASHBOARD -->
+<div class="view on" id="v-dashboard">
+  <div class="g4">
+    <div class="mc hb"><div class="mcl">SKUs ativos</div><div class="mcv">312</div><div class="mcs">67 referências · 4 coleções</div></div>
+    <div class="mc hr"><div class="mcl">Rupturas críticas</div><div class="mcv">7</div><div class="mcs">PP e GG mais afetados</div></div>
+    <div class="mc ha"><div class="mcl">Transferências pendentes</div><div class="mcv">3</div><div class="mcs">aguardando confirmação</div></div>
+    <div class="mc hg"><div class="mcl">Giro médio</div><div class="mcv">24d</div><div class="mcs">dias até ruptura estimado</div></div>
+  </div>
+  <div class="g21">
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:14px"><span class="sht">Estoque por loja</span><div class="shr"><button class="btn btn-o" style="font-size:11px" onclick="nav('saldo-lojas',document.querySelector('.ni[onclick*=saldo-lojas]'))">Ver completo</button></div></div>
+      <table>
+        <thead><tr><th>Loja / Depósito</th><th>SKUs</th><th>Unidades</th><th>Em trânsito</th><th>Rupturas</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Depósito Central</strong></td><td>298</td><td style="font-family:'DM Mono',monospace;color:var(--t1)">4.820</td><td style="color:var(--am);font-family:'DM Mono',monospace">120 saindo</td><td><span class="badge b-gr">0</span></td><td><span class="badge b-gr">OK</span></td></tr>
+          <tr><td>Loja Jardins SP</td><td>187</td><td style="font-family:'DM Mono',monospace">892</td><td style="color:var(--bl);font-family:'DM Mono',monospace">24 chegando</td><td><span class="badge b-am">2</span></td><td><span class="badge b-am">Atenção</span></td></tr>
+          <tr><td>Loja Iguatemi SP</td><td>201</td><td style="font-family:'DM Mono',monospace">1.047</td><td style="color:var(--t3);font-family:'DM Mono',monospace">—</td><td><span class="badge b-re">3</span></td><td><span class="badge b-re">Ruptura</span></td></tr>
+          <tr><td>Loja Barra RJ</td><td>156</td><td style="font-family:'DM Mono',monospace">678</td><td style="color:var(--bl);font-family:'DM Mono',monospace">48 chegando</td><td><span class="badge b-re">2</span></td><td><span class="badge b-re">Ruptura</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Rupturas agora</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="font-family:'DM Mono',monospace;color:var(--t2)">MOB-0291</span><span style="color:var(--re)">PP zerado · Iguatemi</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="font-family:'DM Mono',monospace;color:var(--t2)">MOB-0299</span><span style="color:var(--re)">GG zerado · Barra RJ</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="font-family:'DM Mono',monospace;color:var(--t2)">MOB-0318</span><span style="color:var(--am)">P baixo · Jardins</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="font-family:'DM Mono',monospace;color:var(--t2)">MOB-0327</span><span style="color:var(--am)">GG baixo · Iguatemi</span></div>
+        </div>
+        <button class="btn btn-re" style="width:100%;justify-content:center;margin-top:12px;font-size:11px" onclick="nav('rupturas',document.querySelector('.ni[onclick*=rupturas]'))">Ver todas as rupturas</button>
+      </div>
+      <div class="card card-p">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:'DM Mono',monospace">Última sincronização ERP</div>
+        <div style="font-size:22px;font-weight:800;font-family:'Syne',sans-serif;color:var(--gr);margin-bottom:2px">há 4 min</div>
+        <div style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">312 SKUs · Bling · webhook ativo</div>
+        <div style="margin-top:10px;display:flex;gap:6px">
+          <button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="toast('Sincronizando...')">Forçar sync</button>
+          <button class="btn btn-o" style="font-size:11px" onclick="nav('integracoes',document.querySelector('.ni[onclick*=integracoes]'))">Config</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-p sh"><span class="sht">Movimentações recentes</span><div class="shr"><button class="btn btn-o" style="font-size:11px" onclick="nav('historico',document.querySelector('.ni[onclick*=historico]'))">Ver histórico</button></div></div>
+    <div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--gr)"></div><div class="tl-content"><div class="tl-title">Entrada de produção — Pedido #PRD-0089</div><div class="tl-sub">142 unidades · Blazer Caramelo (MOB-0291) → Depósito Central</div></div><div class="tl-time">hoje 09:14</div></div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--bl)"></div><div class="tl-content"><div class="tl-title">Transferência aprovada · Depósito → Iguatemi SP</div><div class="tl-sub">24 un. Calça Pantalona (MOB-0318) · em trânsito</div></div><div class="tl-time">hoje 08:30</div></div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--re)"></div><div class="tl-content"><div class="tl-title">Alerta gerado — estoque mínimo atingido</div><div class="tl-sub">Saia Midi PU (MOB-0299) GG · Barra RJ (qtd: 0)</div></div><div class="tl-time">ontem 18:42</div></div>
+      <div class="tl-item"><div class="tl-dot" style="background:var(--ac)"></div><div class="tl-content"><div class="tl-title">Saída por venda Shopify</div><div class="tl-sub">3 un. Tricot Oversize (MOB-0327) M · D2C</div></div><div class="tl-time">ontem 16:10</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- GRADE -->
+<div class="view" id="v-grade">
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <select style="background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:7px 11px;font-size:12px;color:var(--t1);outline:none;font-family:'Instrument Sans',sans-serif" onchange="renderGrade()">
+      <option>Inverno 27 (ativa)</option><option>Verão 27</option>
+    </select>
+    <select style="background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:7px 11px;font-size:12px;color:var(--t1);outline:none;font-family:'Instrument Sans',sans-serif" onchange="renderGrade()">
+      <option>Todas as lojas</option><option>Depósito Central</option><option>Loja Jardins SP</option><option>Loja Iguatemi SP</option><option>Loja Barra RJ</option>
+    </select>
+    <div style="display:flex;align-items:center;gap:10px;margin-left:auto">
+      <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t3)"><div style="width:10px;height:10px;border-radius:2px;background:rgba(76,175,128,.15);border:1px solid var(--grb)"></div>OK (≥5)</div>
+      <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t3)"><div style="width:10px;height:10px;border-radius:2px;background:rgba(224,168,64,.1)"></div>Baixo (1-4)</div>
+      <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--t3)"><div style="width:10px;height:10px;border-radius:2px;background:rgba(224,96,96,.08)"></div>Zerado</div>
+    </div>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <div id="grade-container" style="padding:14px 0"></div>
+  </div>
+  <div style="display:flex;gap:10px;font-size:11px;color:var(--t3)">
+    <span>Clique em uma célula para registrar ajuste manual</span>
+    <span style="margin-left:auto;font-family:'DM Mono',monospace">Última atualização: há 4 min via ERP Bling</span>
+  </div>
+</div>
+
+<!-- SALDO POR LOJA -->
+<div class="view" id="v-saldo-lojas">
+  <div class="g4">
+    <div class="mc hb"><div class="mcl">Depósito Central</div><div class="mcv">4.820</div><div class="mcs">unidades disponíveis</div></div>
+    <div class="mc"><div class="mcl">Jardins SP</div><div class="mcv">892</div><div class="mcs">2 rupturas · atenção</div></div>
+    <div class="mc hr"><div class="mcl">Iguatemi SP</div><div class="mcv">1.047</div><div class="mcs">3 rupturas críticas</div></div>
+    <div class="mc hr"><div class="mcl">Barra RJ</div><div class="mcv">678</div><div class="mcs">2 rupturas críticas</div></div>
+  </div>
+  <div class="card card-p">
+    <div class="sh" style="margin-bottom:14px"><span class="sht">Distribuição por referência</span></div>
+    <table>
+      <thead><tr><th>Referência</th><th>Depósito</th><th>Jardins</th><th>Iguatemi</th><th>Barra RJ</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td>MOB-0291 — Blazer Caramelo</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">142</td><td style="font-family:'DM Mono',monospace">28</td><td style="font-family:'DM Mono',monospace">34</td><td style="font-family:'DM Mono',monospace">21</td><td style="font-family:'DM Mono',monospace;font-weight:600">225</td></tr>
+        <tr><td>MOB-0299 — Saia Midi PU</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">89</td><td style="font-family:'DM Mono',monospace">18</td><td style="font-family:'DM Mono',monospace">22</td><td style="font-family:'DM Mono',monospace;color:var(--re)">0</td><td style="font-family:'DM Mono',monospace;font-weight:600">129</td></tr>
+        <tr><td>MOB-0318 — Calça Pantalona</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">118</td><td style="font-family:'DM Mono',monospace;color:var(--am)">4</td><td style="font-family:'DM Mono',monospace">31</td><td style="font-family:'DM Mono',monospace">19</td><td style="font-family:'DM Mono',monospace;font-weight:600">172</td></tr>
+        <tr><td>MOB-0327 — Tricot Oversize</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">76</td><td style="font-family:'DM Mono',monospace">14</td><td style="font-family:'DM Mono',monospace;color:var(--am)">3</td><td style="font-family:'DM Mono',monospace">11</td><td style="font-family:'DM Mono',monospace;font-weight:600">104</td></tr>
+        <tr><td>MOB-0342 — Vestido Midi</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">54</td><td style="font-family:'DM Mono',monospace">12</td><td style="font-family:'DM Mono',monospace">17</td><td style="font-family:'DM Mono',monospace">8</td><td style="font-family:'DM Mono',monospace;font-weight:600">91</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- RUPTURAS -->
+<div class="view" id="v-rupturas">
+  <div style="background:var(--red);border:1px solid var(--reb);border-radius:var(--rl);padding:13px 18px;display:flex;align-items:center;gap:12px">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--re)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div style="font-size:12.5px;color:var(--re)"><strong>7 SKUs em ruptura</strong> — zerados ou abaixo do mínimo. Reposição recomendada em 48h.</div>
+    <button class="btn btn-re" style="margin-left:auto;flex-shrink:0;font-size:11px" onclick="openM('m-reposicao')">Criar pedido de reposição</button>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-p sh"><span class="sht" style="color:var(--re)">Zerados</span><span class="badge b-re" style="margin-left:8px">3 SKUs</span></div>
+      <div>
+        <div class="ruptura-row"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--t2);width:80px;flex-shrink:0">MOB-0291</div><div style="flex:1;font-size:13px;font-weight:500">Blazer Alfaiataria Caramelo<div style="font-size:11px;color:var(--t3);font-weight:400">PP zerado · Iguatemi SP</div></div><span style="font-family:'DM Mono',monospace;color:var(--re);font-size:12px;flex-shrink:0">0 un.</span><button class="btn btn-re" style="font-size:10px;padding:3px 8px;flex-shrink:0;margin-left:8px" onclick="openM('m-transf')">Repor</button></div>
+        <div class="ruptura-row"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--t2);width:80px;flex-shrink:0">MOB-0299</div><div style="flex:1;font-size:13px;font-weight:500">Saia Midi Couro PU<div style="font-size:11px;color:var(--t3);font-weight:400">GG zerado · Barra RJ</div></div><span style="font-family:'DM Mono',monospace;color:var(--re);font-size:12px;flex-shrink:0">0 un.</span><button class="btn btn-re" style="font-size:10px;padding:3px 8px;flex-shrink:0;margin-left:8px" onclick="openM('m-transf')">Repor</button></div>
+        <div class="ruptura-row"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--t2);width:80px;flex-shrink:0">MOB-0342</div><div style="flex:1;font-size:13px;font-weight:500">Vestido Midi Cetim<div style="font-size:11px;color:var(--t3);font-weight:400">G zerado · Jardins SP</div></div><span style="font-family:'DM Mono',monospace;color:var(--re);font-size:12px;flex-shrink:0">0 un.</span><button class="btn btn-re" style="font-size:10px;padding:3px 8px;flex-shrink:0;margin-left:8px" onclick="openM('m-transf')">Repor</button></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-p sh"><span class="sht" style="color:var(--am)">Abaixo do mínimo</span><span class="badge b-am" style="margin-left:8px">4 SKUs</span></div>
+      <div>
+        <div class="ruptura-row"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--t2);width:80px;flex-shrink:0">MOB-0318</div><div style="flex:1;font-size:13px;font-weight:500">Calça Pantalona Linho<div style="font-size:11px;color:var(--t3);font-weight:400">P · Jardins SP (4, mín 6)</div></div><span style="font-family:'DM Mono',monospace;color:var(--am);font-size:12px;flex-shrink:0">4 un.</span><button class="btn btn-am" style="font-size:10px;padding:3px 8px;flex-shrink:0;margin-left:8px" onclick="openM('m-transf')">Repor</button></div>
+        <div class="ruptura-row"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--t2);width:80px;flex-shrink:0">MOB-0327</div><div style="flex:1;font-size:13px;font-weight:500">Tricot Oversize Caramelo<div style="font-size:11px;color:var(--t3);font-weight:400">GG · Iguatemi SP (3, mín 5)</div></div><span style="font-family:'DM Mono',monospace;color:var(--am);font-size:12px;flex-shrink:0">3 un.</span><button class="btn btn-am" style="font-size:10px;padding:3px 8px;flex-shrink:0;margin-left:8px" onclick="openM('m-transf')">Repor</button></div>
+        <div class="ruptura-row"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--t2);width:80px;flex-shrink:0">MOB-0291</div><div style="flex:1;font-size:13px;font-weight:500">Blazer Alfaiataria Caramelo<div style="font-size:11px;color:var(--t3);font-weight:400">GG · Barra RJ (2, mín 5)</div></div><span style="font-family:'DM Mono',monospace;color:var(--am);font-size:12px;flex-shrink:0">2 un.</span><button class="btn btn-am" style="font-size:10px;padding:3px 8px;flex-shrink:0;margin-left:8px" onclick="openM('m-transf')">Repor</button></div>
+        <div class="ruptura-row"><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--t2);width:80px;flex-shrink:0">MOB-0299</div><div style="flex:1;font-size:13px;font-weight:500">Saia Midi Couro PU<div style="font-size:11px;color:var(--t3);font-weight:400">P · Jardins SP (1, mín 4)</div></div><span style="font-family:'DM Mono',monospace;color:var(--am);font-size:12px;flex-shrink:0">1 un.</span><button class="btn btn-am" style="font-size:10px;padding:3px 8px;flex-shrink:0;margin-left:8px" onclick="openM('m-transf')">Repor</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NOVA TRANSFERÊNCIA -->
+<div class="view" id="v-transferencia">
+  <div class="g21">
+    <div class="card card-p">
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;font-family:'DM Mono',monospace">Nova transferência de estoque</div>
+      <div class="fgrid">
+        <div class="fg"><label>Origem</label><select><option>Depósito Central</option><option>Loja Jardins SP</option><option>Loja Iguatemi SP</option><option>Loja Barra RJ</option></select></div>
+        <div class="fg"><label>Destino</label><select><option>Loja Iguatemi SP</option><option>Loja Jardins SP</option><option>Loja Barra RJ</option><option>Depósito Central</option></select></div>
+        <div class="fg full"><label>Motivo</label><select><option>Reposição por ruptura</option><option>Balanceamento de estoque</option><option>Saída de coleção</option><option>Solicitação da loja</option></select></div>
+      </div>
+      <div style="margin-top:16px;border:1px solid var(--b1);border-radius:9px;overflow:hidden">
+        <div style="padding:9px 13px;background:var(--s2);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px">
+          <span style="font-size:9.5px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em">Itens da transferência</span>
+          <button class="btn btn-o" style="font-size:10px;padding:2px 8px;margin-left:auto" onclick="addItemTransf()">+ Adicionar item</button>
+        </div>
+        <table>
+          <thead><tr><th>Ref.</th><th>Descrição</th><th>Cor</th><th>Tam.</th><th>Disponível</th><th>Qtd a transferir</th><th></th></tr></thead>
+          <tbody id="transf-tbody">
+            <tr data-id="1"><td style="font-family:'DM Mono',monospace">MOB-0291</td><td>Blazer Alfaiataria Caramelo</td><td>Caramelo</td><td>PP</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">142</td><td><input type="number" value="24" min="1" style="width:64px;background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:3px 7px;font-family:'DM Mono',monospace;font-size:12px;color:var(--t1);outline:none" onchange="calcTransf()"></td><td><button class="btn btn-re" style="padding:3px 7px;font-size:10px" onclick="rmItemTransf(1)">&#x2715;</button></td></tr>
+          </tbody>
+        </table>
+        <div style="padding:8px 13px;background:var(--s2);border-top:1px solid var(--b1);display:flex;gap:12px">
+          <span style="font-size:12px;color:var(--t2)">Total: <strong id="transf-total" style="color:var(--t1)">1</strong> itens</span>
+          <span style="font-size:12px;color:var(--t2)">Unidades: <strong id="transf-un" style="color:var(--t1)">24</strong></span>
+        </div>
+      </div>
+      <div class="fgrid" style="margin-top:12px">
+        <div class="fg"><label>Previsão de chegada</label><input type="text" placeholder="Ex: 2 dias úteis"></div>
+        <div class="fg"><label>Responsável</label><input type="text" placeholder="Nome do responsável"></div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button class="btn btn-o" onclick="nav('dashboard',document.querySelector('.ni[onclick*=dashboard]'))">Cancelar</button>
+        <button class="btn btn-bl" onclick="confirmarTransf()">Confirmar transferência →</button>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Fluxo da transferência</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="padding:8px 10px;background:var(--bld);border-radius:7px"><div style="font-size:11px;font-weight:600;color:var(--bl);margin-bottom:2px">1. Confirmação</div><div style="font-size:11px;color:var(--t2)">Reserva estoque na origem</div></div>
+          <div style="padding:8px 10px;background:var(--s2);border-radius:7px"><div style="font-size:11px;font-weight:600;margin-bottom:2px">2. Em trânsito</div><div style="font-size:11px;color:var(--t2)">Visível nas duas unidades</div></div>
+          <div style="padding:8px 10px;background:var(--grd);border-radius:7px"><div style="font-size:11px;font-weight:600;color:var(--gr);margin-bottom:2px">3. Recebida</div><div style="font-size:11px;color:var(--t2)">ERP atualizado automaticamente</div></div>
+        </div>
+      </div>
+      <div style="background:var(--bld);border:1px solid var(--blb);border-radius:var(--rl);padding:13px 15px">
+        <div style="font-size:9.5px;color:var(--bl);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">Sync automático ERP</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.65">Ao confirmar o recebimento, o ERP (Bling) é atualizado automaticamente com a movimentação nas duas unidades.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSFERÊNCIAS ATIVAS -->
+<div class="view" id="v-transferencias-ativas">
+  <div class="g4">
+    <div class="mc hb"><div class="mcl">Em trânsito</div><div class="mcv">3</div><div class="mcs">transferências ativas</div></div>
+    <div class="mc"><div class="mcl">Unidades em trânsito</div><div class="mcv">168</div><div class="mcs">aguardando recebimento</div></div>
+    <div class="mc hg"><div class="mcl">Recebidas hoje</div><div class="mcv">2</div><div class="mcs">190 unidades</div></div>
+    <div class="mc ha"><div class="mcl">Aguardando confirmação</div><div class="mcv">1</div><div class="mcs">rascunho pendente</div></div>
+  </div>
+  <div class="card card-p">
+    <div class="sh" style="margin-bottom:14px"><span class="sht">Transferências em andamento</span><div class="shr"><button class="btn btn-bl" onclick="nav('transferencia',document.querySelector('.ni[onclick*=transferencia]'))">Nova transferência</button></div></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="transf-card">
+        <div style="display:flex;align-items:center;gap:10px"><span class="badge b-bl">Em trânsito</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--t3)">TRF-0089</span><span style="font-size:11px;color:var(--t3);margin-left:auto">Previsão: amanhã</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px">
+          <span style="background:var(--s3);padding:3px 9px;border-radius:5px;font-weight:500">Depósito Central</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          <span style="background:var(--s3);padding:3px 9px;border-radius:5px;font-weight:500">Loja Iguatemi SP</span>
+          <span style="font-size:11.5px;color:var(--t2);margin-left:4px">24 un. MOB-0291 PP · MOB-0318 P</span>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:flex-end">
+          <button class="btn btn-o" style="font-size:11px">Ver detalhes</button>
+          <button class="btn btn-gr" style="font-size:11px" onclick="toast('TRF-0089 recebida. ERP atualizado.')">Confirmar recebimento</button>
+        </div>
+      </div>
+      <div class="transf-card">
+        <div style="display:flex;align-items:center;gap:10px"><span class="badge b-bl">Em trânsito</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--t3)">TRF-0090</span><span style="font-size:11px;color:var(--t3);margin-left:auto">Previsão: em 2 dias</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px">
+          <span style="background:var(--s3);padding:3px 9px;border-radius:5px;font-weight:500">Depósito Central</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          <span style="background:var(--s3);padding:3px 9px;border-radius:5px;font-weight:500">Loja Barra RJ</span>
+          <span style="font-size:11.5px;color:var(--t2);margin-left:4px">48 un. MOB-0299 GG · MOB-0291 GG</span>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:flex-end">
+          <button class="btn btn-o" style="font-size:11px">Ver detalhes</button>
+          <button class="btn btn-gr" style="font-size:11px" onclick="toast('TRF-0090 recebida. ERP atualizado.')">Confirmar recebimento</button>
+        </div>
+      </div>
+      <div class="transf-card" style="border-color:var(--amb)">
+        <div style="display:flex;align-items:center;gap:10px"><span class="badge b-am">Rascunho</span><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--t3)">TRF-0091</span><span style="font-size:11px;color:var(--t3);margin-left:auto">Aguardando confirmação</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px">
+          <span style="background:var(--s3);padding:3px 9px;border-radius:5px;font-weight:500">Loja Jardins SP</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--am)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          <span style="background:var(--s3);padding:3px 9px;border-radius:5px;font-weight:500">Loja Barra RJ</span>
+          <span style="font-size:11.5px;color:var(--t2);margin-left:4px">12 un. MOB-0342 G</span>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:flex-end">
+          <button class="btn btn-o" style="font-size:11px">Editar</button>
+          <button class="btn btn-bl" style="font-size:11px" onclick="toast('TRF-0091 confirmada! Estoque reservado na origem.')">Confirmar e enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTÓRICO -->
+<div class="view" id="v-historico">
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <input type="text" placeholder="Buscar por referência, loja, tipo..." style="background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:7px 12px;font-size:12px;color:var(--t1);outline:none;width:250px;font-family:'Instrument Sans',sans-serif">
+    <select style="background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:7px 11px;font-size:12px;color:var(--t1);outline:none;font-family:'Instrument Sans',sans-serif"><option>Todos os tipos</option><option>Entradas</option><option>Saídas</option><option>Transferências</option><option>Ajuste manual</option></select>
+    <button class="btn btn-o" style="margin-left:auto;font-size:11px" onclick="toast('Exportando histórico para Excel...')">Exportar XLS</button>
+  </div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Data</th><th>Tipo</th><th>Referência</th><th>Cor/Tamanho</th><th>Qtd</th><th>Origem</th><th>Destino</th><th>Responsável</th></tr></thead>
+      <tbody>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">hoje 09:14</td><td><span class="badge b-gr">Entrada prod.</span></td><td style="font-family:'DM Mono',monospace">MOB-0291</td><td>Caramelo/PP</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">+142</td><td style="color:var(--t3)">M1 Pedido 089</td><td>Depósito</td><td>Sistema</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">hoje 08:30</td><td><span class="badge b-bl">Transferência</span></td><td style="font-family:'DM Mono',monospace">MOB-0318</td><td>Natural/P</td><td style="font-family:'DM Mono',monospace;color:var(--bl)">→24</td><td>Depósito</td><td>Iguatemi SP</td><td>Ana Costa</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ontem 16:10</td><td><span class="badge b-re">Saída venda</span></td><td style="font-family:'DM Mono',monospace">MOB-0327</td><td>Caramelo/M</td><td style="font-family:'DM Mono',monospace;color:var(--re)">-3</td><td>D2C</td><td>Shopify</td><td>Sistema</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ontem 14:52</td><td><span class="badge b-am">Ajuste manual</span></td><td style="font-family:'DM Mono',monospace">MOB-0299</td><td>Preto/G</td><td style="font-family:'DM Mono',monospace;color:var(--am)">-2</td><td>Jardins SP</td><td>Baixa avaria</td><td>Carla Souza</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- LOJAS -->
+<div class="view" id="v-lojas">
+  <div style="display:flex;justify-content:flex-end"><button class="btn btn-bl" onclick="openM('m-nova-loja')">+ Nova loja</button></div>
+  <div class="g2">
+    <div class="loja-card" style="--loja-color:var(--bl)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><div style="font-size:14px;font-weight:700;font-family:'Syne',sans-serif">Depósito Central</div><span class="badge b-bl">Principal</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="background:var(--s2);border-radius:7px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">UNIDADES</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--gr)">4.820</div></div>
+        <div style="background:var(--s2);border-radius:7px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">SKUs</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif">298</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--t3)">Zona Norte SP · Luciana Ferraz</div>
+      <div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="nav('grade',document.querySelector('.ni[onclick*=grade]'))">Ver grade</button><button class="btn btn-o" style="font-size:11px" onclick="toast('Editando Depósito Central')">Editar</button></div>
+    </div>
+    <div class="loja-card" style="--loja-color:var(--ac)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><div style="font-size:14px;font-weight:700;font-family:'Syne',sans-serif">Loja Jardins SP</div><span class="badge b-am">Atenção</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="background:var(--s2);border-radius:7px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">UNIDADES</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--am)">892</div></div>
+        <div style="background:var(--s2);border-radius:7px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">RUPTURAS</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--am)">2</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--t3)">Jardins, SP · Carla Souza</div>
+      <div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="nav('rupturas',document.querySelector('.ni[onclick*=rupturas]'))">Ver rupturas</button><button class="btn btn-o" style="font-size:11px" onclick="toast('Editando Loja Jardins SP')">Editar</button></div>
+    </div>
+    <div class="loja-card" style="--loja-color:var(--re)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><div style="font-size:14px;font-weight:700;font-family:'Syne',sans-serif">Loja Iguatemi SP</div><span class="badge b-re">Ruptura</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="background:var(--s2);border-radius:7px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">UNIDADES</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--re)">1.047</div></div>
+        <div style="background:var(--s2);border-radius:7px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">RUPTURAS</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--re)">3</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--t3)">Iguatemi SP · Pedro Moura</div>
+      <div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="nav('rupturas',document.querySelector('.ni[onclick*=rupturas]'))">Ver rupturas</button><button class="btn btn-o" style="font-size:11px">Editar</button></div>
+    </div>
+    <div class="loja-card" style="--loja-color:var(--re)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><div style="font-size:14px;font-weight:700;font-family:'Syne',sans-serif">Loja Barra RJ</div><span class="badge b-re">Ruptura</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="background:var(--s2);border-radius:7px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">UNIDADES</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--re)">678</div></div>
+        <div style="background:var(--s2);border-radius:7px;padding:8px 10px"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">RUPTURAS</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif;color:var(--re)">2</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--t3)">Barra da Tijuca, RJ · Ana Lima</div>
+      <div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="nav('transferencia',document.querySelector('.ni[onclick*=transferencia]'))">Solicitar reposição</button><button class="btn btn-o" style="font-size:11px">Editar</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- RELATÓRIO -->
+<div class="view" id="v-relatorio">
+  <div class="g4">
+    <div class="mc hg"><div class="mcl">Giro médio geral</div><div class="mcv">24d</div><div class="mcs">dias até ruptura estimado</div></div>
+    <div class="mc hi"><div class="mcl">SKUs giro rápido</div><div class="mcv">18</div><div class="mcs">giro abaixo de 15 dias</div></div>
+    <div class="mc ha"><div class="mcl">SKUs parados</div><div class="mcv">8</div><div class="mcs">sem saída há 30+ dias</div></div>
+    <div class="mc"><div class="mcl">Cobertura média</div><div class="mcv">38d</div><div class="mcs">dias de estoque disponível</div></div>
+  </div>
+  <div class="g2">
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:14px"><span class="sht">Top SKUs — giro mais rápido</span></div>
+      <table>
+        <thead><tr><th>Referência</th><th>Descrição</th><th>Saídas 30d</th><th>Estoque</th><th>Giro</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:'DM Mono',monospace">MOB-0291</td><td>Blazer Alfaiataria Caramelo</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">142 un.</td><td style="font-family:'DM Mono',monospace">225</td><td><span class="badge b-gr">8 dias</span></td></tr>
+          <tr><td style="font-family:'DM Mono',monospace">MOB-0299</td><td>Saia Midi Couro PU</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">89 un.</td><td style="font-family:'DM Mono',monospace">129</td><td><span class="badge b-gr">11 dias</span></td></tr>
+          <tr><td style="font-family:'DM Mono',monospace">MOB-0318</td><td>Calça Pantalona Linho</td><td style="font-family:'DM Mono',monospace;color:var(--gr)">118 un.</td><td style="font-family:'DM Mono',monospace">172</td><td><span class="badge b-gr">14 dias</span></td></tr>
+          <tr><td style="font-family:'DM Mono',monospace">MOB-0327</td><td>Tricot Oversize Caramelo</td><td style="font-family:'DM Mono',monospace;color:var(--am)">76 un.</td><td style="font-family:'DM Mono',monospace">104</td><td><span class="badge b-am">21 dias</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:14px"><span class="sht">SKUs parados — atenção</span></div>
+      <table>
+        <thead><tr><th>Referência</th><th>Última saída</th><th>Estoque</th><th>Ação</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:'DM Mono',monospace">MOB-0285</td><td style="color:var(--re);font-size:11px">42 dias</td><td style="font-family:'DM Mono',monospace">38</td><td><button class="btn btn-am" style="font-size:10px;padding:3px 8px" onclick="toast('Redistribuição sugerida para Shopify')">Redistribuir</button></td></tr>
+          <tr><td style="font-family:'DM Mono',monospace">MOB-0278</td><td style="color:var(--re);font-size:11px">38 dias</td><td style="font-family:'DM Mono',monospace">24</td><td><button class="btn btn-am" style="font-size:10px;padding:3px 8px" onclick="toast('Criando campanha de saída')">Campanha</button></td></tr>
+          <tr><td style="font-family:'DM Mono',monospace">MOB-0267</td><td style="color:var(--am);font-size:11px">31 dias</td><td style="font-family:'DM Mono',monospace">16</td><td><button class="btn btn-o" style="font-size:10px;padding:3px 8px" onclick="toast('Concentrando no depósito')">Concentrar</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- INTEGRAÇÕES -->
+<div class="view" id="v-integracoes">
+  <div class="g2">
+    <div class="card card-p">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div style="width:40px;height:40px;background:var(--grd);border:1.5px solid var(--grb);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gr)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">ERP — Bling</div><div style="font-size:11px;color:var(--t3)">Sync bidirecional em tempo real</div></div>
+        <span class="int-status int-on">Conectado</span>
+      </div>
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:'DM Mono',monospace">ERP envia para M4</div>
+      <div style="font-size:12px;color:var(--t2);margin-bottom:12px;display:flex;flex-direction:column;gap:4px"><div>• Saldo por SKU, cor e tamanho</div><div>• Entradas de produção (M1)</div><div>• Saídas por NF (M2 atacado)</div></div>
+      <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:'DM Mono',monospace">M4 envia para ERP</div>
+      <div style="font-size:12px;color:var(--t2);margin-bottom:12px;display:flex;flex-direction:column;gap:4px"><div>• Transferências confirmadas</div><div>• Ajustes manuais de inventário</div></div>
+      <button class="btn btn-o" style="width:100%;justify-content:center;font-size:11px" onclick="toast('Abrindo config ERP Bling')">Configurar integração</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:34px;height:34px;background:var(--bld);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">Shopify</div><div style="font-size:10px;color:var(--t3)">Saídas D2C</div></div>
+          <span class="int-status int-on">Ativo</span>
+        </div>
+        <div style="font-size:12px;color:var(--t2)">Vendas Shopify debitam estoque automaticamente.</div>
+      </div>
+      <div class="card card-p">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:34px;height:34px;background:var(--pud);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--pu)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 2,7 12,12 22,7 12,2"/><polyline points="2,17 12,22 22,17"/><polyline points="2,12 12,17 22,12"/></svg></div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">M3 Coleção</div><div style="font-size:10px;color:var(--t3)">Fichas aprovadas viram SKUs</div></div>
+          <span class="int-status int-on">Ativo</span>
+        </div>
+        <div style="font-size:12px;color:var(--t2)">Ficha aprovada no M3 cria SKU e grade automaticamente aqui.</div>
+      </div>
+      <div class="card card-p">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div style="width:34px;height:34px;background:var(--acd);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ac)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600">M1 Produção</div><div style="font-size:10px;color:var(--t3)">Pedidos entregues entram no estoque</div></div>
+          <span class="int-status int-on">Ativo</span>
+        </div>
+        <div style="font-size:12px;color:var(--t2)">Pedidos confirmados no M1 geram entrada no Depósito Central.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTRUÇÕES -->
+<div class="view" id="v-instrucoes">
+  <div style="max-width:800px">
+    <div style="background:var(--s1);border:1px solid var(--blb);border-radius:var(--rl);padding:20px 24px;margin-bottom:14px;display:flex;align-items:flex-start;gap:16px">
+      <div style="width:44px;height:44px;background:var(--bld);border:1.5px solid var(--blb);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--bl)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16,8 20,8 23,11 23,16 16,16 16,8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px">FashionHub Estoque & Grade — Módulo 4</div>
+        <div style="font-size:12px;color:var(--t2);line-height:1.6">Controle de estoque por loja com grade cor × tamanho, alertas de ruptura, transferências e sync em tempo real com o ERP. Integrado a M1, M2, M3 e Shopify.</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Grade cor × tamanho</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Cruzamento de cor e tamanho por referência. Vermelho = zerado, amarelo = abaixo do mínimo. Clique em qualquer célula para ajuste manual.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Alertas de ruptura</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Gerados automaticamente quando estoque cai abaixo do mínimo configurável. O sistema sugere a origem para reposição.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Transferências</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Fluxo: rascunho → confirmada (reserva na origem) → em trânsito → recebida (ERP atualizado).</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Sync com ERP</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Bling envia saldo em tempo real via webhook. Entradas M1, saídas NF M2 e vendas Shopify atualizam automaticamente.</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- MODALS -->
+<div class="mo" id="m-entrada">
+  <div class="mbox">
+    <div class="mt">Registrar entrada de estoque<button class="mcls" onclick="closeM('m-entrada')">×</button></div>
+    <div class="ms">Entrada manual ou de produção</div>
+    <div class="fgrid">
+      <div class="fg"><label>Tipo</label><select><option>Produção (M1)</option><option>Devolução</option><option>Ajuste de inventário</option></select></div>
+      <div class="fg"><label>Destino</label><select><option>Depósito Central</option><option>Loja Jardins SP</option><option>Loja Iguatemi SP</option><option>Loja Barra RJ</option></select></div>
+      <div class="fg"><label>Referência</label><input type="text" placeholder="Ex: MOB-0291"></div>
+      <div class="fg"><label>Cor</label><select><option>Caramelo</option><option>Off-white</option><option>Preto</option><option>Cinza</option></select></div>
+      <div class="fg"><label>Tamanho</label><select><option>PP</option><option>P</option><option>M</option><option>G</option><option>GG</option></select></div>
+      <div class="fg"><label>Quantidade</label><input type="number" placeholder="0"></div>
+      <div class="fg full"><label>Observações</label><input type="text" placeholder="Número do pedido, NF..."></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-entrada')">Cancelar</button>
+      <button class="btn btn-gr" onclick="closeM('m-entrada');toast('Entrada registrada. ERP sincronizado.')">Registrar entrada</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="m-transf">
+  <div class="mbox" style="width:460px">
+    <div class="mt">Transferência rápida<button class="mcls" onclick="closeM('m-transf')">×</button></div>
+    <div class="ms">Para transferências completas, use Nova Transferência</div>
+    <div class="fgrid">
+      <div class="fg"><label>Referência</label><input type="text" placeholder="Ex: MOB-0291"></div>
+      <div class="fg"><label>Tamanho</label><select><option>PP</option><option>P</option><option>G</option><option>GG</option></select></div>
+      <div class="fg"><label>De</label><select><option>Depósito Central</option><option>Loja Jardins SP</option><option>Loja Iguatemi SP</option></select></div>
+      <div class="fg"><label>Para</label><select><option>Loja Iguatemi SP</option><option>Loja Barra RJ</option><option>Loja Jardins SP</option></select></div>
+      <div class="fg"><label>Quantidade</label><input type="number" placeholder="0"></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-transf')">Cancelar</button>
+      <button class="btn btn-bl" onclick="closeM('m-transf');toast('Transferência criada. Estoque reservado.')">Criar transferência</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="m-reposicao">
+  <div class="mbox">
+    <div class="mt">Pedido de reposição via M1<button class="mcls" onclick="closeM('m-reposicao')">×</button></div>
+    <div class="ms">Criar pedido de produção para os SKUs em ruptura</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;padding:8px 11px;background:var(--s2);border-radius:7px;font-size:12.5px"><span style="font-family:'DM Mono',monospace">MOB-0291 PP</span><span style="color:var(--re)">Sugestão: 60 unidades</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 11px;background:var(--s2);border-radius:7px;font-size:12.5px"><span style="font-family:'DM Mono',monospace">MOB-0299 GG</span><span style="color:var(--re)">Sugestão: 40 unidades</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 11px;background:var(--s2);border-radius:7px;font-size:12.5px"><span style="font-family:'DM Mono',monospace">MOB-0318 P</span><span style="color:var(--am)">Sugestão: 30 unidades</span></div>
+    </div>
+    <div class="fg" style="margin-bottom:12px"><label>Fornecedor</label><select><option>Têxtil SP</option><option>Malha & Cia</option><option>Couroart</option></select></div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-reposicao')">Cancelar</button>
+      <button class="btn btn-ac" onclick="closeM('m-reposicao');toast('Pedido de reposição criado no M1!')">Criar pedido no M1 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="m-nova-loja">
+  <div class="mbox" style="width:460px">
+    <div class="mt">Adicionar loja ou depósito<button class="mcls" onclick="closeM('m-nova-loja')">×</button></div>
+    <div class="ms">Registre uma nova unidade física</div>
+    <div class="fgrid">
+      <div class="fg"><label>Nome</label><input type="text" placeholder="Ex: Loja Morumbi SP"></div>
+      <div class="fg"><label>Tipo</label><select><option>Loja física</option><option>Depósito</option><option>Pop-up</option></select></div>
+      <div class="fg full"><label>Endereço</label><input type="text" placeholder="Bairro, cidade, estado"></div>
+      <div class="fg"><label>Responsável</label><input type="text" placeholder="Nome do gerente"></div>
+      <div class="fg"><label>Estoque mínimo padrão</label><input type="number" placeholder="5"></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-nova-loja')">Cancelar</button>
+      <button class="btn btn-bl" onclick="closeM('m-nova-loja');toast('Loja adicionada!')">Adicionar →</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="m-ajuste">
+  <div class="mbox" style="width:420px">
+    <div class="mt" id="aj-titulo">Ajuste de estoque<button class="mcls" onclick="closeM('m-ajuste')">×</button></div>
+    <div class="ms" id="aj-sub">Registre um ajuste manual nesta célula</div>
+    <div class="fgrid">
+      <div class="fg"><label>Tipo de ajuste</label><select><option>Inventário (correção)</option><option>Avaria/baixa</option><option>Devolução</option></select></div>
+      <div class="fg"><label>Novo saldo</label><input type="number" id="aj-qtd" placeholder="0"></div>
+      <div class="fg full"><label>Motivo</label><input type="text" placeholder="Motivo do ajuste..."></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-ajuste')">Cancelar</button>
+      <button class="btn btn-am" onclick="closeM('m-ajuste');toast('Ajuste registrado. ERP sincronizado.')">Salvar ajuste</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
+
+<script>
+var REFS = [
+  {ref:'MOB-0291', nome:'Blazer Alfaiataria Caramelo'},
+  {ref:'MOB-0299', nome:'Saia Midi Couro PU'},
+  {ref:'MOB-0318', nome:'Calça Pantalona Linho Natural'},
+  {ref:'MOB-0327', nome:'Tricot Oversize Caramelo'},
+  {ref:'MOB-0342', nome:'Vestido Midi Cetim Champagne'}
+];
+var TAMANHOS = ['PP','P','M','G','GG'];
+var GRADE = {
+  'MOB-0291': {'Caramelo': {PP:0,P:14,M:22,G:18,GG:12}, 'Off-white': {PP:8,P:16,M:24,G:20,GG:14}},
+  'MOB-0299': {'Caramelo': {PP:12,P:1,M:18,G:14,GG:0}, 'Preto': {PP:8,P:12,M:0,G:9,GG:0}},
+  'MOB-0318': {'Natural': {PP:20,P:4,M:28,G:22,GG:3}, 'Off-white': {PP:15,P:12,M:22,G:18,GG:9}},
+  'MOB-0327': {'Caramelo': {PP:14,P:16,M:18,G:12,GG:0}, 'Off-white': {PP:10,P:12,M:14,G:9,GG:3}},
+  'MOB-0342': {'Champagne': {PP:11,P:14,M:16,G:0,GG:8}, 'Preto': {PP:8,P:10,M:12,G:9,GG:6}}
+};
+
+function getCell(n) {
+  if (n === 0) return 'cell-zero';
+  if (n <= 4) return 'cell-low';
+  return 'cell-ok';
+}
+
+function renderGrade() {
+  var html = '<table class="grade-table" style="margin:0 14px 14px;width:calc(100% - 28px)">';
+  html += '<thead><tr><th style="text-align:left">Referência</th><th style="text-align:left">Cor</th>';
+  TAMANHOS.forEach(function(t) { html += '<th>' + t + '</th>'; });
+  html += '<th>Total</th></tr></thead><tbody>';
+  REFS.forEach(function(r) {
+    var cores = GRADE[r.ref];
+    if (!cores) return;
+    var cl = Object.keys(cores);
+    cl.forEach(function(cor, ci) {
+      var row = cores[cor];
+      var total = TAMANHOS.reduce(function(a, t) { return a + (row[t] || 0); }, 0);
+      html += '<tr>';
+      if (ci === 0) {
+        html += '<td style="text-align:left;font-family:\'Instrument Sans\',sans-serif;font-weight:500;color:var(--t1);min-width:200px;border:1px solid var(--b1)" rowspan="' + cl.length + '">' + r.ref + '<div style="font-size:11px;color:var(--t3);font-weight:400;margin-top:2px">' + r.nome + '</div></td>';
+      }
+      html += '<td style="text-align:left;font-size:11px;color:var(--t2);border:1px solid var(--b1)">' + cor + '</td>';
+      TAMANHOS.forEach(function(t) {
+        var v = row[t] !== undefined ? row[t] : '-';
+        var cls = typeof v === 'number' ? getCell(v) : '';
+        html += '<td class="' + cls + '" onclick="abrirAjuste(\'' + r.ref + '\',\'' + cor + '\',\'' + t + '\',' + v + ')" style="cursor:pointer">' + v + '</td>';
+      });
+      html += '<td style="font-weight:600;color:var(--t1)">' + total + '</td></tr>';
+    });
+  });
+  html += '</tbody></table>';
+  document.getElementById('grade-container').innerHTML = html;
+}
+
+function abrirAjuste(ref, cor, tam, qtd) {
+  document.getElementById('aj-titulo').innerHTML = 'Ajuste \u00b7 ' + ref + ' \u00b7 ' + cor + ' \u00b7 ' + tam + '<button class="mcls" onclick="closeM(\'m-ajuste\')">&#x00D7;</button>';
+  document.getElementById('aj-sub').textContent = 'Saldo atual: ' + qtd + ' unidades.';
+  document.getElementById('aj-qtd').value = qtd;
+  openM('m-ajuste');
+}
+
+function nav(id, el) {
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('on'); });
+  var v = document.getElementById('v-' + id);
+  if (v) v.classList.add('on');
+  document.querySelectorAll('.ni').forEach(function(n) { n.classList.remove('on'); });
+  if (el) el.classList.add('on');
+  var t = {dashboard:'Dashboard',grade:'Grade Cor x Tamanho','saldo-lojas':'Saldo por Loja',rupturas:'Alertas de Ruptura',transferencia:'Nova Transferência','transferencias-ativas':'Transferências Ativas',historico:'Histórico',lojas:'Lojas & Depósito',relatorio:'Relatório de Giro',integracoes:'Integrações',instrucoes:'Instruções'};
+  if (t[id]) document.getElementById('page-title').textContent = t[id];
+  if (id === 'grade') setTimeout(renderGrade, 50);
+}
+
+function openM(id) { document.getElementById(id).classList.add('on'); }
+function closeM(id) { document.getElementById(id).classList.remove('on'); }
+
+function toast(msg) {
+  var el = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  el.classList.add('show');
+  setTimeout(function() { el.classList.remove('show'); }, 3200);
+}
+
+var transfId = 2;
+function addItemTransf() {
+  transfId++;
+  var tbody = document.getElementById('transf-tbody');
+  var tr = document.createElement('tr');
+  tr.setAttribute('data-id', transfId);
+  tr.innerHTML = '<td style="font-family:\'DM Mono\',monospace">MOB-0318</td><td>Calça Pantalona</td><td>Natural</td><td>P</td><td style="font-family:\'DM Mono\',monospace;color:var(--gr)">118</td><td><input type="number" value="12" min="1" style="width:64px;background:var(--s2);border:1px solid var(--b2);border-radius:5px;padding:3px 7px;font-family:\'DM Mono\',monospace;font-size:12px;color:var(--t1);outline:none" onchange="calcTransf()"></td><td><button class="btn btn-re" style="padding:3px 7px;font-size:10px" onclick="rmItemTransf(' + transfId + ')">&#x2715;</button></td>';
+  tbody.appendChild(tr);
+  calcTransf();
+}
+
+function rmItemTransf(id) {
+  var tr = document.querySelector('#transf-tbody tr[data-id="' + id + '"]');
+  if (tr) tr.remove();
+  calcTransf();
+}
+
+function calcTransf() {
+  var rows = document.querySelectorAll('#transf-tbody tr');
+  var un = 0;
+  rows.forEach(function(r) {
+    var inp = r.querySelector('input[type=number]');
+    if (inp) un += parseInt(inp.value) || 0;
+  });
+  document.getElementById('transf-total').textContent = rows.length;
+  document.getElementById('transf-un').textContent = un;
+}
+
+function confirmarTransf() {
+  toast('Transferência confirmada! Estoque reservado. ERP Bling sincronizado.');
+  setTimeout(function() { nav('transferencias-ativas', document.querySelector('.ni[onclick*=transferencias-ativas]')); }, 800);
+}
+
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  try { localStorage.setItem('fh-theme', cur === 'dark' ? 'light' : 'dark'); } catch(e) {}
+}
+
+window.addEventListener('load', function() {
+  try { var t = localStorage.getItem('fh-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch(e) {}
+});
+</script>
+</body>
+</html>

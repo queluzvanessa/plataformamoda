@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FashionHub — Loja & VM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090C;--s1:#0E0F14;--s2:#14151C;--s3:#1C1D26;--s4:#252630;
+  --b1:rgba(255,255,255,0.055);--b2:rgba(255,255,255,0.1);--b3:rgba(255,255,255,0.16);
+  --ac:#E8650A;--ac2:#FF7A1F;--acd:rgba(232,101,10,0.12);--acb:rgba(232,101,10,0.25);
+  --t1:#F0EDE8;--t2:#888480;--t3:#484440;--t4:#282420;
+  --gr:#4CAF80;--grd:rgba(76,175,128,0.10);--grb:rgba(76,175,128,0.22);
+  --re:#E06060;--red:rgba(224,96,96,0.10);--reb:rgba(224,96,96,0.22);
+  --am:#E0A840;--amd:rgba(224,168,64,0.10);--amb:rgba(224,168,64,0.22);
+  --bl:#6090D8;--bld:rgba(96,144,216,0.10);--blb:rgba(96,144,216,0.22);
+  --pu:#9878D0;--pud:rgba(152,120,208,0.10);--pub:rgba(152,120,208,0.22);
+  --pk:#C87898;--pkd:rgba(200,120,152,0.10);--pkb:rgba(200,120,152,0.22);
+  --r:10px;--rl:14px;
+[data-theme="light"]{
+  --bg:#F5F4F2;--s1:#FFFFFF;--s2:#F0EFEC;--s3:#E8E6E2;--s4:#DDD9D4;
+  --b1:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.12);--b3:rgba(0,0,0,0.18);
+  --ac:#E8650A;--acd:rgba(232,101,10,0.09);--acb:rgba(232,101,10,0.22);
+  --t1:#1A1815;--t2:#5A5650;--t3:#9A9690;--t4:#C4C0BA;
+  --gr:#2E7D52;--grd:rgba(46,125,82,0.09);--grb:rgba(46,125,82,0.2);
+  --re:#C0392B;--red:rgba(192,57,43,0.08);--reb:rgba(192,57,43,0.2);
+  --am:#B8860B;--amd:rgba(184,134,11,0.09);--amb:rgba(184,134,11,0.2);
+  --bl:#2563EB;--bld:rgba(37,99,235,0.09);--blb:rgba(37,99,235,0.2);
+  --pu:#7C3AED;--pud:rgba(124,58,237,0.09);--pub:rgba(124,58,237,0.2);
+  --pk:#A0506A;--pkd:rgba(160,80,106,0.09);--pkb:rgba(160,80,106,0.2);
+}
+*,*::before,*::after{transition:background .2s,color .2s,border-color .2s}
+.btn,.ni,.mc{transition:all .15s !important}
+.theme-toggle{width:34px;height:20px;border-radius:10px;background:var(--s4);border:1px solid var(--b2);position:relative;cursor:pointer;flex-shrink:0}
+.theme-toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;top:2px;left:2px;background:var(--t2);transition:transform .2s,background .2s !important}
+[data-theme="light"] .theme-toggle{background:var(--pkd);border-color:var(--pkb)}
+[data-theme="light"] .theme-toggle::after{transform:translateX(14px);background:var(--pk)}
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t1);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.bbar{height:30px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0}
+.bl-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;font-family:'DM Mono',monospace}
+.bc{padding:2px 10px;border-radius:4px;font-size:10.5px;cursor:pointer;border:1px solid var(--b1);background:transparent;color:var(--t2)}
+.bc:hover{background:var(--s2);color:var(--t1)}
+.bc.on{background:var(--pkd);color:var(--pk);border-color:var(--pkb)}
+.br{margin-left:auto;font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace}
+.brdot{width:5px;height:5px;border-radius:50%;background:var(--gr);box-shadow:0 0 5px var(--gr)}
+.body{flex:1;display:flex;overflow:hidden}
+.sb{width:210px;flex-shrink:0;background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;height:100%;overflow-y:auto}
+.logo{padding:14px 14px 12px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:9px}
+.lm{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.03em}
+.lm b{color:var(--ac)}
+.lbadge{background:var(--pkd);border:1px solid var(--pkb);color:var(--pk);font-size:8px;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:3px;letter-spacing:.07em}
+nav{padding:7px;flex:1}
+.ng{margin-bottom:3px}
+.nl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);padding:7px 8px 3px;font-family:'DM Mono',monospace}
+.ni{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:7px;font-size:12.5px;color:var(--t2);cursor:pointer;margin-bottom:1px;border:1px solid transparent;user-select:none}
+.ni:hover{background:var(--s2);color:var(--t1)}
+.ni.on{background:var(--pkd);color:var(--pk);border-color:var(--pkb)}
+.nd{width:4px;height:4px;border-radius:50%;background:var(--t3);flex-shrink:0}
+.ni.on .nd{background:var(--pk)}
+.nb{margin-left:auto;font-size:9px;font-family:'DM Mono',monospace;padding:1px 5px;border-radius:99px}
+.nb-r{background:var(--red);color:var(--re)}
+.nb-a{background:var(--amd);color:var(--am)}
+.nn{font-size:8px;background:var(--pkd);color:var(--pk);padding:1px 5px;border-radius:3px;font-family:'DM Mono',monospace;margin-left:auto;border:1px solid var(--pkb)}
+.sft{padding:10px;border-top:1px solid var(--b1)}
+.ws{background:var(--s2);border-radius:8px;padding:9px 11px;border:1px solid var(--b1)}
+.wsn{font-size:12px;font-weight:500}
+.wsp{font-size:10px;color:var(--t3);margin-top:1px;display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace}
+.pp{background:var(--pkd);color:var(--pk);font-size:9px;padding:1px 5px;border-radius:3px;border:1px solid var(--pkb)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.tb{height:48px;flex-shrink:0;border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 18px;gap:10px;background:var(--s1)}
+.tbt{font-family:'Syne',sans-serif;font-size:13.5px;font-weight:700;letter-spacing:-.02em}
+.tbr{margin-left:auto;display:flex;align-items:center;gap:7px}
+.pulse{width:5px;height:5px;border-radius:50%;background:var(--gr);box-shadow:0 0 4px var(--gr);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.btn{padding:5px 12px;border-radius:7px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:5px}
+.btn-ac{background:var(--ac);color:#08090C}.btn-ac:hover{background:var(--ac2)}
+.btn-o{background:transparent;color:var(--t2);border:1px solid var(--b2)}.btn-o:hover{background:var(--s2);color:var(--t1)}
+.btn-gr{background:var(--grd);color:var(--gr);border:1px solid var(--grb)}
+.btn-re{background:var(--red);color:var(--re);border:1px solid rgba(224,96,96,.2)}
+.btn-am{background:var(--amd);color:var(--am);border:1px solid rgba(224,168,64,.2)}
+.btn-bl{background:var(--bld);color:var(--bl);border:1px solid rgba(96,144,216,.2)}
+.btn-pk{background:var(--pkd);color:var(--pk);border:1px solid var(--pkb)}
+.content{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.view{display:none;flex-direction:column;gap:12px}
+.view.on{display:flex}
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden}
+.card-p{padding:16px 18px}
+.sh{display:flex;align-items:center;gap:8px}
+.sht{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:-.02em}
+.shr{margin-left:auto;display:flex;gap:6px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:99px;font-size:10px;font-weight:500;font-family:'DM Mono',monospace}
+.b-gr{background:var(--grd);color:var(--gr)}.b-re{background:var(--red);color:var(--re)}.b-am{background:var(--amd);color:var(--am)}.b-bl{background:var(--bld);color:var(--bl)}.b-pk{background:var(--pkd);color:var(--pk)}.b-n{background:var(--s3);color:var(--t3);border:1px solid var(--b1)}
+.mc{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:13px 16px}
+.mc.hpk{background:var(--pkd);border-color:var(--pkb)}.mc.hg{background:var(--grd);border-color:var(--grb)}.mc.hr{background:var(--red);border-color:var(--reb)}.mc.ha{background:var(--amd);border-color:var(--amb)}.mc.hb{background:var(--bld);border-color:var(--blb)}
+.mcl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;font-family:'DM Mono',monospace}
+.mcv{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1}
+.mc.hpk .mcv{color:var(--pk)}.mc.hg .mcv{color:var(--gr)}.mc.hr .mcv{color:var(--re)}.mc.ha .mcv{color:var(--am)}.mc.hb .mcv{color:var(--bl)}
+.mcs{font-size:10px;color:var(--t3);margin-top:2px;font-family:'DM Mono',monospace}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:9px 13px;font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--b1);background:var(--s2);font-family:'DM Mono',monospace}
+td{padding:10px 13px;font-size:12.5px;color:var(--t1);border-bottom:1px solid var(--b1)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--s2)}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10.5px;color:var(--t2);font-weight:500}
+.fg input,.fg select,.fg textarea{background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:8px 11px;font-family:'Instrument Sans',sans-serif;font-size:12.5px;color:var(--t1);outline:none;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--pk)}
+.fg select option{background:var(--s2)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.full{grid-column:span 2}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.mo.on{display:flex}
+.mbox{background:var(--s1);border:1px solid var(--b2);border-radius:var(--rl);padding:22px;width:560px;max-width:96vw;max-height:92vh;overflow-y:auto}
+.mt{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;letter-spacing:-.02em}
+.ms{font-size:12px;color:var(--t3);margin-bottom:18px}
+.mact{display:flex;gap:7px;justify-content:flex-end;margin-top:18px}
+.mcls{cursor:pointer;color:var(--t3);font-size:18px;background:none;border:none;line-height:1}
+.mcls:hover{color:var(--t1)}
+.tl-item{display:flex;gap:11px;align-items:flex-start;padding:10px 14px;border-bottom:1px solid var(--b1)}
+.tl-item:last-child{border-bottom:none}
+.tl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.tl-content{flex:1}
+.tl-title{font-size:12.5px;font-weight:500;margin-bottom:2px}
+.tl-sub{font-size:11px;color:var(--t3);font-family:'DM Mono',monospace}
+.tl-time{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace;flex-shrink:0}
+.pbar{background:var(--s4);border-radius:99px;height:5px;overflow:hidden}
+.pbf{height:100%;border-radius:99px}
+.toast{position:fixed;bottom:18px;right:18px;background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:10px 15px;font-size:12.5px;color:var(--t1);z-index:500;display:flex;align-items:center;gap:8px;transform:translateY(60px);opacity:0;transition:all .3s ease;max-width:340px}
+.toast.show{transform:translateY(0);opacity:1}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid var(--b1);cursor:pointer;user-select:none}
+.check-item:last-child{border-bottom:none}
+.check-item:hover{background:var(--s2)}
+.check-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--b3);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center}
+.check-box.checked{background:var(--gr);border-color:var(--gr)}
+.check-label{font-size:12.5px;flex:1;line-height:1.5}
+.check-sub{font-size:11px;color:var(--t3);margin-top:2px;font-family:'DM Mono',monospace}
+.aderencia-bar{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.aderencia-nome{font-size:12px;font-weight:500;width:140px;flex-shrink:0}
+.aderencia-track{flex:1;height:6px;background:var(--s4);border-radius:99px;overflow:hidden}
+.aderencia-fill{height:100%;border-radius:99px}
+.aderencia-pct{font-size:11px;font-family:'DM Mono',monospace;min-width:36px;text-align:right}
+.vitrine-img{width:100%;height:100px;background:var(--s3);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;border:2px dashed var(--b2);cursor:pointer}
+.vitrine-img:hover{border-color:var(--pk);background:var(--pkd)}
+.vitrine-img span{font-size:11px;color:var(--t3)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--s4);border-radius:99px}
+</style>
+</head>
+<body>
+<div class="bbar">
+  <span class="bl-label">Marca</span>
+  <button class="bc on">Minha Marca</button>
+  <span style="width:1px;height:12px;background:var(--b1);margin:0 2px"></span>
+  <button class="bc" style="border-style:dashed" onclick="toast('Múltiplas marcas disponível na versão Pro')">+ Marca</button>
+  <div class="br"><div class="brdot"></div><span>Inverno 27 · Temporada ativa</span></div>
+</div>
+<div class="body">
+<aside class="sb">
+  <div class="logo">
+    <div><div class="lm">Fashion<b>Hub</b></div><div style="font-size:8px;font-family:'DM Mono',monospace;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-top:2px">Loja & VM</div></div>
+    <span class="lbadge">M5</span>
+  </div>
+  <nav>
+    <div class="ng">
+      <div class="nl">Visão Geral</div>
+      <div class="ni on" onclick="nav('dashboard',this)"><div class="nd"></div>Dashboard</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Lojas</div>
+      <div class="ni" onclick="nav('lojas',this)"><div class="nd"></div>Lojas ativas</div>
+      <div class="ni" onclick="nav('nova-loja',this)"><div class="nd"></div>Cadastrar loja<span class="nn">+</span></div>
+    </div>
+    <div class="ng">
+      <div class="nl">Visual Merchandising</div>
+      <div class="ni" onclick="nav('guideline',this)"><div class="nd"></div>Guideline de vitrine</div>
+      <div class="ni" onclick="nav('aprovacao',this)"><div class="nd"></div>Aprovação remota<span class="nb nb-a">3</span></div>
+      <div class="ni" onclick="nav('historico-vm',this)"><div class="nd"></div>Histórico por loja</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Checklists</div>
+      <div class="ni" onclick="nav('checklist',this)"><div class="nd"></div>Checklist de loja<span class="nb nb-r">2</span></div>
+      <div class="ni" onclick="nav('responder-checklist',this)"><div class="nd"></div>Responder checklist<span class="nn">+</span></div>
+    </div>
+    <div class="ng">
+      <div class="nl">Relatórios</div>
+      <div class="ni" onclick="nav('relatorio',this)"><div class="nd"></div>Aderência ao guideline</div>
+    </div>
+    <div class="ng">
+      <div class="nl">Ajuda</div>
+      <div class="ni" onclick="nav('instrucoes',this)"><div class="nd"></div>Instruções do módulo</div>
+    </div>
+  </nav>
+  <div class="sft">
+    <div class="ws"><div class="wsn">Loja & VM</div><div class="wsp"><span class="pp">M5</span> 4 lojas ativas</div></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding:4px 2px">
+      <span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">tema</span>
+      <div class="theme-toggle" onclick="toggleTheme()"></div>
+    </div>
+  </div>
+</aside>
+<div class="main">
+<div class="tb">
+  <div class="tbt" id="page-title">Dashboard</div>
+  <div class="tbr">
+    <span style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">Coleção Inverno 27</span>
+    <button class="btn btn-pk" onclick="nav('aprovacao',document.querySelector('.ni[onclick*=aprovacao]'))">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+      Aprovações pendentes (3)
+    </button>
+  </div>
+</div>
+<div class="content">
+
+<!-- DASHBOARD -->
+<div class="view on" id="v-dashboard">
+  <div class="g4">
+    <div class="mc hpk"><div class="mcl">Lojas com guideline ativo</div><div class="mcv">4</div><div class="mcs">Inverno 27 em todas</div></div>
+    <div class="mc ha"><div class="mcl">Aprovações pendentes</div><div class="mcv">3</div><div class="mcs">vitrines aguardando ok</div></div>
+    <div class="mc hr"><div class="mcl">Checklists atrasados</div><div class="mcv">2</div><div class="mcs">ontem não enviados</div></div>
+    <div class="mc hg"><div class="mcl">Aderência média</div><div class="mcv">78%</div><div class="mcs">ao guideline Inverno 27</div></div>
+  </div>
+  <div class="g2">
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:14px"><span class="sht">Status das lojas</span><div class="shr"><button class="btn btn-o" style="font-size:11px" onclick="nav('lojas',document.querySelector('.ni[onclick*=lojas]'))">Ver todas</button></div></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:var(--s2);border:1px solid var(--grb);border-radius:9px;padding:12px 14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-size:13px;font-weight:600">Jardins SP</div><div style="display:flex;gap:5px"><span class="badge b-gr">Guideline OK</span><span class="badge b-gr">Checklist OK</span></div></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1"><div class="pbar"><div class="pbf" style="width:92%;background:var(--gr)"></div></div></div><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--gr)">92%</span></div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">Vitrine aprovada · Carla Souza · última auditoria ontem</div>
+        </div>
+        <div style="background:var(--s2);border:1px solid var(--amb);border-radius:9px;padding:12px 14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-size:13px;font-weight:600">Iguatemi SP</div><div style="display:flex;gap:5px"><span class="badge b-am">Aguardando</span><span class="badge b-gr">Checklist OK</span></div></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1"><div class="pbar"><div class="pbf" style="width:74%;background:var(--am)"></div></div></div><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--am)">74%</span></div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">Vitrine enviada para aprovação · Pedro Moura · aguardando há 1h</div>
+        </div>
+        <div style="background:var(--s2);border:1px solid var(--reb);border-radius:9px;padding:12px 14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-size:13px;font-weight:600">Barra RJ</div><div style="display:flex;gap:5px"><span class="badge b-am">Aguardando</span><span class="badge b-re">Checklist atrasado</span></div></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1"><div class="pbar"><div class="pbf" style="width:61%;background:var(--re)"></div></div></div><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--re)">61%</span></div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">Vitrine pendente · Ana Lima · checklist não enviado ontem</div>
+        </div>
+        <div style="background:var(--s2);border:1px solid var(--pkb);border-radius:9px;padding:12px 14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-size:13px;font-weight:600">Morumbi SP</div><div style="display:flex;gap:5px"><span class="badge b-bl">Em montagem</span><span class="badge b-re">Checklist atrasado</span></div></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1"><div class="pbar"><div class="pbf" style="width:45%;background:var(--pk)"></div></div></div><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--pk)">45%</span></div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">Nova loja · inauguração em 5 dias · vitrine sendo montada</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="card card-p">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace">Guideline ativo</div>
+        <div style="font-size:16px;font-weight:700;font-family:'Syne',sans-serif;margin-bottom:4px">Inverno 27</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+          <span style="background:var(--s3);padding:3px 8px;border-radius:4px;font-size:11px">Caramelo dominante</span>
+          <span style="background:var(--s3);padding:3px 8px;border-radius:4px;font-size:11px">Couro estruturado</span>
+          <span style="background:var(--s3);padding:3px 8px;border-radius:4px;font-size:11px">Off-white + Preto</span>
+        </div>
+        <button class="btn btn-pk" style="width:100%;justify-content:center;font-size:11px" onclick="nav('guideline',document.querySelector('.ni[onclick*=guideline]'))">Ver guideline completo</button>
+      </div>
+      <div class="card">
+        <div class="card-p sh"><span class="sht">Última atividade</span></div>
+        <div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--gr)"></div><div class="tl-content"><div class="tl-title">Vitrine aprovada — Jardins SP</div><div class="tl-sub">Blazer + Saia couro · aprovado por Marina VP</div></div><div class="tl-time">hoje 09:32</div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--am)"></div><div class="tl-content"><div class="tl-title">Vitrine enviada — Iguatemi SP</div><div class="tl-sub">Foto enviada por Pedro Moura · aguardando</div></div><div class="tl-time">hoje 08:45</div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--re)"></div><div class="tl-content"><div class="tl-title">Checklist atrasado — Barra RJ</div><div class="tl-sub">Não enviado ontem · alerta gerado</div></div><div class="tl-time">ontem</div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--pk)"></div><div class="tl-content"><div class="tl-title">Guideline Inverno 27 publicado</div><div class="tl-sub">8 referências · 3 paletas · enviado para todas as lojas</div></div><div class="tl-time">há 3 dias</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOJAS -->
+<div class="view" id="v-lojas">
+  <div style="display:flex;justify-content:flex-end"><button class="btn btn-pk" onclick="nav('nova-loja',document.querySelector('.ni[onclick*=nova-loja]'))">+ Cadastrar loja</button></div>
+  <div class="g2">
+    <div style="background:var(--s1);border:1px solid var(--grb);border-radius:var(--rl);padding:18px 20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gr)"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:15px;font-weight:700;font-family:'Syne',sans-serif">Jardins SP</div><div style="font-size:11px;color:var(--t3)">Jardins, São Paulo · Carla Souza</div></div><span class="badge b-gr">Ativa</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">ADERÊNCIA</div><div style="font-size:18px;font-weight:800;color:var(--gr);font-family:'Syne',sans-serif">92%</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">AUDITORIAS</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif">14</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">CHECKLISTS</div><div style="font-size:18px;font-weight:800;color:var(--gr);font-family:'Syne',sans-serif">OK</div></div>
+      </div>
+      <div style="display:flex;gap:6px"><button class="btn btn-o" style="font-size:11px;flex:1;justify-content:center" onclick="nav('historico-vm',document.querySelector('.ni[onclick*=historico-vm]'))">Ver histórico</button><button class="btn btn-o" style="font-size:11px" onclick="toast('Editando Jardins SP')">Editar</button></div>
+    </div>
+    <div style="background:var(--s1);border:1px solid var(--amb);border-radius:var(--rl);padding:18px 20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--am)"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:15px;font-weight:700;font-family:'Syne',sans-serif">Iguatemi SP</div><div style="font-size:11px;color:var(--t3)">Iguatemi, São Paulo · Pedro Moura</div></div><span class="badge b-am">Aguardando</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">ADERÊNCIA</div><div style="font-size:18px;font-weight:800;color:var(--am);font-family:'Syne',sans-serif">74%</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">AUDITORIAS</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif">11</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">PENDENTE</div><div style="font-size:18px;font-weight:800;color:var(--am);font-family:'Syne',sans-serif">1</div></div>
+      </div>
+      <div style="display:flex;gap:6px"><button class="btn btn-am" style="font-size:11px;flex:1;justify-content:center" onclick="nav('aprovacao',document.querySelector('.ni[onclick*=aprovacao]'))">Aprovar vitrine</button><button class="btn btn-o" style="font-size:11px">Editar</button></div>
+    </div>
+    <div style="background:var(--s1);border:1px solid var(--reb);border-radius:var(--rl);padding:18px 20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--re)"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:15px;font-weight:700;font-family:'Syne',sans-serif">Barra RJ</div><div style="font-size:11px;color:var(--t3)">Barra da Tijuca, Rio de Janeiro · Ana Lima</div></div><span class="badge b-re">Atenção</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">ADERÊNCIA</div><div style="font-size:18px;font-weight:800;color:var(--re);font-family:'Syne',sans-serif">61%</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">AUDITORIAS</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif">9</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">CHECKLIST</div><div style="font-size:18px;font-weight:800;color:var(--re);font-family:'Syne',sans-serif">Atr.</div></div>
+      </div>
+      <div style="display:flex;gap:6px"><button class="btn btn-re" style="font-size:11px;flex:1;justify-content:center" onclick="nav('checklist',document.querySelector('.ni[onclick*=checklist]'))">Ver checklist</button><button class="btn btn-o" style="font-size:11px">Editar</button></div>
+    </div>
+    <div style="background:var(--s1);border:1px solid var(--pkb);border-radius:var(--rl);padding:18px 20px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--pk)"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:15px;font-weight:700;font-family:'Syne',sans-serif">Morumbi SP</div><div style="font-size:11px;color:var(--t3)">Morumbi, São Paulo · Fernanda Reis</div></div><span class="badge b-bl">Em montagem</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">ADERÊNCIA</div><div style="font-size:18px;font-weight:800;color:var(--pk);font-family:'Syne',sans-serif">45%</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">INAUGURAÇÃO</div><div style="font-size:18px;font-weight:800;color:var(--pk);font-family:'Syne',sans-serif">5d</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:2px">AUDITORIAS</div><div style="font-size:18px;font-weight:800;font-family:'Syne',sans-serif">2</div></div>
+      </div>
+      <div style="display:flex;gap:6px"><button class="btn btn-pk" style="font-size:11px;flex:1;justify-content:center" onclick="nav('guideline',document.querySelector('.ni[onclick*=guideline]'))">Ver guideline</button><button class="btn btn-o" style="font-size:11px">Editar</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- GUIDELINE -->
+<div class="view" id="v-guideline">
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <select style="background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:7px 11px;font-size:12px;color:var(--t1);outline:none;font-family:'Instrument Sans',sans-serif"><option>Inverno 27 (ativo)</option><option>Verão 27</option></select>
+    <div style="display:flex;gap:6px;margin-left:auto">
+      <button class="btn btn-o" style="font-size:11px" onclick="toast('PDF do guideline baixado')">Baixar PDF</button>
+      <button class="btn btn-pk" style="font-size:11px" onclick="openM('m-novo-guideline')">+ Novo guideline</button>
+    </div>
+  </div>
+  <div class="card card-p">
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="flex:1">
+        <div style="font-size:9.5px;color:var(--pk);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:'DM Mono',monospace">Conceito Inverno 27</div>
+        <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px">"Alfaiataria do Cotidiano"</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:14px">A vitrine deve transmitir sofisticação acessível — peças estruturadas em contextos reais. Priorizar combinações que mostrem versatilidade: couro com linho, blazer com calça pantalona. Iluminação fria e direta nas peças-chave.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span style="background:var(--s3);padding:4px 12px;border-radius:5px;font-size:11.5px">Alfaiataria</span>
+          <span style="background:var(--s3);padding:4px 12px;border-radius:5px;font-size:11.5px">Couro estruturado</span>
+          <span style="background:var(--s3);padding:4px 12px;border-radius:5px;font-size:11.5px">Sobreposição</span>
+          <span style="background:var(--s3);padding:4px 12px;border-radius:5px;font-size:11.5px">Neutros + Caramelo</span>
+        </div>
+      </div>
+      <div style="width:190px;flex-shrink:0">
+        <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:'DM Mono',monospace">Paleta principal</div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:5px;background:#C8A060;border:1px solid var(--b2)"></div><div style="font-size:12px">Caramelo<div style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">#C8A060 · dominante</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:5px;background:#F0EDE8;border:1px solid var(--b2)"></div><div style="font-size:12px">Off-white<div style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">#F0EDE8 · secundário</div></div></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:5px;background:#1A1815;border:1px solid rgba(255,255,255,.1)"></div><div style="font-size:12px">Preto<div style="font-size:10px;color:var(--t3);font-family:'DM Mono',monospace">#1A1815 · acento</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:14px"><span class="sht">Regras obrigatórias</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="background:var(--grd);border:1px solid var(--grb);border-radius:7px;padding:9px 12px;font-size:12px;display:flex;gap:8px;align-items:flex-start"><div style="width:18px;height:18px;border-radius:4px;background:var(--gr);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg></div>Máx. 3 manequins por vitrine — nunca mais de 2 peças de couro simultaneamente</div>
+        <div style="background:var(--grd);border:1px solid var(--grb);border-radius:7px;padding:9px 12px;font-size:12px;display:flex;gap:8px;align-items:flex-start"><div style="width:18px;height:18px;border-radius:4px;background:var(--gr);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg></div>Blazer Alfaiataria Caramelo (MOB-0291) é peça-chave obrigatória em todas as vitrines</div>
+        <div style="background:var(--grd);border:1px solid var(--grb);border-radius:7px;padding:9px 12px;font-size:12px;display:flex;gap:8px;align-items:flex-start"><div style="width:18px;height:18px;border-radius:4px;background:var(--gr);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg></div>Iluminação fria (4000K–5000K) nas peças de couro. Luz ambiente quente nas laterais</div>
+        <div style="background:var(--red);border:1px solid var(--reb);border-radius:7px;padding:9px 12px;font-size:12px;display:flex;gap:8px;align-items:flex-start"><div style="width:18px;height:18px;border-radius:4px;background:var(--re);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Proibido: etiquetas visíveis, manequins com proporções discrepantes, props que distraiam das peças</div>
+        <div style="background:var(--red);border:1px solid var(--reb);border-radius:7px;padding:9px 12px;font-size:12px;display:flex;gap:8px;align-items:flex-start"><div style="width:18px;height:18px;border-radius:4px;background:var(--re);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Proibido misturar coleções diferentes na mesma vitrine sem aprovação prévia</div>
+      </div>
+    </div>
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:14px"><span class="sht">Combinações aprovadas</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:var(--s2);border-radius:8px;padding:10px 12px"><div style="font-size:11.5px;font-weight:600;color:var(--pk);margin-bottom:4px">Montagem 1 — Editorial</div><div style="font-size:12px;color:var(--t2)">Blazer Caramelo + Calça Pantalona Natural + Tricot Off-white por baixo</div><div style="font-size:10px;color:var(--t3);margin-top:3px;font-family:'DM Mono',monospace">MOB-0291 + MOB-0318 + MOB-0327</div></div>
+        <div style="background:var(--s2);border-radius:8px;padding:10px 12px"><div style="font-size:11.5px;font-weight:600;color:var(--pk);margin-bottom:4px">Montagem 2 — Couro Foco</div><div style="font-size:12px;color:var(--t2)">Saia Midi PU Preto + Tricot Oversize Off-white + acessório metálico</div><div style="font-size:10px;color:var(--t3);margin-top:3px;font-family:'DM Mono',monospace">MOB-0299 + MOB-0327</div></div>
+        <div style="background:var(--s2);border-radius:8px;padding:10px 12px"><div style="font-size:11.5px;font-weight:600;color:var(--pk);margin-bottom:4px">Montagem 3 — Minimalista</div><div style="font-size:12px;color:var(--t2)">Vestido Midi Cetim Champagne + cinto estruturado + sapato nude</div><div style="font-size:10px;color:var(--t3);margin-top:3px;font-family:'DM Mono',monospace">MOB-0342</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card card-p">
+    <div class="sh" style="margin-bottom:14px"><span class="sht">Referências visuais — Moodboard Inverno 27</span><div class="shr"><button class="btn btn-pk" style="font-size:11px" onclick="openM('m-add-ref')">+ Adicionar referência</button></div></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div><div style="width:100%;height:130px;border-radius:8px;background:linear-gradient(135deg,#C8A060,#8B6040);margin-bottom:6px"></div><div style="font-size:11px;font-weight:500">Paleta caramelo</div><div style="font-size:10px;color:var(--t3)">Ref. coloração vitrine</div></div>
+      <div><div style="width:100%;height:130px;border-radius:8px;background:linear-gradient(135deg,#2A2520,#4A4038);margin-bottom:6px"></div><div style="font-size:11px;font-weight:500">Couro alfaiataria</div><div style="font-size:10px;color:var(--t3)">Posicionamento manequim</div></div>
+      <div><div style="width:100%;height:130px;border-radius:8px;background:linear-gradient(135deg,#F0EDE8,#D0CAC0);margin-bottom:6px"></div><div style="font-size:11px;font-weight:500">Iluminação fria</div><div style="font-size:10px;color:var(--t3)">Setup de luz obrigatório</div></div>
+      <div><div class="vitrine-img" onclick="toast('Upload de referência visual')" style="height:130px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>+ Adicionar</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- APROVAÇÃO REMOTA -->
+<div class="view" id="v-aprovacao">
+  <div style="background:var(--amd);border:1px solid var(--amb);border-radius:var(--rl);padding:12px 16px;display:flex;align-items:center;gap:10px">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--am)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span style="font-size:12px;color:var(--am)"><strong>3 vitrines aguardando aprovação</strong> — revise cada foto e aprove ou solicite ajuste com comentário.</span>
+  </div>
+  <div class="card card-p">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span class="badge b-am">Aguardando</span><div style="font-size:13px;font-weight:600">Iguatemi SP — Vitrine principal</div><span style="margin-left:auto;font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">Pedro Moura · hoje 08:45</span></div>
+    <div class="g21">
+      <div>
+        <div style="width:100%;height:200px;border-radius:9px;background:linear-gradient(135deg,#C8A060 20%,#2A2520 80%);display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+          <div style="text-align:center"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px">Foto vitrine Iguatemi</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">
+          <div style="background:var(--s2);border-radius:6px;padding:6px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:1px">PEÇAS</div><div style="font-size:13px;font-weight:700">3</div></div>
+          <div style="background:var(--grd);border-radius:6px;padding:6px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:1px">PEÇA-CHAVE</div><div style="font-size:13px;font-weight:700;color:var(--gr)">OK</div></div>
+          <div style="background:var(--amd);border-radius:6px;padding:6px;text-align:center"><div style="font-size:9px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:1px">LUZ</div><div style="font-size:13px;font-weight:700;color:var(--am)">?</div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:9.5px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Checklist de aprovação</div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px"><div style="width:14px;height:14px;border-radius:3px;background:var(--gr);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>Blazer Caramelo presente</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px"><div style="width:14px;height:14px;border-radius:3px;background:var(--gr);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>Paleta correta</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px"><div style="width:14px;height:14px;border-radius:3px;background:var(--am);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/></svg></div>Iluminação não verificada</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:12px"><div style="width:14px;height:14px;border-radius:3px;background:var(--gr);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>Sem etiquetas visíveis</div>
+        </div>
+        <div class="fg" style="margin-top:6px"><label>Comentário (opcional)</label><textarea rows="2" id="comentario-1" placeholder="Ex: Ajustar posição do manequim central..."></textarea></div>
+        <button class="btn btn-gr" style="width:100%;justify-content:center" onclick="aprovarVitrine(1)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+          Aprovar vitrine
+        </button>
+        <button class="btn btn-re" style="width:100%;justify-content:center" onclick="reprovarVitrine(1)">Solicitar ajuste</button>
+      </div>
+    </div>
+  </div>
+  <div class="card card-p">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="badge b-am">Aguardando</span><div style="font-size:13px;font-weight:600">Barra RJ — Vitrine principal</div><span style="margin-left:auto;font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">Ana Lima · ontem 17:20</span></div>
+    <div style="background:var(--red);border:1px solid var(--reb);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--re);margin-bottom:12px"><strong>Atenção:</strong> Blazer Caramelo não identificado na foto. Verificar se está presente.</div>
+    <div style="display:flex;gap:7px">
+      <div class="fg" style="flex:1"><label>Comentário</label><input type="text" id="comentario-2" placeholder="Detalhe o ajuste necessário..."></div>
+      <div style="display:flex;flex-direction:column;gap:6px;justify-content:flex-end">
+        <button class="btn btn-gr" onclick="aprovarVitrine(2)">Aprovar mesmo assim</button>
+        <button class="btn btn-re" onclick="reprovarVitrine(2)">Solicitar ajuste urgente</button>
+      </div>
+    </div>
+  </div>
+  <div class="card card-p">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="badge b-bl">Em montagem</span><div style="font-size:13px;font-weight:600">Morumbi SP — Pré-inauguração</div><span style="margin-left:auto;font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">Fernanda Reis · hoje 07:10</span></div>
+    <div style="background:var(--bld);border:1px solid var(--blb);border-radius:8px;padding:12px 14px;font-size:12.5px;color:var(--t2);margin-bottom:12px">Vitrine em montagem — aprovação prévia para garantir alinhamento antes da inauguração.</div>
+    <div style="display:flex;gap:7px">
+      <div class="fg" style="flex:1"><label>Orientação para a equipe</label><input type="text" placeholder="Instrução ou aprovação..."></div>
+      <div style="display:flex;flex-direction:column;gap:6px;justify-content:flex-end">
+        <button class="btn btn-gr" onclick="aprovarVitrine(3)">Aprovar direção</button>
+        <button class="btn btn-am" onclick="toast('Orientação enviada para Fernanda')">Enviar orientação</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLIST -->
+<div class="view" id="v-checklist">
+  <div class="g4">
+    <div class="mc hg"><div class="mcl">Enviados hoje</div><div class="mcv">2</div><div class="mcs">Jardins + Iguatemi</div></div>
+    <div class="mc hr"><div class="mcl">Atrasados</div><div class="mcv">2</div><div class="mcs">Barra RJ + Morumbi</div></div>
+    <div class="mc hpk"><div class="mcl">Conformidade</div><div class="mcv">87%</div><div class="mcs">últimos 30 dias</div></div>
+    <div class="mc"><div class="mcl">Checklists este mês</div><div class="mcv">62</div><div class="mcs">de 84 esperados</div></div>
+  </div>
+  <div class="g2">
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:14px"><span class="sht">Status de hoje</span><div class="shr"><button class="btn btn-pk" style="font-size:11px" onclick="nav('responder-checklist',document.querySelector('.ni[onclick*=responder-checklist]'))">Responder</button></div></div>
+      <table>
+        <thead><tr><th>Loja</th><th>Responsável</th><th>Enviado</th><th>Conformidade</th><th>Ação</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Jardins SP</strong></td><td>Carla Souza</td><td style="color:var(--gr);font-size:11px">hoje 08:12</td><td><span class="badge b-gr">94%</span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 8px" onclick="openM('m-ver-checklist')">Ver</button></td></tr>
+          <tr><td><strong>Iguatemi SP</strong></td><td>Pedro Moura</td><td style="color:var(--gr);font-size:11px">hoje 09:30</td><td><span class="badge b-am">78%</span></td><td><button class="btn btn-o" style="font-size:10px;padding:2px 8px" onclick="openM('m-ver-checklist')">Ver</button></td></tr>
+          <tr><td><strong>Barra RJ</strong></td><td>Ana Lima</td><td style="color:var(--re);font-size:11px">Não enviado</td><td><span class="badge b-n">—</span></td><td><button class="btn btn-re" style="font-size:10px;padding:2px 8px" onclick="toast('Lembrete enviado para Ana Lima')">Cobrar</button></td></tr>
+          <tr><td><strong>Morumbi SP</strong></td><td>Fernanda Reis</td><td style="color:var(--re);font-size:11px">Não enviado</td><td><span class="badge b-n">—</span></td><td><button class="btn btn-re" style="font-size:10px;padding:2px 8px" onclick="toast('Lembrete enviado para Fernanda Reis')">Cobrar</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card card-p">
+      <div class="sh" style="margin-bottom:12px"><span class="sht">Histórico semanal</span></div>
+      <table>
+        <thead><tr><th>Data</th><th>Jardins</th><th>Iguatemi</th><th>Barra RJ</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">Hoje</td><td><span class="badge b-gr">94%</span></td><td><span class="badge b-am">78%</span></td><td><span class="badge b-re">—</span></td></tr>
+          <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">Ontem</td><td><span class="badge b-gr">91%</span></td><td><span class="badge b-gr">88%</span></td><td><span class="badge b-am">72%</span></td></tr>
+          <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">Anteontem</td><td><span class="badge b-gr">95%</span></td><td><span class="badge b-gr">90%</span></td><td><span class="badge b-gr">81%</span></td></tr>
+          <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">Seg</td><td><span class="badge b-gr">89%</span></td><td><span class="badge b-am">76%</span></td><td><span class="badge b-am">74%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- RESPONDER CHECKLIST -->
+<div class="view" id="v-responder-checklist">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2px">
+    <div class="fg" style="width:200px"><label>Loja</label><select><option>Barra RJ</option><option>Jardins SP</option><option>Iguatemi SP</option><option>Morumbi SP</option></select></div>
+    <div class="fg" style="width:160px"><label>Data</label><input type="text" value="01/05/2026"></div>
+    <div class="fg" style="width:200px"><label>Responsável</label><input type="text" placeholder="Seu nome"></div>
+  </div>
+  <div class="card">
+    <div class="card-p sh"><span class="sht">Checklist diário — Abertura de loja</span></div>
+    <div>
+      <div style="padding:8px 14px;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);font-family:'DM Mono',monospace">Vitrine & Fachada</div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg></div><div class="check-label">Vitrine montada conforme guideline da coleção ativa<div class="check-sub">Verificar combinações aprovadas e peças-chave obrigatórias</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg></div><div class="check-label">Iluminação correta (4000K–5000K nas peças de couro)<div class="check-sub">Verificar temperatura de cor e foco</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Manequins sem etiquetas visíveis<div class="check-sub">Checar costas e dobras das peças</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Fachada limpa e sinalização correta<div class="check-sub">Sem papel adesivo ou cartazes não autorizados</div></div></div>
+    </div>
+    <div>
+      <div style="padding:8px 14px;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);font-family:'DM Mono',monospace">Interior da loja</div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg></div><div class="check-label">Arara organizada por coleção e categoria<div class="check-sub">Frente das araras nivelada, cabides uniformes</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg></div><div class="check-label">Todas as peças com etiqueta e preço visível<div class="check-sub">Sem peças sem precificação</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Provadores organizados (cabide, espelho limpo)<div class="check-sub"></div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">PDV (caixa) organizado — sem objetos pessoais visíveis<div class="check-sub"></div></div></div>
+    </div>
+    <div>
+      <div style="padding:8px 14px;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);font-family:'DM Mono',monospace">Estoque & Limpeza</div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Estoque reabastecido nas araras e prateleiras<div class="check-sub">Verificar rupturas por tamanho e cor</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box checked"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg></div><div class="check-label">Piso e superfícies limpos<div class="check-sub">Espelhos sem manchas, expositores limpos</div></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Perfumação ativa (difusor ou spray ambiente)<div class="check-sub">Fragrância aprovada: Neroli + Madeira</div></div></div>
+    </div>
+    <div class="card-p">
+      <div class="fg" style="margin-bottom:8px"><label>Observações ou ocorrências</label><textarea rows="2" placeholder="Registre qualquer observação importante..."></textarea></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button class="btn btn-o" onclick="nav('checklist',document.querySelector('.ni[onclick*=checklist]'))">Cancelar</button>
+        <button class="btn btn-pk" onclick="enviarChecklist()">Enviar checklist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTÓRICO -->
+<div class="view" id="v-historico-vm">
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <select style="background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:7px 11px;font-size:12px;color:var(--t1);outline:none;font-family:'Instrument Sans',sans-serif"><option>Jardins SP</option><option>Iguatemi SP</option><option>Barra RJ</option><option>Morumbi SP</option></select>
+    <select style="background:var(--s2);border:1px solid var(--b2);border-radius:7px;padding:7px 11px;font-size:12px;color:var(--t1);outline:none;font-family:'Instrument Sans',sans-serif"><option>Últimos 30 dias</option><option>Este mês</option></select>
+    <button class="btn btn-o" style="margin-left:auto;font-size:11px" onclick="toast('Exportando histórico Jardins SP...')">Exportar PDF</button>
+  </div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Data</th><th>Tipo</th><th>Coleção</th><th>Conformidade</th><th>Aprovado por</th><th>Observação</th></tr></thead>
+      <tbody>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">hoje</td><td><span class="badge b-gr">Checklist</span></td><td>Inverno 27</td><td><span class="badge b-gr">94%</span></td><td>Carla Souza</td><td style="font-size:11px;color:var(--t3)">Tudo OK</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ontem</td><td><span class="badge b-pk">Vitrine</span></td><td>Inverno 27</td><td><span class="badge b-gr">Aprovada</span></td><td>Marina VP</td><td style="font-size:11px;color:var(--t3)">Ótima execução montagem 1</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">ontem</td><td><span class="badge b-gr">Checklist</span></td><td>Inverno 27</td><td><span class="badge b-gr">91%</span></td><td>Carla Souza</td><td style="font-size:11px;color:var(--t3)">Provador 2 com ajuste</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">28/04</td><td><span class="badge b-am">Auditoria</span></td><td>Inverno 27</td><td><span class="badge b-gr">92%</span></td><td>Marina VP</td><td style="font-size:11px;color:var(--t3)">Ajuste na iluminação solicitado</td></tr>
+        <tr><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">27/04</td><td><span class="badge b-pk">Vitrine</span></td><td>Inverno 27</td><td><span class="badge b-am">Ajuste solicitado</span></td><td>Marina VP</td><td style="font-size:11px;color:var(--t3)">Montagem 2 corrigida e reaprovada</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- NOVA LOJA -->
+<div class="view" id="v-nova-loja">
+  <div class="card card-p" style="max-width:700px">
+    <div style="font-size:9.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:18px;font-family:'DM Mono',monospace">Cadastrar nova loja</div>
+    <div class="fgrid">
+      <div class="fg"><label>Nome da loja</label><input type="text" placeholder="Ex: Loja Morumbi SP"></div>
+      <div class="fg"><label>Tipo</label><select><option>Loja física</option><option>Quiosque</option><option>Pop-up temporária</option><option>Franqueada</option></select></div>
+      <div class="fg"><label>Endereço completo</label><input type="text" placeholder="Rua, número, bairro"></div>
+      <div class="fg"><label>Cidade / Estado</label><input type="text" placeholder="São Paulo, SP"></div>
+      <div class="fg"><label>Gerente responsável</label><input type="text" placeholder="Nome do gerente"></div>
+      <div class="fg"><label>WhatsApp (checklists)</label><input type="text" placeholder="+55 11 99999-0000"></div>
+      <div class="fg"><label>Área da vitrine (m²)</label><input type="number" placeholder="Ex: 4.5"></div>
+      <div class="fg"><label>Número de manequins</label><input type="number" placeholder="Ex: 3"></div>
+      <div class="fg full"><label>Observações</label><textarea rows="2" placeholder="Particularidades da vitrine, limitações de espaço..."></textarea></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+      <button class="btn btn-o" onclick="nav('lojas',document.querySelector('.ni[onclick*=lojas]'))">Cancelar</button>
+      <button class="btn btn-pk" onclick="toast('Loja cadastrada! Guideline Inverno 27 enviado automaticamente.')">Cadastrar loja</button>
+    </div>
+  </div>
+</div>
+
+<!-- RELATÓRIO -->
+<div class="view" id="v-relatorio">
+  <div class="g4">
+    <div class="mc hpk"><div class="mcl">Aderência média geral</div><div class="mcv">78%</div><div class="mcs">Inverno 27 · 4 lojas</div></div>
+    <div class="mc hg"><div class="mcl">Vitrines aprovadas</div><div class="mcv">12</div><div class="mcs">este mês</div></div>
+    <div class="mc ha"><div class="mcl">Ajustes solicitados</div><div class="mcv">4</div><div class="mcs">taxa de retorno 33%</div></div>
+    <div class="mc"><div class="mcl">Checklists no mês</div><div class="mcv">62</div><div class="mcs">de 84 esperados</div></div>
+  </div>
+  <div class="card card-p">
+    <div class="sh" style="margin-bottom:16px"><span class="sht">Aderência ao guideline por loja</span><div class="shr"><span style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace">Inverno 27 · maio 2026</span></div></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="aderencia-bar"><div class="aderencia-nome">Jardins SP</div><div class="aderencia-track"><div class="aderencia-fill" style="width:92%;background:var(--gr)"></div></div><div class="aderencia-pct" style="color:var(--gr)">92%</div></div>
+      <div class="aderencia-bar"><div class="aderencia-nome">Iguatemi SP</div><div class="aderencia-track"><div class="aderencia-fill" style="width:74%;background:var(--am)"></div></div><div class="aderencia-pct" style="color:var(--am)">74%</div></div>
+      <div class="aderencia-bar"><div class="aderencia-nome">Barra RJ</div><div class="aderencia-track"><div class="aderencia-fill" style="width:61%;background:var(--re)"></div></div><div class="aderencia-pct" style="color:var(--re)">61%</div></div>
+      <div class="aderencia-bar"><div class="aderencia-nome">Morumbi SP</div><div class="aderencia-track"><div class="aderencia-fill" style="width:45%;background:var(--pk)"></div></div><div class="aderencia-pct" style="color:var(--pk)">45%</div></div>
+    </div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--b1)">
+      <div style="font-size:9.5px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Principais gaps identificados</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px"><span class="badge b-re" style="flex-shrink:0">Barra RJ</span><span style="color:var(--t2)">Blazer Caramelo ausente em 3 das últimas 5 vitrines analisadas</span></div>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px"><span class="badge b-am" style="flex-shrink:0">Iguatemi</span><span style="color:var(--t2)">Iluminação não verificada em 40% dos checklists enviados</span></div>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:12px"><span class="badge b-am" style="flex-shrink:0">Geral</span><span style="color:var(--t2)">Checklists de fim de expediente com baixa taxa de envio (62%)</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTRUÇÕES -->
+<div class="view" id="v-instrucoes">
+  <div style="max-width:800px">
+    <div style="background:var(--s1);border:1px solid var(--pkb);border-radius:var(--rl);padding:20px 24px;margin-bottom:14px;display:flex;align-items:flex-start;gap:16px">
+      <div style="width:44px;height:44px;background:var(--pkd);border:1.5px solid var(--pkb);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pk)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
+      <div><div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px">FashionHub Loja & VM — Módulo 5</div><div style="font-size:12px;color:var(--t2);line-height:1.6">Gestão completa do ponto de venda: guideline de vitrine por coleção, checklist diário, aprovação remota de montagens via foto, histórico de auditorias e relatório de aderência.</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Guideline de vitrine</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Criado por coleção e temporada. Contém conceito, paleta, regras obrigatórias e combinações aprovadas. Enviado para todas as lojas ao publicar.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Checklist diário</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">O gerente de loja responde o checklist de abertura. O sistema alerta quando está atrasado. Histórico acumulado por loja.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Aprovação remota</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Gerente tira foto da vitrine e envia. A direção visual revisa remotamente e aprova ou solicita ajuste com comentário. Toda a linha do tempo fica registrada.</div></div>
+      <div style="background:var(--s1);border:1px solid var(--b1);border-radius:var(--rl);padding:15px"><div style="font-size:12px;font-weight:600;margin-bottom:6px">Relatório de aderência</div><div style="font-size:11.5px;color:var(--t2);line-height:1.7">Score de aderência ao guideline por loja. Identifica gaps: peças ausentes, iluminação incorreta, baixa frequência de checklist.</div></div>
+    </div>
+  </div>
+</div>
+
+</div></div></div>
+
+<!-- MODALS -->
+<div class="mo" id="m-novo-guideline">
+  <div class="mbox">
+    <div class="mt">Novo guideline de vitrine<button class="mcls" onclick="closeM('m-novo-guideline')">×</button></div>
+    <div class="ms">Crie o guideline para uma nova coleção ou temporada</div>
+    <div class="fgrid">
+      <div class="fg"><label>Nome da coleção</label><input type="text" placeholder="Ex: Verão 28"></div>
+      <div class="fg"><label>Temporada</label><select><option>Inverno</option><option>Verão</option><option>Resort</option><option>Cápsula</option></select></div>
+      <div class="fg full"><label>Conceito criativo</label><textarea rows="3" placeholder="Descreva o conceito e a direção visual desta coleção para as vitrines..."></textarea></div>
+      <div class="fg full"><label>Peça-chave obrigatória</label><input type="text" placeholder="Referência e nome da peça principal"></div>
+      <div class="fg"><label>Paleta dominante</label><input type="text" placeholder="Ex: Caramelo, Off-white, Preto"></div>
+      <div class="fg"><label>Lojas que receberão</label><select><option>Todas as lojas ativas</option><option>Selecionar lojas</option></select></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-o" onclick="closeM('m-novo-guideline')">Cancelar</button>
+      <button class="btn btn-pk" onclick="closeM('m-novo-guideline');toast('Guideline publicado e enviado para todas as lojas!')">Publicar guideline</button>
+    </div>
+  </div>
+</div>
+
+<div class="mo" id="m-add-ref">
+  <div class="mbox" style="width:460px">
+    <div class="mt">Adicionar referência visual<button class="mcls" onclick="closeM('m-add-ref')">×</button></div>
+    <div class="ms">Adicione uma foto de inspiração ao moodboard</div>
+    <div class="fgrid">
+      <div class="fg full"><label>Upload de imagem</label><div class="vitrine-img" onclick="toast('Selecione um arquivo de imagem')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>Clique para selecionar (JPG, PNG)</span></div></div>
+      <div class="fg full"><label>Legenda</label><input type="text" placeholder="Ex: Referência de iluminação fria em alfaiataria"></div>
+      <div class="fg"><label>Categoria</label><select><option>Coloração</option><option>Iluminação</option><option>Posicionamento</option><option>Combinação de peças</option></select></div>
+    </div>
+    <div class="mact"><button class="btn btn-o" onclick="closeM('m-add-ref')">Cancelar</button><button class="btn btn-pk" onclick="closeM('m-add-ref');toast('Referência adicionada ao moodboard!')">Adicionar</button></div>
+  </div>
+</div>
+
+<div class="mo" id="m-ver-checklist">
+  <div class="mbox">
+    <div class="mt">Checklist — Jardins SP · hoje<button class="mcls" onclick="closeM('m-ver-checklist')">×</button></div>
+    <div class="ms">Respondido por Carla Souza · 08:12 · 94% de conformidade</div>
+    <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:7px;font-size:12.5px"><div style="width:14px;height:14px;border-radius:3px;background:var(--gr);flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>Vitrine montada conforme guideline</div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12.5px"><div style="width:14px;height:14px;border-radius:3px;background:var(--gr);flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>Iluminação correta</div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12.5px"><div style="width:14px;height:14px;border-radius:3px;background:var(--gr);flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></div>Sem etiquetas visíveis</div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12.5px"><div style="width:14px;height:14px;border-radius:3px;background:var(--re);flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>Provadores — cabide do provador 2 com defeito (não urgente)</div>
+    </div>
+    <div class="mact"><button class="btn btn-o" onclick="closeM('m-ver-checklist')">Fechar</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toast-msg"></span></div>
+
+<script>
+function nav(id, el) {
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('on'); });
+  var v = document.getElementById('v-' + id);
+  if (v) v.classList.add('on');
+  document.querySelectorAll('.ni').forEach(function(n) { n.classList.remove('on'); });
+  if (el) el.classList.add('on');
+  var t = {dashboard:'Dashboard',lojas:'Lojas Ativas','nova-loja':'Cadastrar Loja',guideline:'Guideline de Vitrine',aprovacao:'Aprovação Remota','historico-vm':'Histórico por Loja',checklist:'Checklist de Loja','responder-checklist':'Responder Checklist',relatorio:'Relatório de Aderência',instrucoes:'Instruções'};
+  if (t[id]) document.getElementById('page-title').textContent = t[id];
+}
+function openM(id) { document.getElementById(id).classList.add('on'); }
+function closeM(id) { document.getElementById(id).classList.remove('on'); }
+function toast(msg) {
+  var el = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  el.classList.add('show');
+  setTimeout(function() { el.classList.remove('show'); }, 3200);
+}
+function toggleCheck(el) {
+  var box = el.querySelector('.check-box');
+  if (box.classList.contains('checked')) {
+    box.classList.remove('checked');
+  } else {
+    box.classList.add('checked');
+    box.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>';
+  }
+}
+function enviarChecklist() {
+  var todos = document.querySelectorAll('#v-responder-checklist .check-box').length;
+  var marcados = document.querySelectorAll('#v-responder-checklist .check-box.checked').length;
+  var pct = Math.round((marcados / todos) * 100);
+  toast('Checklist enviado! Conformidade: ' + pct + '%');
+  setTimeout(function() { nav('checklist', document.querySelector('.ni[onclick*=checklist]')); }, 800);
+}
+function aprovarVitrine(id) {
+  toast('Vitrine aprovada! Gerente notificado via WhatsApp.');
+}
+function reprovarVitrine(id) {
+  var c = document.getElementById('comentario-' + id);
+  var msg = c && c.value ? c.value : 'Ajuste necessário';
+  toast('Ajuste solicitado: ' + msg.substring(0, 60));
+}
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  try { localStorage.setItem('fh-theme', cur === 'dark' ? 'light' : 'dark'); } catch(e) {}
+}
+window.addEventListener('load', function() {
+  try { var t = localStorage.getItem('fh-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch(e) {}
+});
+</script>
+</body>
+</html>

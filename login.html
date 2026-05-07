@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FashionHub — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090C;--s1:#0E0F14;--s2:#14151C;--s3:#1C1D26;
+  --b1:rgba(255,255,255,0.06);--b2:rgba(255,255,255,0.11);
+  --ac:#E8650A;--ac2:#FF7A1F;--acd:rgba(232,101,10,0.12);--acb:rgba(232,101,10,0.28);
+  --t1:#F0EDE8;--t2:#888480;--t3:#484440;
+  --gr:#4CAF80;--grd:rgba(76,175,128,0.10);--grb:rgba(76,175,128,0.22);
+  --re:#E06060;--red:rgba(224,96,96,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t1)}
+
+/* FUNDO ANIMADO */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(232,101,10,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 15% 80%, rgba(232,101,10,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(76,175,128,0.03) 0%, transparent 50%);
+  animation: bg-shift 12s ease-in-out infinite alternate;
+}
+@keyframes bg-shift{
+  0%{background-position:0% 0%}
+  100%{background-position:100% 100%}
+}
+
+/* GRID DE FUNDO */
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+
+/* LAYOUT PRINCIPAL */
+.layout{
+  position:relative;z-index:1;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:24px;
+}
+
+/* PAINEL ESQUERDO — BRAND */
+.brand-side{
+  flex:1;max-width:480px;padding:48px;
+  display:flex;flex-direction:column;justify-content:center;
+  margin-right:60px;
+}
+.brand-logo{
+  display:flex;align-items:center;gap:12px;margin-bottom:48px;
+}
+.brand-logo-mark{
+  width:44px;height:44px;background:var(--ac);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#08090C;
+  box-shadow:0 8px 32px rgba(232,101,10,0.4);
+}
+.brand-name{
+  font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
+  letter-spacing:-.03em;
+}
+.brand-name b{color:var(--ac)}
+.brand-sub{font-size:11px;font-family:'DM Mono',monospace;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
+
+.brand-headline{
+  font-family:'Syne',sans-serif;font-size:clamp(32px,4vw,48px);
+  font-weight:800;letter-spacing:-.03em;line-height:1.05;
+  margin-bottom:20px;
+}
+.brand-headline span{color:var(--ac)}
+.brand-desc{
+  font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:40px;max-width:380px;
+}
+
+.modulo-list{display:flex;flex-direction:column;gap:10px}
+.modulo-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--s1);border:1px solid var(--b1);border-radius:10px;
+  padding:12px 16px;transition:border-color .2s;
+}
+.modulo-item:hover{border-color:var(--b2)}
+.modulo-icon{
+  width:34px;height:34px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.modulo-info{flex:1}
+.modulo-name{font-size:12.5px;font-weight:500;margin-bottom:1px}
+.modulo-desc{font-size:11px;color:var(--t3)}
+.modulo-badge{font-size:9px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:99px;flex-shrink:0}
+
+/* PAINEL DIREITO — FORM */
+.login-side{
+  width:420px;flex-shrink:0;
+}
+.login-card{
+  background:var(--s1);border:1px solid var(--b1);border-radius:18px;
+  padding:36px 32px;
+  box-shadow:0 24px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
+}
+.login-title{
+  font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
+  letter-spacing:-.02em;margin-bottom:6px;
+}
+.login-sub{font-size:12.5px;color:var(--t2);margin-bottom:28px;line-height:1.5}
+
+/* QUICK LOGIN PILLS */
+.quick-label{font-size:9.5px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.quick-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.qpill{
+  padding:5px 12px;border-radius:99px;border:1px solid var(--b2);
+  background:transparent;color:var(--t2);font-size:11px;
+  font-family:'Instrument Sans',sans-serif;cursor:pointer;transition:all .15s;
+}
+.qpill:hover{background:var(--s2);color:var(--t1)}
+.qpill.active{background:var(--acd);color:var(--ac);border-color:var(--acb)}
+
+/* DIVIDER */
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0}
+.div-line{flex:1;height:1px;background:var(--b1)}
+.div-txt{font-size:10px;color:var(--t3);font-family:'DM Mono',monospace;white-space:nowrap}
+
+/* FORM FIELDS */
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.fg label{font-size:11px;color:var(--t2);font-weight:500;letter-spacing:.02em}
+.fg-input-wrap{position:relative}
+.fg input{
+  width:100%;background:var(--s2);border:1px solid var(--b2);
+  border-radius:9px;padding:11px 14px;
+  font-family:'Instrument Sans',sans-serif;font-size:13px;
+  color:var(--t1);outline:none;transition:all .2s;
+}
+.fg input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--acd)}
+.fg input::placeholder{color:var(--t3)}
+.fg-icon{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:14px;cursor:pointer;user-select:none;transition:color .15s}
+.fg-icon:hover{color:var(--t2)}
+
+/* ERRO */
+.form-error{
+  background:var(--red);border:1px solid rgba(224,96,96,.25);
+  border-radius:8px;padding:10px 13px;
+  font-size:12px;color:var(--re);margin-bottom:14px;
+  display:none;align-items:center;gap:8px;
+}
+.form-error.show{display:flex}
+
+/* BTN */
+.btn-login{
+  width:100%;padding:13px;border-radius:10px;
+  background:var(--ac);color:#08090C;border:none;
+  font-family:'Instrument Sans',sans-serif;font-size:13.5px;font-weight:600;
+  cursor:pointer;transition:all .2s;margin-top:4px;
+  box-shadow:0 4px 20px rgba(232,101,10,0.35);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-login:hover{background:var(--ac2);transform:translateY(-1px);box-shadow:0 8px 28px rgba(232,101,10,0.45)}
+.btn-login:active{transform:translateY(0)}
+.btn-login:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* LOADING SPINNER */
+.spinner{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid rgba(0,0,0,.3);border-top-color:#08090C;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ESQUECEU SENHA */
+.forgot{
+  text-align:center;margin-top:16px;
+  font-size:11.5px;color:var(--t3);
+}
+.forgot a{color:var(--t2);text-decoration:none;cursor:pointer;transition:color .15s}
+.forgot a:hover{color:var(--ac)}
+
+/* ROLES PREVIEW */
+.role-preview{
+  margin-top:20px;padding:14px;
+  background:var(--s2);border-radius:10px;border:1px solid var(--b1);
+  display:none;
+}
+.role-preview.show{display:block}
+.role-preview-title{font-size:9.5px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.role-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:6px;font-size:11px;
+  font-family:'DM Mono',monospace;font-weight:500;margin-bottom:8px;
+}
+.perm-list{display:flex;flex-direction:column;gap:4px}
+.perm-item{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--t2)}
+.perm-icon{font-size:10px;flex-shrink:0;width:16px;text-align:center}
+
+/* VERSÃO */
+.version{
+  text-align:center;margin-top:20px;
+  font-size:10px;color:var(--t3);font-family:'DM Mono',monospace;
+}
+
+/* SCREEN DE SUCESSO */
+.success-screen{
+  display:none;flex-direction:column;align-items:center;
+  text-align:center;padding:20px 0;
+}
+.success-screen.show{display:flex}
+.success-avatar{
+  width:64px;height:64px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
+  margin-bottom:16px;
+  box-shadow:0 8px 32px rgba(232,101,10,0.3);
+}
+.success-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px}
+.success-role{font-size:11.5px;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:20px}
+.success-modulos{display:flex;flex-direction:column;gap:8px;width:100%;margin-bottom:20px}
+.success-modulo-btn{
+  width:100%;padding:12px 16px;border-radius:10px;
+  background:var(--s2);border:1px solid var(--b1);
+  color:var(--t1);font-family:'Instrument Sans',sans-serif;
+  font-size:13px;font-weight:500;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;gap:10px;
+  text-decoration:none;
+}
+.success-modulo-btn:hover{border-color:var(--acb);background:var(--acd);color:var(--ac)}
+.success-modulo-btn .btn-icon{font-size:16px}
+.success-modulo-btn .btn-label{flex:1;text-align:left}
+.success-modulo-btn .btn-role-tag{font-size:9px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:99px}
+.logout-btn{font-size:11.5px;color:var(--t3);background:none;border:none;cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:color .15s}
+.logout-btn:hover{color:var(--t2)}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  .layout{flex-direction:column;padding:20px}
+  .brand-side{margin-right:0;margin-bottom:32px;max-width:420px;padding:24px}
+  .login-side{width:100%;max-width:420px}
+  .brand-headline{font-size:28px}
+}
+
+[data-theme="light"] {
+  --bg:#F5F4F2;--s1:#FFFFFF;--s2:#F0EFEC;--s3:#E8E6E2;--s4:#DDD9D4;
+  --b1:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.12);--b3:rgba(0,0,0,0.18);
+  --ac:#E8650A;--ac2:#D45A08;--acd:rgba(232,101,10,0.09);--acb:rgba(232,101,10,0.22);
+  --t1:#1A1815;--t2:#5A5650;--t3:#9A9690;--t4:#C4C0BA;
+  --gr:#2E7D52;--grd:rgba(46,125,82,0.09);--grb:rgba(46,125,82,0.2);
+  --re:#C0392B;--red:rgba(192,57,43,0.08);
+  --am:#B8860B;--amd:rgba(184,134,11,0.09);
+  --bl:#2563EB;--bld:rgba(37,99,235,0.09);
+  --pu:#7C3AED;--pud:rgba(124,58,237,0.09);
+}
+*,*::before,*::after{transition:background .2s ease,color .2s ease,border-color .2s ease}
+.btn-login,.qpill{transition:all .15s !important}
+.theme-float{position:fixed;top:16px;right:16px;z-index:100;display:flex;align-items:center;gap:6px;background:var(--s1);border:1px solid var(--b1);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:11px;color:var(--t2)}
+.theme-float:hover{border-color:var(--acb);color:var(--ac)}
+.theme-toggle-sm{width:28px;height:16px;border-radius:8px;background:var(--s4);border:1px solid var(--b2);position:relative;flex-shrink:0}
+.theme-toggle-sm::after{content:'';position:absolute;width:11px;height:11px;border-radius:50%;top:1.5px;left:1.5px;background:var(--t2);transition:transform .2s ease,background .2s ease}
+[data-theme="light"] .theme-toggle-sm::after{transform:translateX(12px);background:var(--ac)}
+
+</style>
+<script>try{if(localStorage.getItem('fh-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}</script>
+</head>
+<body>
+
+
+<div class="theme-float" onclick="toggleTheme()">
+  <span id="theme-icon">◐</span>
+  <div class="theme-toggle-sm"></div>
+</div>
+
+<div class="layout">
+  <!-- BRAND SIDE -->
+  <div class="brand-side">
+    <div class="brand-logo">
+      <div class="brand-logo-mark">F</div>
+      <div>
+        <div class="brand-name">Fashion<b>Hub</b></div>
+        <div class="brand-sub">Plataforma de Gestão — Moda</div>
+      </div>
+    </div>
+
+    <h1 class="brand-headline">
+      Gestão completa<br>para marcas de<br><span>moda que vendem.</span>
+    </h1>
+    <p class="brand-desc">
+      Do fornecedor ao cliente final. Amostras, pedidos, atacado, representantes, crédito e inteligência de vendas — em uma plataforma modular.
+    </p>
+
+    <div class="modulo-list">
+      <div class="modulo-item">
+        <div class="modulo-icon" style="background:rgba(152,120,208,0.12);border:1px solid rgba(152,120,208,0.2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v16z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg></div>
+        <div class="modulo-info">
+          <div class="modulo-name">Módulo Fornecedores</div>
+          <div class="modulo-desc">Amostras, pedidos de produção, Agente IA, NFs, contratos</div>
+        </div>
+        <span class="modulo-badge" style="background:rgba(76,175,128,0.1);color:#4CAF80;border:1px solid rgba(76,175,128,0.22)">Ativo</span>
+      </div>
+      <div class="modulo-item">
+        <div class="modulo-icon" style="background:rgba(232,101,10,0.10);border:1px solid rgba(232,101,10,0.2)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M12 2l10 6.5v7L12 22 2 15.5v-7L12 2z"/><path d="M12 22V9"/><path d="M22 8.5l-10 6.5-10-6.5"/></svg></div>
+        <div class="modulo-info">
+          <div class="modulo-name">Módulo Atacado</div>
+          <div class="modulo-desc">Clientes, pedidos, representantes, crédito, faturamento</div>
+        </div>
+        <span class="modulo-badge" style="background:rgba(76,175,128,0.1);color:#4CAF80;border:1px solid rgba(76,175,128,0.22)">Ativo</span>
+      </div>
+      <div class="modulo-item" style="opacity:.5">
+        <div class="modulo-icon" style="background:rgba(96,144,216,0.10);border:1px solid rgba(96,144,216,0.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></div>
+        <div class="modulo-info">
+          <div class="modulo-name">Módulo Coleção & Estilo</div>
+          <div class="modulo-desc">Calendário, briefing, ficha técnica, lookbook</div>
+        </div>
+        <span class="modulo-badge" style="background:var(--s3);color:var(--t3);border:1px solid var(--b1)">Em breve</span>
+      </div>
+      <div class="modulo-item" style="opacity:.5">
+        <div class="modulo-icon" style="background:rgba(224,168,64,0.10);border:1px solid rgba(224,168,64,0.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M2 3h20v4H2z"/><path d="M4 7v13a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7"/><path d="M10 11h4"/><path d="M8 7v1a4 4 0 0 1-4 4 4 4 0 0 1-4-4V7"/><path d="M16 7v1a4 4 0 0 0 4 4 4 4 0 0 0 4-4V7"/></svg></div>
+        <div class="modulo-info">
+          <div class="modulo-name">Módulo Estoque & Loja</div>
+          <div class="modulo-desc">Grade, saldo, VM, transferências entre lojas</div>
+        </div>
+        <span class="modulo-badge" style="background:var(--s3);color:var(--t3);border:1px solid var(--b1)">Em breve</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN SIDE -->
+  <div class="login-side">
+    <div class="login-card">
+      <!-- FORM DE LOGIN -->
+      <div id="login-form-area">
+        <div class="login-title">Entrar na plataforma</div>
+        <div class="login-sub">Acesse com seu e-mail corporativo. Seu perfil define os módulos e dados disponíveis.</div>
+
+        <!-- QUICK LOGIN -->
+        <div class="quick-label">Acesso rápido — demonstração</div>
+        <div class="quick-pills">
+          <button class="qpill" onclick="quickLogin('admin@marca.com','admin123','admin')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M2 20h20"/><path d="M5 20V8l7-6 7 6v12"/><path d="M9 20v-5h6v5"/></svg> Admin</button>
+          <button class="qpill" onclick="quickLogin('carla@marca.com','rep123','representante')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/></svg> Representante</button>
+          <button class="qpill" onclick="quickLogin('financeiro@marca.com','fin123','financeiro')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Financeiro</button>
+          <button class="qpill" onclick="quickLogin('estilo@marca.com','est123','estilo')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg> Estilo</button>
+          <button class="qpill" onclick="quickLogin('compras@marca.com','com123','compras')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v16z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg> Compras</button>
+        </div>
+
+        <div class="divider">
+          <div class="div-line"></div>
+          <span class="div-txt">ou entre com e-mail</span>
+          <div class="div-line"></div>
+        </div>
+
+        <div class="form-error" id="form-error">
+          <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span id="error-msg">E-mail ou senha incorretos</span>
+        </div>
+
+        <div class="fg">
+          <label>E-mail corporativo</label>
+          <div class="fg-input-wrap">
+            <input type="email" id="inp-email" placeholder="seu@marca.com.br" autocomplete="email"
+              onkeydown="if(event.key==='Enter')document.getElementById('inp-senha').focus()">
+            <span class="fg-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Senha</label>
+          <div class="fg-input-wrap">
+            <input type="password" id="inp-senha" placeholder="••••••••" autocomplete="current-password"
+              onkeydown="if(event.key==='Enter')fazerLogin()">
+            <span class="fg-icon" id="toggle-pass" onclick="togglePass()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+          </div>
+        </div>
+
+        <!-- ROLE PREVIEW dinâmico -->
+        <div class="role-preview" id="role-preview">
+          <div class="role-preview-title">Perfil detectado</div>
+          <div id="role-tag-container"></div>
+          <div class="perm-list" id="perm-list"></div>
+        </div>
+
+        <button class="btn-login" id="btn-login" onclick="fazerLogin()">
+          Entrar →
+        </button>
+
+        <div class="forgot">
+          <a onclick="toast('Link de recuperação enviado para seu e-mail')">Esqueceu sua senha?</a>
+          &nbsp;·&nbsp;
+          <a onclick="toast('Entre em contato com o admin da sua marca')">Precisa de acesso?</a>
+        </div>
+      </div>
+
+      <!-- TELA PÓS-LOGIN -->
+      <div class="success-screen" id="success-screen">
+        <div class="success-avatar" id="suc-avatar"></div>
+        <div class="success-name" id="suc-name"></div>
+        <div class="success-role" id="suc-role"></div>
+        <div class="success-modulos" id="suc-modulos"></div>
+        <button class="logout-btn" onclick="fazerLogout()">← Trocar usuário</button>
+      </div>
+    </div>
+
+    <div class="version">FashionHub v1.0 · Brand Voice · brandvoice.com.br</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#1C1D26;border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:10px 18px;font-size:12.5px;color:#F0EDE8;z-index:999;opacity:0;transition:all .3s ease;white-space:nowrap"></div>
+
+<script>
+// ═══════════════════════════════════
+// BASE DE USUÁRIOS
+// ═══════════════════════════════════
+const USERS = [
+  {
+    email:'admin@marca.com', senha:'admin123',
+    nome:'Vanessa Queluz', cargo:'Diretora Geral',
+    role:'admin', avatar:'VQ', cor:'#E8650A', corBg:'rgba(232,101,10,0.12)',
+    modulos:[
+      {id:'fornecedores', label:'Módulo Fornecedores', icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v16z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>', file:'fashionhub-fornecedores-v1.html', tag:'Admin — Acesso total'},
+      {id:'atacado', label:'Módulo Atacado', icon:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M12 2l10 6.5v7L12 22 2 15.5v-7L12 2z"/><path d="M12 22V9"/><path d="M22 8.5l-10 6.5-10-6.5"/></svg>', file:'fashionhub-atacado-v1.html', tag:'Admin — Acesso total'},
+    ],
+    permissoes:['Todos os módulos','Gestão de usuários','Tabela de preços','Relatórios financeiros','Aprovações','Configurações']
+  },
+  {
+    email:'carla@marca.com', senha:'rep123',
+    nome:'Carla Mendonça', cargo:'Representante — SP Interior',
+    role:'representante', avatar:'CM', cor:'#4CAF80', corBg:'rgba(76,175,128,0.10)',
+    modulos:[
+      {id:'atacado', label:'Módulo Atacado', icon:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M12 2l10 6.5v7L12 22 2 15.5v-7L12 2z"/><path d="M12 22V9"/><path d="M22 8.5l-10 6.5-10-6.5"/></svg>', file:'fashionhub-atacado-v1.html?role=representante&rep=0', tag:'Sua carteira — SP Interior'},
+    ],
+    permissoes:['Seus clientes (SP Interior)','Seus pedidos','Sua meta e comissão','Histórico de vendas','Cadastrar novo cliente']
+  },
+  {
+    email:'paulo@marca.com', senha:'rep123',
+    nome:'Paulo Nobre', cargo:'Representante — Sul',
+    role:'representante', avatar:'PN', cor:'#4CAF80', corBg:'rgba(76,175,128,0.10)',
+    modulos:[
+      {id:'atacado', label:'Módulo Atacado', icon:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M12 2l10 6.5v7L12 22 2 15.5v-7L12 2z"/><path d="M12 22V9"/><path d="M22 8.5l-10 6.5-10-6.5"/></svg>', file:'fashionhub-atacado-v1.html?role=representante&rep=1', tag:'Sua carteira — Sul'},
+    ],
+    permissoes:['Seus clientes (Sul)','Seus pedidos','Sua meta e comissão','Histórico de vendas','Cadastrar novo cliente']
+  },
+  {
+    email:'ana@marca.com', senha:'rep123',
+    nome:'Ana Lima', cargo:'Representante — RJ + ES',
+    role:'representante', avatar:'AL', cor:'#4CAF80', corBg:'rgba(76,175,128,0.10)',
+    modulos:[
+      {id:'atacado', label:'Módulo Atacado', icon:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M12 2l10 6.5v7L12 22 2 15.5v-7L12 2z"/><path d="M12 22V9"/><path d="M22 8.5l-10 6.5-10-6.5"/></svg>', file:'fashionhub-atacado-v1.html?role=representante&rep=2', tag:'Sua carteira — RJ + ES'},
+    ],
+    permissoes:['Seus clientes (RJ+ES)','Seus pedidos','Sua meta e comissão','Histórico de vendas','Cadastrar novo cliente']
+  },
+  {
+    email:'financeiro@marca.com', senha:'fin123',
+    nome:'Roberto Costa', cargo:'Gestor Financeiro',
+    role:'financeiro', avatar:'RC', cor:'#6090D8', corBg:'rgba(96,144,216,0.10)',
+    modulos:[
+      {id:'fornecedores', label:'Módulo Fornecedores', icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v16z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>', file:'fashionhub-fornecedores-v1.html?role=financeiro', tag:'Só leitura financeira'},
+      {id:'atacado', label:'Módulo Atacado', icon:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M12 2l10 6.5v7L12 22 2 15.5v-7L12 2z"/><path d="M12 22V9"/><path d="M22 8.5l-10 6.5-10-6.5"/></svg>', file:'fashionhub-atacado-v1.html?role=financeiro', tag:'Crédito + Faturamento'},
+    ],
+    permissoes:['Crédito & adimplência','Faturamento e NFs','Contratos','Histórico financeiro','Sem acesso a tabela de preços']
+  },
+  {
+    email:'estilo@marca.com', senha:'est123',
+    nome:'Marina Dias', cargo:'Coordenadora de Estilo',
+    role:'estilo', avatar:'MD', cor:'#9878D0', corBg:'rgba(152,120,208,0.10)',
+    modulos:[
+      {id:'fornecedores', label:'Módulo Fornecedores', icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v16z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>', file:'fashionhub-fornecedores-v1.html?role=estilo', tag:'Amostras e aprovações'},
+    ],
+    permissoes:['Amostras aguardando aprovação','Histórico de amostras','Aprovar ou reprovar amostras','Sem acesso a pedidos de produção']
+  },
+  {
+    email:'compras@marca.com', senha:'com123',
+    nome:'Felipe Torres', cargo:'Gerente de Compras',
+    role:'compras', avatar:'FT', cor:'#E0A840', corBg:'rgba(224,168,64,0.10)',
+    modulos:[
+      {id:'fornecedores', label:'Módulo Fornecedores', icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0" ><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v16z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>', file:'fashionhub-fornecedores-v1.html?role=compras', tag:'Fornecedores + Pedidos'},
+    ],
+    permissoes:['Score & cadastro de fornecedores','Pedidos de produção','Amostras','Contratos e NFs','Sem aprovação de amostras']
+  },
+];
+
+const ROLE_LABELS = {
+  admin:        {label:'Administrador', cor:'var(--ac)', bg:'var(--acd)', border:'var(--acb)'},
+  representante:{label:'Representante', cor:'#4CAF80', bg:'rgba(76,175,128,.1)', border:'rgba(76,175,128,.22)'},
+  financeiro:   {label:'Financeiro', cor:'#6090D8', bg:'rgba(96,144,216,.1)', border:'rgba(96,144,216,.22)'},
+  estilo:       {label:'Estilo', cor:'#9878D0', bg:'rgba(152,120,208,.1)', border:'rgba(152,120,208,.22)'},
+  compras:      {label:'Compras', cor:'#E0A840', bg:'rgba(224,168,64,.1)', border:'rgba(224,168,64,.22)'},
+};
+
+// ═══════════════════════════════════
+// LÓGICA DE LOGIN
+// ═══════════════════════════════════
+let currentUser = null;
+
+function quickLogin(email, senha, role) {
+  document.getElementById('inp-email').value = email;
+  document.getElementById('inp-senha').value = senha;
+  document.querySelectorAll('.qpill').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  showRolePreview(email);
+  // pequeno delay para mostrar preview antes de logar
+  setTimeout(() => fazerLogin(), 600);
+}
+
+document.getElementById('inp-email').addEventListener('input', function() {
+  showRolePreview(this.value);
+});
+
+function showRolePreview(email) {
+  const user = USERS.find(u => u.email.toLowerCase() === email.toLowerCase());
+  const preview = document.getElementById('role-preview');
+  if (!user) { preview.classList.remove('show'); return; }
+  const rl = ROLE_LABELS[user.role];
+  document.getElementById('role-tag-container').innerHTML =
+    `<span class="role-tag" style="background:${rl.bg};color:${rl.cor};border:1px solid ${rl.border}">${rl.label} — ${user.cargo}</span>`;
+  document.getElementById('perm-list').innerHTML = user.permissoes.map((p,i) =>
+    `<div class="perm-item"><span class="perm-icon" style="color:${i<user.permissoes.length-1?'#4CAF80':'#E06060'}">${i<user.permissoes.length-1?`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><polyline points="20,6 9,17 4,12"/></svg>`:`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`}</span>${p}</div>`
+  ).join('');
+  preview.classList.add('show');
+}
+
+function togglePass() {
+  const inp = document.getElementById('inp-senha');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  document.getElementById('toggle-pass').textContent = inp.type === 'password' ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>` : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+}
+
+function fazerLogin() {
+  const email = document.getElementById('inp-email').value.trim();
+  const senha = document.getElementById('inp-senha').value;
+  const errEl = document.getElementById('form-error');
+  const btn = document.getElementById('btn-login');
+
+  if (!email || !senha) {
+    showError('Preencha e-mail e senha');
+    return;
+  }
+
+  // Loading
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Verificando...';
+  errEl.classList.remove('show');
+
+  setTimeout(() => {
+    const user = USERS.find(u =>
+      u.email.toLowerCase() === email.toLowerCase() && u.senha === senha
+    );
+
+    btn.disabled = false;
+    btn.innerHTML = 'Entrar →';
+
+    if (!user) {
+      showError('E-mail ou senha incorretos. Tente os atalhos acima para demonstração.');
+      return;
+    }
+
+    currentUser = user;
+    mostrarSucesso(user);
+  }, 900);
+}
+
+function showError(msg) {
+  const el = document.getElementById('form-error');
+  document.getElementById('error-msg').textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+function mostrarSucesso(user) {
+  // Esconde form, mostra sucesso
+  document.getElementById('login-form-area').style.display = 'none';
+  const suc = document.getElementById('success-screen');
+  suc.classList.add('show');
+
+  const rl = ROLE_LABELS[user.role];
+
+  const av = document.getElementById('suc-avatar');
+  av.textContent = user.avatar;
+  av.style.background = user.corBg;
+  av.style.color = user.cor;
+  av.style.border = `1.5px solid ${user.cor}44`;
+
+  document.getElementById('suc-name').textContent = user.nome;
+  document.getElementById('suc-role').innerHTML =
+    `<span style="background:${rl.bg};color:${rl.cor};border:1px solid ${rl.border};padding:3px 10px;border-radius:99px;">${rl.label}</span> &nbsp;·&nbsp; ${user.cargo}`;
+
+  const modContainer = document.getElementById('suc-modulos');
+  modContainer.innerHTML = `<div style="font-size:11px;color:var(--t3);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;text-align:left">Selecione o módulo</div>`;
+  user.modulos.forEach(m => {
+    const btn = document.createElement('a');
+    btn.href = m.file;
+    btn.className = 'success-modulo-btn';
+    btn.innerHTML = `
+      <span class="btn-icon">${m.icon}</span>
+      <span class="btn-label">${m.label}</span>
+      <span class="btn-role-tag" style="background:${rl.bg};color:${rl.cor};border:1px solid ${rl.border}44">${m.tag}</span>
+      <span style="color:var(--t3);font-size:12px">→</span>`;
+    modContainer.appendChild(btn);
+  });
+}
+
+function fazerLogout() {
+  currentUser = null;
+  document.getElementById('login-form-area').style.display = 'block';
+  document.getElementById('success-screen').classList.remove('show');
+  document.getElementById('inp-email').value = '';
+  document.getElementById('inp-senha').value = '';
+  document.getElementById('role-preview').classList.remove('show');
+  document.querySelectorAll('.qpill').forEach(p => p.classList.remove('active'));
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(80px)';
+  }, 2800);
+}
+
+// ═══ TEMA DARK/LIGHT ═══
+(function(){
+  var saved = '';
+  try { saved = localStorage.getItem('fh-theme') || 'dark'; } catch(e){ saved='dark'; }
+  document.documentElement.setAttribute('data-theme', saved);
+  document.documentElement.style.colorScheme = saved;
+})();
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  document.documentElement.style.colorScheme = next;
+  try { localStorage.setItem('fh-theme', next); } catch(e){}
+  var icon = document.getElementById('theme-icon');
+  if (icon) icon.textContent = next === 'light' ? '◑' : '◐';
+}
+
+</script>
+</body>
+</html>
